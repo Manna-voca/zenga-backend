@@ -57,8 +57,28 @@ jobs:
         id: current-time
         with:
           format: YYYY-MM-DDTHH-mm-ss
-          tcOffset: "+09:00" # (8).build 시점의 시간확보
+          utcOffset: "+09:00" # (8).build 시점의 시간확보
 
       - name: Show Current Time
-        run: echo "CurrentTime=$"
+        run: echo "CurrentTime=${{ steps.current-time.outputs.time }}"
         shell: bash # (9).확보한 시간 보여주기
+
+      - name: Generate deployment package
+        run: |
+          mkdir -p deploy
+          cp build/libs/*.jar deploy/application.jar
+          cp Procfile deploy/Procfile
+          cp -r .ebextensions deploy/.ebextensions
+          cp -r .platform deploy/.platform
+          cd deploy && zip -r deploy.zip .
+
+      - name: Beanstalk Deploy
+        uses: einaregilsson/beanstalk-deploy@v20
+        with:
+          aws_access_key: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws_secret_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          application_name: Zenga-real
+          environment_name: Zenga-real-env
+          version_label: github-action-${{ steps.current-time.outputs.time }}
+          region: ap-northeast-2
+          deployment_package: deploy/deploy.zip
