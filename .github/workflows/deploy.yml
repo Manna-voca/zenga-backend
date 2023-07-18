@@ -3,7 +3,7 @@ name: zenga-backend
 on:
   push:
     branches: [ "master" ]
-    workflow_dispatch: # (2).수동 실행
+  workflow_dispatch: # (2).수동 실행
 
 permissions:
   contents: read
@@ -26,17 +26,17 @@ jobs:
         run: chmod +x ./gradlew
         shell: bash # (6).권한 부여
 
-      ## create application-secret.yml
+      # create application-secret.yml
       - name: make application-secret.yml
         run: echo ${{ secrets.SECRET_YML }} | base64 --decode > ./src/main/resources/application-secret.yml
         shell: bash
 
-        ## create application-prod.yml
+      # create application-prod.yml
       - name: make application-prod.yml
         run: echo ${{ secrets.PROD_YML }}  | base64 --decode > ./src/main/resources/application-prod.yml
         shell: bash
 
-      ## gradle caching
+      # gradle caching
       - name: Gradle Caching
         uses: actions/cache@v3
         with:
@@ -51,15 +51,13 @@ jobs:
         run: ./gradlew clean build
         shell: bash # (7).build 시작
 
-      #      - name: Compile querydsl with Gradle
-      #        run: ./gradlew compilequerydsl
-
+      # get current time
       - name: Get current time
         uses: 1466587594/get-current-time@v2
         id: current-time
         with:
-        format: YYYY-MM-DDTHH-mm-ss
-        tcOffset: "+09:00"작 # (8).build 시점의 시간확보
+          format: YYYY-MM-DDTHH-mm-ss
+          tcOffset: "+09:00" # (8).build 시점의 시간확보
 
       - name: Show Current Time
         run: echo "CurrentTime=$"
