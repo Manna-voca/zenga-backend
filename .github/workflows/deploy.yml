@@ -3,7 +3,7 @@ name: zenga-backend
 on:
   push:
     branches: [ "master" ]
-  workflow_dispatch: # (2).수동 실행
+    workflow_dispatch: # (2).수동 실행
 
 permissions:
   contents: read
@@ -58,8 +58,8 @@ jobs:
         uses: 1466587594/get-current-time@v2
         id: current-time
         with:
-          format: YYYY-MM-DDTHH-mm-ss
-          utcOffset: "+09:00"작 # (8).build 시점의 시간확보
+        format: YYYY-MM-DDTHH-mm-ss
+        tcOffset: "+09:00"작 # (8).build 시점의 시간확보
 
       - name: Show Current Time
         run: echo "CurrentTime=$"
