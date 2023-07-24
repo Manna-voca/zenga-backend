@@ -1,9 +1,9 @@
 package com.mannavoca.zenga.common.security.jwt;
 
-import com.example.openoff.common.consts.ApplicationConst;
-import com.example.openoff.common.consts.IgnoredPathConst;
-import com.example.openoff.common.util.HeaderUtils;
-import com.example.openoff.common.util.SecurityUtils;
+import com.mannavoca.zenga.common.consts.ApplicationConst;
+import com.mannavoca.zenga.common.consts.IgnoredPathConst;
+import com.mannavoca.zenga.common.util.HeaderUtils;
+import com.mannavoca.zenga.common.util.SecurityUtils;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.GrantedAuthority;

@@ -1,8 +1,9 @@
 package com.mannavoca.zenga.common.security.jwt;
 
-import com.example.openoff.common.consts.IgnoredPathConst;
-import com.example.openoff.common.security.exception.JwtException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.mannavoca.zenga.common.consts.IgnoredPathConst;
+import com.mannavoca.zenga.common.exception.Error;
+import com.mannavoca.zenga.common.security.exception.JwtException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;

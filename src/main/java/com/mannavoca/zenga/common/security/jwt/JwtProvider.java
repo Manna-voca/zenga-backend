@@ -1,7 +1,8 @@
 package com.mannavoca.zenga.common.security.jwt;
 
-import com.example.openoff.common.security.exception.ExpiredTokenException;
-import com.example.openoff.common.security.exception.InvalidTokenException;
+import com.mannavoca.zenga.common.exception.Error;
+import com.mannavoca.zenga.common.security.exception.ExpiredTokenException;
+import com.mannavoca.zenga.common.security.exception.InvalidTokenException;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.security.Keys;
 import io.jsonwebtoken.security.SignatureException;
@@ -16,7 +17,7 @@ import java.util.Date;
 import java.util.Objects;
 import java.util.concurrent.TimeUnit;
 
-import static com.example.openoff.common.consts.ApplicationConst.*;
+import static com.mannavoca.zenga.common.consts.ApplicationConst.*;
 
 /**
  * TODO : 예외처리에서 사용자 정보를 담어서 로그를 남겨야함, 토큰에 저장할 정보 uuid로 할지 정하기, refreshToken을 재발급하는 과정을 filter사용할지 아니면 컨트롤러에서 처리할지 정하기
