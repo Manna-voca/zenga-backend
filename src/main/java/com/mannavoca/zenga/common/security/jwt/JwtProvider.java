@@ -19,9 +19,6 @@ import java.util.concurrent.TimeUnit;
 
 import static com.mannavoca.zenga.common.consts.ApplicationConst.*;
 
-/**
- * TODO : 예외처리에서 사용자 정보를 담어서 로그를 남겨야함, 토큰에 저장할 정보 uuid로 할지 정하기, refreshToken을 재발급하는 과정을 filter사용할지 아니면 컨트롤러에서 처리할지 정하기
- */
 @Slf4j
 @Component
 @RequiredArgsConstructor
