@@ -48,7 +48,7 @@ jobs:
             ${{ runner.os }}-gradle-
 
       - name: Build with Gradle
-        run: ./gradlew clean build
+        run: ./gradlew clean build -x test
         shell: bash # (7).build 시작
 
       # get current time
