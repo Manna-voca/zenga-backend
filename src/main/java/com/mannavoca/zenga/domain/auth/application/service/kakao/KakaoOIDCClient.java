@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.GetMapping;
         url = "https://kauth.kakao.com"
 )
 public interface KakaoOIDCClient {
-    @Cacheable(cacheNames = "KakaoOICD", cacheManager = "kakaoOidcCacheManager")
+    @Cacheable(cacheNames = "KakaoOIDC", cacheManager = "kakaoOidcCacheManager")
     @GetMapping("/.well-known/jwks.json")
     OIDCPublicKeysResponse getKakaoOIDCOpenKeys();
 }
