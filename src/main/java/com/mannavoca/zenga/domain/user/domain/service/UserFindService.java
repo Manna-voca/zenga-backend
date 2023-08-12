@@ -25,4 +25,12 @@ public class UserFindService {
     public User findBySocialId(String socialId) {
         return userRepository.findUserBySocialId(socialId).orElseThrow();
     }
+
+    public User findById(Long id) {
+        return userRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("유저 없지롱")); // 에러 처리 로직 구현 필요
+    }
+
+    public void validateUserId(Long id) {
+        userRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("유저 없지롱")); // 에러 처리 로직 구현 필요
+    }
 }
