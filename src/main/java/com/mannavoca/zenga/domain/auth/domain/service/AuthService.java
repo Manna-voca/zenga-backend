@@ -3,6 +3,7 @@ package com.mannavoca.zenga.domain.auth.domain.service;
 import com.mannavoca.zenga.common.security.jwt.JwtProvider;
 import com.mannavoca.zenga.common.security.oauth.OAuthProperties;
 import com.mannavoca.zenga.domain.auth.application.dto.request.KakaoOAuthRequestDto;
+import com.mannavoca.zenga.domain.auth.application.dto.request.RefreshTokensRequestDto;
 import com.mannavoca.zenga.domain.auth.application.dto.response.KakaoOAuthResponseDto;
 import com.mannavoca.zenga.domain.auth.application.dto.response.TokenResponseDto;
 import com.mannavoca.zenga.domain.auth.application.service.kakao.KakaoOAuthClient;
@@ -44,7 +45,19 @@ public class AuthService {
         return TokenResponseDto.builder()
                 .accessToken(jwtProvider.generateAccessToken(user.getId()))
                 .refreshToken(jwtProvider.generateRefreshToken(user.getId()))
-                .build(); // TODO: 리프레시 토큰 레디스에 저장하는 로직 구현 필요, 사용자 검증 로직 구현 필요
+                .build();
     }
 
+    public TokenResponseDto refreshTokens(RefreshTokensRequestDto refreshTokenDto) {
+        String refreshToken = refreshTokenDto.getRefreshToken();
+        jwtProvider.validateRefreshToken(refreshToken); // 저장된 리프레시와 받은 리프레시가 일치하는 지 검증
+
+        Long userId = jwtProvider.extractId(refreshToken); // 리프레시 토큰에 담긴 userId가 실제로 존재하는 지 검증
+        userFindService.validateUserId(userId);
+
+        return TokenResponseDto.builder()
+                .accessToken(jwtProvider.generateAccessToken(userId))
+                .refreshToken(jwtProvider.generateRefreshToken(userId))
+                .build();
+    }
 }
