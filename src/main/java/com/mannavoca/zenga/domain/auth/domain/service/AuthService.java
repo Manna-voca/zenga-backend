@@ -7,6 +7,8 @@ import com.mannavoca.zenga.domain.auth.application.dto.response.KakaoOAuthRespon
 import com.mannavoca.zenga.domain.auth.application.dto.response.TokenResponseDto;
 import com.mannavoca.zenga.domain.auth.application.service.kakao.KakaoOAuthClient;
 import com.mannavoca.zenga.domain.auth.application.service.kakao.KakaoOIDCHelper;
+import com.mannavoca.zenga.domain.user.domain.entity.User;
+import com.mannavoca.zenga.domain.user.domain.service.UserFindService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -19,6 +21,7 @@ public class AuthService {
     private final KakaoOIDCHelper kakaoOIDCHelper;
     private final JwtProvider jwtProvider;
     private final OAuthProperties oAuthProperties;
+    private final UserFindService userFindService;
 
     private String getIdToken(String code) {
         KakaoOAuthRequestDto kakaoOAuthRequestDto = KakaoOAuthRequestDto.builder()
@@ -34,12 +37,13 @@ public class AuthService {
 
     public TokenResponseDto generateTokens(String code) {
         String idToken = getIdToken(code);
-        String uuid = kakaoOIDCHelper.getPayloadFromIdToken(idToken).getSub();
+        String socialId = kakaoOIDCHelper.getPayloadFromIdToken(idToken).getSub();
+        User user = userFindService.findOrCreateBySocialId(socialId);
         //id_token 디코딩 후 Sub값의 uuid로 accessToken 생성
 
         return TokenResponseDto.builder()
-                .accessToken(jwtProvider.generateAccessToken(uuid))
-                .refreshToken(jwtProvider.generateRefreshToken(uuid))
+                .accessToken(jwtProvider.generateAccessToken(user.getId()))
+                .refreshToken(jwtProvider.generateRefreshToken(user.getId()))
                 .build(); // TODO: 리프레시 토큰 레디스에 저장하는 로직 구현 필요, 사용자 검증 로직 구현 필요
     }
 
