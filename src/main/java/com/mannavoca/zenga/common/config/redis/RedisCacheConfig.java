@@ -26,8 +26,8 @@ public class RedisCacheConfig {
                         .serializeValuesWith(
                                 RedisSerializationContext.SerializationPair.fromSerializer(
                                         new GenericJackson2JsonRedisSerializer()))
-                        // TTL 일주일로 설정
-                        .entryTtl(Duration.ofDays(7L));
+                        // TTL 하루로 설정
+                        .entryTtl(Duration.ofDays(1L));
 
         return RedisCacheManager.RedisCacheManagerBuilder.fromConnectionFactory(cf)
                 .cacheDefaults(redisCacheConfiguration)
