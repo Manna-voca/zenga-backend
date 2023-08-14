@@ -1,4 +1,4 @@
-package com.mannavoca.zenga.domain.club.domain.entity;
+package com.mannavoca.zenga.domain.channel.domain.entity;
 
 import com.mannavoca.zenga.common.infrastructure.domain.BaseEntity;
 import com.mannavoca.zenga.domain.member.domain.entity.Member;
@@ -13,18 +13,18 @@ import java.util.List;
 
 @Getter
 @Entity
-@Table(name = "zg_club")
+@Table(name = "zg_channel")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class Club extends BaseEntity {
+public class Channel extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private Long id;
 
-    @Column(name="name")
+    @Column(name = "name")
     private String name;
 
-    @Column(name="capacity")
+    @Column(name = "capacity")
     private Integer capacity;
 
     @Column(name="logo_image_url")
@@ -36,11 +36,11 @@ public class Club extends BaseEntity {
     @Column(name="finished_at")
     private LocalDateTime finishedAt;
 
-    @OneToMany(mappedBy = "club", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "channel", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Member> memberList;
 
     @Builder
-    public Club(String name, Integer capacity, String logoImageUrl, String description, LocalDateTime finishedAt) {
+    public Channel(String name, Integer capacity, String logoImageUrl, String description, LocalDateTime finishedAt) {
         this.name = name;
         this.capacity = capacity;
         this.logoImageUrl = logoImageUrl;
