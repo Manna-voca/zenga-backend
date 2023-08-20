@@ -29,5 +29,13 @@ public class ChannelController {
         return ResponseEntity.ok(ResponseDto.success(channelCreateUseCase.createChannel(creatingChannelRequestDto)));
     }
 
+    @GetMapping("/info")
+    public ResponseEntity<ResponseDto<ChannelResponseDto>> getChannelById(@RequestParam String code) {
+        return ResponseEntity.ok(ResponseDto.success(channelReadUseCase.getChannelByCode(code)));
+    }
 
+    @GetMapping("/{channelId}")
+    public ResponseEntity<ResponseDto<ChannelResponseDto>> getChannelById(@PathVariable Long channelId) {
+        return ResponseEntity.ok(ResponseDto.success(channelReadUseCase.getChannelById(channelId)));
+    }
 }

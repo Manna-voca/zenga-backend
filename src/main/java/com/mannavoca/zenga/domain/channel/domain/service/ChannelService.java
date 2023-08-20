@@ -37,4 +37,10 @@ public class ChannelService {
 
         return channelList;
     }
+
+    public Channel getChannelByCode(String code) {
+        Channel channel = channelRepository.findByCode(code).orElseThrow(); // TODO: 에러 처리 로직
+
+        return channel;
+    }
 }
