@@ -17,7 +17,7 @@ public class ChannelCodePublisher {
     private final ChannelRepository channelRepository;
 
     @TransactionalEventListener(phase = TransactionPhase.AFTER_COMMIT)
-    @Transactional(propagation = Propagation.REQUIRES_NEW)
+    @Transactional(propagation = Propagation.REQUIRED)
     public void publishCode(Channel channel) {
         channel.setCode(UniqueCodeGenerator.generateCodeForChannel(channel.getId()));
         channelRepository.save(channel);
