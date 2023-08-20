@@ -2,6 +2,7 @@ package com.mannavoca.zenga.domain.channel.domain.entity;
 
 import com.mannavoca.zenga.common.infrastructure.domain.BaseEntity;
 import com.mannavoca.zenga.domain.member.domain.entity.Member;
+import com.mannavoca.zenga.domain.party.domain.entity.Party;
 import lombok.*;
 
 import javax.persistence.*;
@@ -36,6 +37,9 @@ public class Channel extends BaseEntity {
 
     @Column(name = "finished_at")
     private LocalDateTime finishedAt;
+
+    @OneToMany(mappedBy = "channel", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Party> partyList;
 
     @OneToMany(mappedBy = "channel", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Member> memberList;
