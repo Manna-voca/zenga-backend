@@ -11,6 +11,7 @@ import java.util.List;
 @NoArgsConstructor
 public class CurrentTodoPraiseResponseDto {
     private String praise;
+    private int shuffleCount;
     private List<MemberInfoList> memberList;
 
     @Getter
@@ -23,8 +24,9 @@ public class CurrentTodoPraiseResponseDto {
     }
 
     @Builder
-    public CurrentTodoPraiseResponseDto(String praise, List<MemberInfoList> memberList) {
+    public CurrentTodoPraiseResponseDto(String praise, int shuffleCount, List<MemberInfoList> memberList) {
         this.praise = praise;
+        this.shuffleCount = shuffleCount;
         this.memberList = memberList;
     }
 
