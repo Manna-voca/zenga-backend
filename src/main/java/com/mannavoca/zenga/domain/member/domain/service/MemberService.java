@@ -29,4 +29,9 @@ public class MemberService {
         // 만약 리스트의 크기가 4 보다 작다면, 리스트의 모든 멤버를 반환한다.
         return membersByClubId.subList(0, Math.min(membersByClubId.size(), 4));
     }
+
+    public Member findMemberById(Long memberId) {
+        return memberRepository.findById(memberId)
+                .orElseThrow(() -> BusinessException.of(Error.DATA_NOT_FOUND));
+    }
 }
