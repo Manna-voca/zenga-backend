@@ -26,4 +26,8 @@ public class ChannelReadUseCase {
 
         return ChannelMapper.mapChannelListToChannelResponseDtoList(channelService.getAllChannelsByUserId(userId));
     }
+
+    public ChannelResponseDto getChannelByCode(String code) {
+        return ChannelMapper.mapChannelToChannelResponseDto(channelService.getChannelByCode(code));
+    }
 }
