@@ -19,6 +19,9 @@ public class Participation extends BaseEntity {
     @Column(name = "id")
     private Long id;
 
+    @Column(name = "is_maker")
+    private Boolean isMaker;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "member_id")
     private Member member;
@@ -28,7 +31,8 @@ public class Participation extends BaseEntity {
     private Party party;
 
     @Builder
-    public Participation(Member member, Party party) {
+    public Participation(Boolean isMaker, Member member, Party party) {
+        this.isMaker = isMaker;
         this.member = member;
         this.party = party;
     }
