@@ -1,6 +1,9 @@
 package com.mannavoca.zenga.domain.praise.domain.service;
 
 import com.mannavoca.zenga.common.annotation.DomainService;
+import com.mannavoca.zenga.common.exception.BusinessException;
+import com.mannavoca.zenga.common.exception.Error;
+import com.mannavoca.zenga.domain.member.domain.entity.Member;
 import com.mannavoca.zenga.domain.praise.domain.entity.MemberPraise;
 import com.mannavoca.zenga.domain.praise.domain.repository.MemberPraiseRepository;
 import lombok.RequiredArgsConstructor;
@@ -34,5 +37,14 @@ public class MemberPraiseService {
     public Page<MemberPraise> findMyCompletePraiseList(Long memberId, int page) {
         Pageable pageable = PageRequest.of(page-1, 20);
         return memberPraiseRepository.getMyCompletePraiseList(memberId, pageable);
+    }
+
+    public MemberPraise findMemberPraiseById(Long memberPraiseId) {
+        return memberPraiseRepository.findById(memberPraiseId).orElseThrow(() -> BusinessException.of(Error.DATA_NOT_FOUND));
+    }
+
+    public void updatePraisedMemberToMemberPraise(MemberPraise memberPraise, Member praisedMember) {
+        memberPraise.updatePraisedMember(praisedMember);
+        memberPraiseRepository.save(memberPraise);
     }
 }
