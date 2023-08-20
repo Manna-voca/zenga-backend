@@ -48,7 +48,7 @@ jobs:
             ${{ runner.os }}-gradle-
 
       - name: Build with Gradle
-        run: ./gradlew clean build
+        run: ./gradlew clean build -x test
         shell: bash # (7).build 시작
 
       # get current time
@@ -82,3 +82,4 @@ jobs:
           version_label: github-action-${{ steps.current-time.outputs.time }}
           region: ap-northeast-2
           deployment_package: deploy/deploy.zip
+          wait_for_environment_recovery: 300

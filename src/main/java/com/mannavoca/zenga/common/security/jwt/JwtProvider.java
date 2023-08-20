@@ -19,9 +19,6 @@ import java.util.concurrent.TimeUnit;
 
 import static com.mannavoca.zenga.common.consts.ApplicationConst.*;
 
-/**
- * TODO : 예외처리에서 사용자 정보를 담어서 로그를 남겨야함, 토큰에 저장할 정보 uuid로 할지 정하기, refreshToken을 재발급하는 과정을 filter사용할지 아니면 컨트롤러에서 처리할지 정하기
- */
 @Slf4j
 @Component
 @RequiredArgsConstructor
@@ -34,27 +31,27 @@ public class JwtProvider {
         return Keys.hmacShaKeyFor(jwtProperties.getSecret().getBytes(StandardCharsets.UTF_8));
     }
 
-    private String buildAccessToken(String uuid, Date now) {
+    private String buildAccessToken(Long id, Date now) {
         return buildToken(now)
                 .setExpiration(new Date(now.getTime() + jwtProperties.getAccessTokenPeriod()))
-                .setSubject(uuid)
+                .setSubject(id.toString())
                 .claim(TOKEN_TYPE, ACCESS_TOKEN)
                 .compact();
     }
 
-    private String buildRefreshToken(String uuid, Date now) {
+    private String buildRefreshToken(Long id, Date now) {
         final String refreshToken = buildToken(now)
                 .setExpiration(new Date(now.getTime() + jwtProperties.getRefreshTokenPeriod()))
-                .setSubject(uuid)
+                .setSubject(id.toString())
                 .claim(TOKEN_TYPE, REFRESH_TOKEN)
                 .compact();
-        storeRefreshToken(uuid, refreshToken);
+        storeRefreshToken(id, refreshToken);
         return refreshToken;
     }
 
-    private void storeRefreshToken(String uuid, String refreshToken) {
+    private void storeRefreshToken(Long id, String refreshToken) {
         redisTemplate.opsForValue().set(
-                uuid,
+                id.toString(),
                 refreshToken,
                 jwtProperties.getRefreshTokenPeriod(),
                 TimeUnit.MILLISECONDS);
@@ -67,14 +64,14 @@ public class JwtProvider {
                 .signWith(key);
     }
 
-    public String generateAccessToken(String uuid) {
+    public String generateAccessToken(Long id) {
         final Date now = new Date();
-        return buildAccessToken(uuid, now);
+        return buildAccessToken(id, now);
     }
 
-    public String generateRefreshToken(String uuid) {
+    public String generateRefreshToken(Long id) {
         final Date now = new Date();
-        return buildRefreshToken(uuid, now);
+        return buildRefreshToken(id, now);
     }
 
     /**
@@ -89,40 +86,42 @@ public class JwtProvider {
                 .build();
         try {
             jwtParser.parse(token);
-        } catch (MalformedJwtException | SignatureException | IllegalArgumentException e){
+        } catch (MalformedJwtException | SignatureException | IllegalArgumentException e) {
             throw InvalidTokenException.of(Error.INVALID_TOKEN);
-        } catch (ExpiredJwtException e){
+        } catch (ExpiredJwtException e) {
             throw ExpiredTokenException.of(Error.EXPIRED_TOKEN);
 
         }
     }
 
-    public String extractUUID(String token){
-        return Jwts.parserBuilder()
-                .setSigningKey(getSecretKey())
-                .build()
-                .parseClaimsJws(token)
-                .getBody()
-                .getSubject();
+    public Long extractId(String token) {
+        return Long.valueOf(
+                Jwts.parserBuilder()
+                        .setSigningKey(getSecretKey())
+                        .build()
+                        .parseClaimsJws(token)
+                        .getBody()
+                        .getSubject()
+        );
     }
 
-    public String reIssue(String refreshToken){
-        String uuid = validateRefreshToken(refreshToken);
-        return generateAccessToken(uuid);
+    public String reIssue(String refreshToken) {
+        Long id = validateRefreshToken(refreshToken);
+        return generateAccessToken(id);
     }
 
-    public String validateRefreshToken(String refreshToken) {
+    public Long validateRefreshToken(String refreshToken) {
         validateToken(refreshToken);
-        final String uuid = extractUUID(refreshToken);
-        final String storedRefreshToken = getRefreshToken(uuid);
-        if(!Objects.equals(refreshToken, storedRefreshToken)){
+        final long id = extractId(refreshToken);
+        final String storedRefreshToken = getRefreshToken(id);
+        if (!Objects.equals(refreshToken, storedRefreshToken)) {
             throw InvalidTokenException.of(Error.INVALID_TOKEN);
         }
-        return uuid;
+        return id;
     }
 
-    private String getRefreshToken(String uuid) {
-        return String.valueOf(redisTemplate.opsForValue().get(uuid));
+    private String getRefreshToken(Long id) {
+        return String.valueOf(redisTemplate.opsForValue().get(id.toString()));
     }
 
 
