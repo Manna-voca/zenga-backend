@@ -1,6 +1,6 @@
 package com.mannavoca.zenga.domain.user.domain.service;
 
-import com.mannavoca.zenga.domain.user.application.dto.request.OnboardingUserRequestDto;
+import com.mannavoca.zenga.domain.user.application.dto.request.UserOnboardingRequestDto;
 import com.mannavoca.zenga.domain.user.domain.entity.User;
 import com.mannavoca.zenga.domain.user.domain.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -22,9 +22,9 @@ public class UserService {
     }
 
     @Transactional
-    public User onboardUser(Long userId, OnboardingUserRequestDto onboardingUserRequestDto) {
+    public User onboardUser(Long userId, UserOnboardingRequestDto userOnboardingRequestDto) {
         User user = userRepository.findById(userId).orElseThrow(); // TODO: 에러 처리 로직 구현 필요
-        user.onboardUser(onboardingUserRequestDto);
+        user.onboardUser(userOnboardingRequestDto);
         return userRepository.save(user);
     }
 

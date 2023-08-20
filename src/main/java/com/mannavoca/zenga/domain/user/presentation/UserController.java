@@ -2,7 +2,7 @@ package com.mannavoca.zenga.domain.user.presentation;
 
 import com.mannavoca.zenga.common.dto.ResponseDto;
 import com.mannavoca.zenga.common.util.SecurityUtils;
-import com.mannavoca.zenga.domain.user.application.dto.request.OnboardingUserRequestDto;
+import com.mannavoca.zenga.domain.user.application.dto.request.UserOnboardingRequestDto;
 import com.mannavoca.zenga.domain.user.application.dto.response.UserInfoResponseDto;
 import com.mannavoca.zenga.domain.user.application.service.UserReadUseCase;
 import com.mannavoca.zenga.domain.user.application.service.UserUpdateUseCase;
@@ -24,7 +24,7 @@ public class UserController {
     }
 
     @PutMapping("/onboard")
-    public ResponseEntity<ResponseDto<UserInfoResponseDto>> onboardUser(@RequestBody OnboardingUserRequestDto onboardingUserRequestDto) {
-        return ResponseEntity.ok(ResponseDto.success(userUpdateUseCase.onboardUser(SecurityUtils.getUserId(), onboardingUserRequestDto)));
+    public ResponseEntity<ResponseDto<UserInfoResponseDto>> onboardUser(@RequestBody UserOnboardingRequestDto userOnboardingRequestDto) {
+        return ResponseEntity.ok(ResponseDto.success(userUpdateUseCase.onboardUser(SecurityUtils.getUserId(), userOnboardingRequestDto)));
     }
 }
