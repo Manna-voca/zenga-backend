@@ -26,6 +26,9 @@ public class MemberPraise extends BaseEntity {
     @Column(name = "shuffle_count")
     private int shuffleCount;
 
+    @Column(name = "is_open")
+    private Boolean isOpen;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "praise_member_id")
     private Member praiseMember;
@@ -42,6 +45,7 @@ public class MemberPraise extends BaseEntity {
     public MemberPraise(TimeSectionType timeSection, Member praiseMember, Member praisedMember, Praise praise) {
         this.timeSection = timeSection;
         this.shuffleCount = 0;
+        this.isOpen = false;
         this.praiseMember = praiseMember;
         this.praisedMember = praisedMember;
         this.praise = praise;
