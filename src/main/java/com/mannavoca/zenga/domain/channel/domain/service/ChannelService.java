@@ -1,7 +1,7 @@
 package com.mannavoca.zenga.domain.channel.domain.service;
 
 import com.mannavoca.zenga.common.annotation.DomainService;
-import com.mannavoca.zenga.domain.channel.application.dto.request.ChannelCreatingRequestDto;
+import com.mannavoca.zenga.domain.channel.application.dto.request.CreatingChannelRequestDto;
 import com.mannavoca.zenga.domain.channel.application.mapper.ChannelMapper;
 import com.mannavoca.zenga.domain.channel.domain.entity.Channel;
 import com.mannavoca.zenga.domain.channel.domain.repository.ChannelRepository;
@@ -23,8 +23,8 @@ public class ChannelService {
     }
 
     @Transactional
-    public Channel createChannel(ChannelCreatingRequestDto channelCreatingRequestDto) {
-        Channel newChannel = ChannelMapper.mapChannelCreatingRequestDtoToChannel(channelCreatingRequestDto);
+    public Channel createChannel(CreatingChannelRequestDto creatingChannelRequestDto) {
+        Channel newChannel = ChannelMapper.mapCreatingChannelRequestDtoToChannel(creatingChannelRequestDto);
         channelRepository.save(newChannel);
         channelCodePublisher.publishCode(newChannel);
 

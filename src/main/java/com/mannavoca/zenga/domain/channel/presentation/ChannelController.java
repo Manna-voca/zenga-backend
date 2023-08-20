@@ -2,7 +2,7 @@ package com.mannavoca.zenga.domain.channel.presentation;
 
 import com.mannavoca.zenga.common.dto.ResponseDto;
 import com.mannavoca.zenga.common.util.SecurityUtils;
-import com.mannavoca.zenga.domain.channel.application.dto.request.ChannelCreatingRequestDto;
+import com.mannavoca.zenga.domain.channel.application.dto.request.CreatingChannelRequestDto;
 import com.mannavoca.zenga.domain.channel.application.dto.response.ChannelResponseDto;
 import com.mannavoca.zenga.domain.channel.application.service.ChannelCreateUseCase;
 import com.mannavoca.zenga.domain.channel.application.service.ChannelReadUseCase;
@@ -25,8 +25,8 @@ public class ChannelController {
     }
 
     @PostMapping
-    public ResponseEntity<ResponseDto<ChannelResponseDto>> createNewChannel(@RequestBody ChannelCreatingRequestDto channelCreatingRequestDto) {
-        return ResponseEntity.ok(ResponseDto.success(channelCreateUseCase.createChannel(channelCreatingRequestDto)));
+    public ResponseEntity<ResponseDto<ChannelResponseDto>> createNewChannel(@RequestBody CreatingChannelRequestDto creatingChannelRequestDto) {
+        return ResponseEntity.ok(ResponseDto.success(channelCreateUseCase.createChannel(creatingChannelRequestDto)));
     }
 
 
