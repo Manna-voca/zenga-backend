@@ -17,4 +17,9 @@ public class MemberPraiseService {
     public Optional<MemberPraise> findTodayTodoPraiseForMember(Long memberId){
         return memberPraiseRepository.findTodayTodoPraise(memberId);
     }
+
+    public void updatePlusShuffleCountMemberPraise(MemberPraise memberPraise) {
+        memberPraise.updateShuffleCount();
+        memberPraiseRepository.save(memberPraise);
+    }
 }
