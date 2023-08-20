@@ -11,7 +11,7 @@ import java.time.LocalDate;
 
 @Getter
 @NoArgsConstructor(access = lombok.AccessLevel.PROTECTED)
-public class OnboardingUserRequestDto {
+public class UserOnboardingRequestDto {
 
     @NotBlank(message = "이름은 공백일 수 없습니다.")
     private String name;
