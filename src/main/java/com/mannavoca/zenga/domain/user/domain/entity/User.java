@@ -1,6 +1,7 @@
 package com.mannavoca.zenga.domain.user.domain.entity;
 
 import com.mannavoca.zenga.common.infrastructure.domain.BaseEntity;
+import com.mannavoca.zenga.domain.user.application.dto.request.OnboardingUserRequestDto;
 import com.mannavoca.zenga.domain.user.domain.entity.enumType.GenderType;
 import com.mannavoca.zenga.domain.user.domain.entity.enumType.RoleType;
 import lombok.AccessLevel;
@@ -45,10 +46,16 @@ public class User extends BaseEntity {
         this.socialId = socialId;
     }
 
-    public static User toInitEntity(String socialId){
+    public static User toInitEntity(String socialId) {
         return User.builder()
                 .role(RoleType.USER)
                 .socialId(socialId)
                 .build();
+    }
+
+    public void onboardUser(OnboardingUserRequestDto onboardingUserRequestDto) {
+        this.name = onboardingUserRequestDto.getName();
+        this.gender = onboardingUserRequestDto.getGender();
+        this.birth = onboardingUserRequestDto.getBirthDate();
     }
 }

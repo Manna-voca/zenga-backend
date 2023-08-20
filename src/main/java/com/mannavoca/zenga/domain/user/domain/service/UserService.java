@@ -1,6 +1,6 @@
 package com.mannavoca.zenga.domain.user.domain.service;
 
-import com.mannavoca.zenga.domain.user.application.dto.response.UserInfoResponseDto;
+import com.mannavoca.zenga.domain.user.application.dto.request.OnboardingUserRequestDto;
 import com.mannavoca.zenga.domain.user.domain.entity.User;
 import com.mannavoca.zenga.domain.user.domain.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -21,8 +21,15 @@ public class UserService {
                 .build());
     }
 
-    public UserInfoResponseDto getUserInfo(Long userId) {
+    @Transactional
+    public User onboardUser(Long userId, OnboardingUserRequestDto onboardingUserRequestDto) {
         User user = userRepository.findById(userId).orElseThrow(); // TODO: 에러 처리 로직 구현 필요
-        return UserInfoResponseDto.of(user);
+        user.onboardUser(onboardingUserRequestDto);
+        return userRepository.save(user);
+    }
+
+    public User getUserInfo(Long userId) {
+        User user = userRepository.findById(userId).orElseThrow(); // TODO: 에러 처리 로직 구현 필요
+        return user;
     }
 }
