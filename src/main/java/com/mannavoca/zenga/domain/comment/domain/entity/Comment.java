@@ -14,7 +14,7 @@ import java.util.List;
 
 @Getter
 @Entity
-@Table(name = "zg_club")
+@Table(name = "zg_comment")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Comment extends BaseEntity {
     @Id

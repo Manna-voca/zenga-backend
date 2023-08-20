@@ -2,7 +2,7 @@ package com.mannavoca.zenga.domain.member.domain.entity;
 
 import com.mannavoca.zenga.common.infrastructure.domain.BaseEntity;
 import com.mannavoca.zenga.domain.badge.domain.entity.MemberBadge;
-import com.mannavoca.zenga.domain.club.domain.entity.Club;
+import com.mannavoca.zenga.domain.channel.domain.entity.Channel;
 import com.mannavoca.zenga.domain.comment.domain.entity.Comment;
 import com.mannavoca.zenga.domain.member.domain.entity.enumType.LevelType;
 import com.mannavoca.zenga.domain.notification.domain.entity.Notification;
@@ -23,8 +23,8 @@ import java.util.List;
 @Table(name = "zg_member",
         uniqueConstraints = {
             @UniqueConstraint(
-                    name = "uk_club_id_user_id",
-                    columnNames = {"club_id","user_id"}
+                    name = "uk_channel_id_user_id",
+                    columnNames = {"channel_id", "user_id"}
             )
         }
 )
@@ -52,17 +52,14 @@ public class Member extends BaseEntity {
     private User user;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "club_id")
-    private Club club;
+    @JoinColumn(name = "channel_id")
+    private Channel channel;
 
-    @OneToMany(mappedBy = "member", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "praisedMember", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<MemberPraise> memberPraiseList;
 
     @OneToMany(mappedBy = "member", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<MemberBadge> memberBadgeList;
-
-    @OneToMany(mappedBy = "member", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Club> clubList;
 
     @OneToMany(mappedBy = "member", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Point> pointList;
@@ -70,19 +67,19 @@ public class Member extends BaseEntity {
     @OneToMany(mappedBy = "member", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Notification> notificationList;
 
-    @OneToMany(mappedBy = "member", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "writer", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Comment> commentList;
 
     @OneToMany(mappedBy = "member", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Participation> participationList;
 
     @Builder
-    public Member(LevelType level, String profileImageUrl, String nickname, String introduction, User user, Club club) {
+    public Member(LevelType level, String profileImageUrl, String nickname, String introduction, User user, Channel channel) {
         this.level = level;
         this.profileImageUrl = profileImageUrl;
         this.nickname = nickname;
         this.introduction = introduction;
         this.user = user;
-        this.club = club;
+        this.channel = channel;
     }
 }

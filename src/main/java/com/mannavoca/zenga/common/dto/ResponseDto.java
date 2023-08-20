@@ -30,4 +30,12 @@ public class ResponseDto<T> {
                 .data(data)
                 .build();
     }
+
+    public static <T> ResponseDto<T> success(T data) {
+        return ResponseDto.<T>builder()
+                .code(200)
+                .message("SUCCESS")
+                .data(data)
+                .build();
+    }
 }
