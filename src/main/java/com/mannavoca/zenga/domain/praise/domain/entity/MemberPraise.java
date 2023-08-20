@@ -23,8 +23,8 @@ public class MemberPraise extends BaseEntity {
     @Column(name = "time_section")
     private TimeSectionType timeSection;
 
-    @Column(name = "suffle_count")
-    private int suffleCount;
+    @Column(name = "shuffle_count")
+    private int shuffleCount;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "praise_member_id")
@@ -41,13 +41,13 @@ public class MemberPraise extends BaseEntity {
     @Builder
     public MemberPraise(TimeSectionType timeSection, Member praiseMember, Member praisedMember, Praise praise) {
         this.timeSection = timeSection;
-        this.suffleCount = 0;
+        this.shuffleCount = 0;
         this.praiseMember = praiseMember;
         this.praisedMember = praisedMember;
         this.praise = praise;
     }
 
-    public void updateSuffleCount(){
-        this.suffleCount++;
+    public void updateShuffleCount(){
+        this.shuffleCount++;
     }
 }
