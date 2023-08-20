@@ -40,6 +40,9 @@ public class Party extends BaseEntity {
     @Column(name="party_image_url")
     private String partyImageUrl;
 
+    @Column(name="is_open")
+    private Boolean isOpen;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "channel_id")
     private Channel channel;
@@ -58,6 +61,11 @@ public class Party extends BaseEntity {
         this.location = location;
         this.partyDate = partyDate;
         this.partyImageUrl = partyImageUrl;
+        this.isOpen = true;
         this.channel = channel;
+    }
+
+    public void updateIsOpen(Boolean isOpen) {
+        this.isOpen = isOpen;
     }
 }
