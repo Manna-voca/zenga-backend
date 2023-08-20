@@ -1,7 +1,7 @@
 package com.mannavoca.zenga.domain.channel.application.mapper;
 
 import com.mannavoca.zenga.common.annotation.Mapper;
-import com.mannavoca.zenga.domain.channel.application.dto.request.ChannelCreatingRequestDto;
+import com.mannavoca.zenga.domain.channel.application.dto.request.CreatingChannelRequestDto;
 import com.mannavoca.zenga.domain.channel.application.dto.response.ChannelResponseDto;
 import com.mannavoca.zenga.domain.channel.domain.entity.Channel;
 
@@ -22,13 +22,13 @@ public class ChannelMapper {
                 .build();
     }
 
-    public static Channel mapChannelCreatingRequestDtoToChannel(ChannelCreatingRequestDto channelCreatingRequestDto) {
+    public static Channel mapCreatingChannelRequestDtoToChannel(CreatingChannelRequestDto creatingChannelRequestDto) {
         return Channel.builder()
-                .name(channelCreatingRequestDto.getName())
-//                .capacity(channelCreatingRequestDto.getCapacity())
-                .logoImageUrl(channelCreatingRequestDto.getLogoImageUrl())
-                .description(channelCreatingRequestDto.getDescription())
-//                .finishedAt(channelCreatingRequestDto.getFinishedAt())
+                .name(creatingChannelRequestDto.getName())
+//                .capacity(creatingChannelRequestDto.getCapacity())
+                .logoImageUrl(creatingChannelRequestDto.getLogoImageUrl())
+                .description(creatingChannelRequestDto.getDescription())
+//                .finishedAt(creatingChannelRequestDto.getFinishedAt())
                 .build();
     }
 
