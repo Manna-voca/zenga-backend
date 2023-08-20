@@ -16,11 +16,11 @@ public class MemberRepositoryImpl implements MemberRepositoryCustom {
     private final JPAQueryFactory queryFactory;
 
     @Override
-    public List<Member> findMembersByClubId(Long memberId, Long clubId) {
+    public List<Member> findMembersByChannelId(Long memberId, Long channelId) {
         return queryFactory
                 .selectFrom(member)
                 .where(
-                        member.club.id.eq(clubId)
+                        member.channel.id.eq(channelId)
                                 .and(member.id.ne(memberId))
                 )
                 .fetch();
