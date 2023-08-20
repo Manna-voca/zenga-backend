@@ -40,6 +40,9 @@ public class Party extends BaseEntity {
     @Column(name="party_image_url")
     private String partyImageUrl;
 
+    @Column(name="card_image_url")
+    private String cardImageUrl;
+
     @Column(name="is_open")
     private Boolean isOpen;
 
@@ -54,14 +57,15 @@ public class Party extends BaseEntity {
     private List<Participation> participationList;
 
     @Builder
-    public Party(String title, String content, Integer maxCapacity, String location, LocalDateTime partyDate, String partyImageUrl, Channel channel) {
+    public Party(String title, String content, Integer maxCapacity, String location, LocalDateTime partyDate, String partyImageUrl, String cardImageUrl, Channel channel, Boolean isOpen) {
         this.title = title;
         this.content = content;
         this.maxCapacity = maxCapacity;
         this.location = location;
         this.partyDate = partyDate;
         this.partyImageUrl = partyImageUrl;
-        this.isOpen = true;
+        this.cardImageUrl = cardImageUrl;
+        this.isOpen = isOpen;
         this.channel = channel;
     }
 
