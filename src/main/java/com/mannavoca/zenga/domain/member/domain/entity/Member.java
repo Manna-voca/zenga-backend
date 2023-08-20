@@ -26,7 +26,8 @@ import java.util.List;
                     name = "uk_channel_id_user_id",
                     columnNames = {"channel_id", "user_id"}
             )
-        }
+        },
+        indexes = @Index(name = "idx_club_id", columnList = "club_id")
 )
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Member extends BaseEntity {
