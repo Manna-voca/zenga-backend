@@ -54,4 +54,8 @@ public class MemberPraise extends BaseEntity {
     public void updateShuffleCount(){
         this.shuffleCount++;
     }
+
+    public void updatePraisedMember(Member praisedMember){
+        this.praisedMember = praisedMember;
+    }
 }
