@@ -10,6 +10,7 @@ import java.util.List;
 @Getter
 @NoArgsConstructor
 public class CurrentTodoPraiseResponseDto {
+    private Long memberPraiseId;
     private String praise;
     private int shuffleCount;
     private List<MemberInfoList> memberList;
@@ -24,7 +25,8 @@ public class CurrentTodoPraiseResponseDto {
     }
 
     @Builder
-    public CurrentTodoPraiseResponseDto(String praise, int shuffleCount, List<MemberInfoList> memberList) {
+    public CurrentTodoPraiseResponseDto(Long memberPraiseId, String praise, int shuffleCount, List<MemberInfoList> memberList) {
+        this.memberPraiseId = memberPraiseId;
         this.praise = praise;
         this.shuffleCount = shuffleCount;
         this.memberList = memberList;

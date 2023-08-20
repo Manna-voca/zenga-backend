@@ -25,6 +25,7 @@ public class PraiseMapper {
                         .build()
                 ).collect(Collectors.toList());
         return CurrentTodoPraiseResponseDto.builder()
+                .memberPraiseId(todayTodoPraiseForMember.getId())
                 .praise(todayTodoPraiseForMember.getPraise().getDescription())
                 .shuffleCount(todayTodoPraiseForMember.getShuffleCount())
                 .memberList(memberInfoLists)
