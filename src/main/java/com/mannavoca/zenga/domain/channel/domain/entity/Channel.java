@@ -2,10 +2,7 @@ package com.mannavoca.zenga.domain.channel.domain.entity;
 
 import com.mannavoca.zenga.common.infrastructure.domain.BaseEntity;
 import com.mannavoca.zenga.domain.member.domain.entity.Member;
-import lombok.AccessLevel;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -27,13 +24,17 @@ public class Channel extends BaseEntity {
     @Column(name = "capacity")
     private Integer capacity;
 
-    @Column(name="logo_image_url")
+    @Column(name = "logo_image_url")
     private String logoImageUrl;
 
-    @Column(name="description")
+    @Column(name = "description")
     private String description;
 
-    @Column(name="finished_at")
+    @Column(name = "code")
+    @Setter
+    private String code;
+
+    @Column(name = "finished_at")
     private LocalDateTime finishedAt;
 
     @OneToMany(mappedBy = "channel", cascade = CascadeType.ALL, orphanRemoval = true)
