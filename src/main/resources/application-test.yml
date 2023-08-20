@@ -23,6 +23,12 @@ spring:
     host: localhost
     port: 6379
 
+  batch:
+    jdbc:
+      initialize-schema: always
+    job:
+      enabled: false
+
 logging:
   level:
     org.hibernate.SQL: debug
