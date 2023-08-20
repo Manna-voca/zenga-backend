@@ -17,7 +17,7 @@ import java.util.Map;
 @Slf4j
 @DomainService
 @RequiredArgsConstructor
-public class MemberPraiseService {
+public class MemberPraiseSqsService {
     private final JobLauncher jobLauncher;
     private final MemberPraiseRepository memberPraiseRepository;
     private final MemberPraiseCreateBatchConfig memberPraiseCreateBatchConfig;
