@@ -72,4 +72,17 @@ public class Party extends BaseEntity {
     public void updateIsOpen(Boolean isOpen) {
         this.isOpen = isOpen;
     }
+    public void updateCardImageUrl(String cardImageUrl) {
+        this.isOpen = false;
+        this.cardImageUrl = cardImageUrl;
+    }
+
+    public void editPartyInfo(String title, String content, Integer maxCapacity, String location, LocalDateTime partyDate, String partyImageUrl) {
+        this.title = title;
+        this.content = content;
+        this.maxCapacity = maxCapacity;
+        this.location = location;
+        this.partyDate = partyDate;
+        this.partyImageUrl = partyImageUrl;
+    }
 }
