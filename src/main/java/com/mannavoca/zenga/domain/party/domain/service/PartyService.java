@@ -5,6 +5,7 @@ import com.mannavoca.zenga.common.exception.BusinessException;
 import com.mannavoca.zenga.common.exception.Error;
 import com.mannavoca.zenga.domain.channel.domain.entity.Channel;
 import com.mannavoca.zenga.domain.party.application.dto.request.CreatePartyRequestDto;
+import com.mannavoca.zenga.domain.party.application.dto.request.EditPartyInfoRequestDto;
 import com.mannavoca.zenga.domain.party.domain.entity.Party;
 import com.mannavoca.zenga.domain.party.domain.repository.PartyRepository;
 import lombok.RequiredArgsConstructor;
@@ -36,5 +37,25 @@ public class PartyService {
 
     public Party getPartyById(Long partyId) {
         return partyRepository.findById(partyId).orElseThrow(() -> BusinessException.of(Error.DATA_NOT_FOUND));
+    }
+
+    public Party completePartyAndUploadCard(Party party, String partyCardImageUrl) {
+        party.updateCardImageUrl(partyCardImageUrl);
+        return partyRepository.save(party);
+    }
+
+    public void deletePartyById(Long partyId) {
+        partyRepository.deleteById(partyId);
+    }
+
+    public Party updatePartyInfo(Party party, EditPartyInfoRequestDto editPartyInfoRequestDto) {
+        party.editPartyInfo(
+                editPartyInfoRequestDto.getTitle(),
+                editPartyInfoRequestDto.getContent(),
+                editPartyInfoRequestDto.getMaxCapacity(),
+                editPartyInfoRequestDto.getLocation(),
+                editPartyInfoRequestDto.getPartyDate(),
+                editPartyInfoRequestDto.getPartyImageUrl());
+        return partyRepository.save(party);
     }
 }
