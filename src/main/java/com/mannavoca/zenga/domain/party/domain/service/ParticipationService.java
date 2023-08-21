@@ -35,4 +35,20 @@ public class ParticipationService {
                 .orElseThrow(() -> BusinessException.of(Error.DATA_NOT_FOUND)).getMember();
         return Map.of("maker", maker, "joinerCount", participationList.size());
     }
+
+    public boolean isAlreadyApplied(Long partyId, Long memberId) {
+        return participationRepository.existsByParty_IdAndMember_Id(partyId, memberId);
+    }
+
+    public void deleteParticipation(Long partyId, Long memberId) {
+        participationRepository.deleteByParty_IdAndMember_Id(partyId, memberId);
+    }
+
+    public void deleteAllParticipationByPartyId(Long partyId) {
+        participationRepository.deleteAllByParty_Id(partyId);
+    }
+
+    public Long getParticipationCountByPartyId(Long partyId) {
+        return participationRepository.countByParty_Id(partyId);
+    }
 }
