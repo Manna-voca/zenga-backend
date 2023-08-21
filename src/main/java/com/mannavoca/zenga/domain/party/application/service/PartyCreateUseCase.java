@@ -1,6 +1,8 @@
 package com.mannavoca.zenga.domain.party.application.service;
 
 import com.mannavoca.zenga.common.annotation.UseCase;
+import com.mannavoca.zenga.common.exception.BusinessException;
+import com.mannavoca.zenga.common.exception.Error;
 import com.mannavoca.zenga.common.util.UserUtils;
 import com.mannavoca.zenga.domain.channel.domain.entity.Channel;
 import com.mannavoca.zenga.domain.channel.domain.service.ChannelService;
@@ -33,5 +35,14 @@ public class PartyCreateUseCase {
         participationService.createNewParticipation(true, partyMaker, newParty);
 
         return PartyMapper.mapToCreatePartyResponseDto(newParty, partyMaker);
+    }
+
+    public void applyParty(Long channelId, Long partyId) {
+        Member applyMember = userUtils.getMember(channelId);
+        if (participationService.isAlreadyApplied(applyMember.getId(), partyId)) {
+            throw BusinessException.of(Error.INTERNAL_SERVER_ERROR); // TODO: 예외 처리 따로 해야함
+        }
+        Party party = partyService.getPartyById(partyId);
+        participationService.createNewParticipation(false, applyMember, party);
     }
 }
