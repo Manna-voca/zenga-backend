@@ -25,4 +25,15 @@ public class PartyPostController {
         CreatePartyResponseDto createPartyResponseDto = partyCreateUseCase.createNewParty(channelId, createPartyRequestDto);
         return ResponseEntity.ok(ResponseDto.of(HttpStatus.OK.value(), "모임 생성을 성공하였습니다.", createPartyResponseDto));
     }
+
+    @PostMapping("/apply")
+    public ResponseEntity<ResponseDto<Void>> applyParty
+            (
+                    @RequestParam Long channelId,
+                    @RequestParam Long partyId
+            )
+    {
+        partyCreateUseCase.applyParty(channelId, partyId);
+        return ResponseEntity.ok(ResponseDto.of(HttpStatus.OK.value(), "모임 신청을 성공하였습니다.", null));
+    }
 }
