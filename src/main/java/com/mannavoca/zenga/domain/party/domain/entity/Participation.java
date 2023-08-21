@@ -11,7 +11,14 @@ import javax.persistence.*;
 
 @Getter
 @Entity
-@Table(name = "zg_participation")
+@Table(name = "zg_participation",
+        uniqueConstraints = {
+                @UniqueConstraint(
+                        name = "uk_member_id_party_id",
+                        columnNames = {"member_id", "party_id"}
+                )
+        }
+)
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Participation extends BaseEntity {
     @Id
