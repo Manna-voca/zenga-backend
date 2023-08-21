@@ -2,6 +2,7 @@ package com.mannavoca.zenga.domain.party.application.mapper;
 
 import com.mannavoca.zenga.common.annotation.Mapper;
 import com.mannavoca.zenga.domain.member.domain.entity.Member;
+import com.mannavoca.zenga.domain.party.application.dto.response.CompletePartyResponseDto;
 import com.mannavoca.zenga.domain.party.application.dto.response.CreatePartyResponseDto;
 import com.mannavoca.zenga.domain.party.application.dto.response.PartyDetailInfoResponseDto;
 import com.mannavoca.zenga.domain.party.application.dto.response.PartyTapResponseDto;
@@ -79,6 +80,15 @@ public class PartyMapper {
         }
 
         return PartyDetailInfoResponseDto.ButtonState.JOIN;
+    }
+
+    public static CompletePartyResponseDto mapToCompletePartyResponseDto(Party party) {
+        return CompletePartyResponseDto.builder()
+                .partyId(party.getId())
+                .partyDate(party.getPartyDate())
+                .title(party.getTitle())
+                .content(party.getContent())
+                .partyCardImageUrl(party.getCardImageUrl()).build();
     }
 
 }
