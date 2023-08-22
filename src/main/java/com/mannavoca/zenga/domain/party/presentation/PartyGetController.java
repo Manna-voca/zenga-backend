@@ -27,7 +27,7 @@ public class PartyGetController {
             )
     {
         SliceResponse<PartyTapResponseDto> partyTapResponseDtoSliceResponseDto = partySearchUseCase.searchPartyListInChannel(channelId, partyId, pageable);
-        return ResponseEntity.ok(ResponseDto.of(HttpStatus.OK.value(), "모임 조회을 성공하였습니다.", partyTapResponseDtoSliceResponseDto));
+        return ResponseEntity.ok(ResponseDto.success(partyTapResponseDtoSliceResponseDto));
     }
 
     @GetMapping("/detail/{partyId}")
@@ -38,6 +38,6 @@ public class PartyGetController {
             )
     {
         PartyDetailInfoResponseDto partyDetailInfoResponseDto = partySearchUseCase.getPartyDetailInfo(partyId, channelId);
-        return ResponseEntity.ok(ResponseDto.of(HttpStatus.OK.value(), "모임 상세정보 조회을 성공하였습니다.", partyDetailInfoResponseDto));
+        return ResponseEntity.ok(ResponseDto.success(partyDetailInfoResponseDto));
     }
 }
