@@ -1,0 +1,39 @@
+spring:
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://zenga-database.cnbpsem3s6sq.ap-northeast-2.rds.amazonaws.com:3306/zenga_test?useSSL=false&serverTimezone=Asia/Seoul&characterEncoding=UTF-8&allowPublicKeyRetrieval=true
+    username: admin
+    password: Moapw.123
+
+  config:
+    activate:
+      on-profile: test
+    import: application-secret.yml
+
+  jpa:
+    hibernate:
+      ddl-auto: update
+
+  servlet:
+    multipart:
+      max-request-size: 15MB
+      max-file-size: 15MB
+
+  redis:
+    host: zenga-redis-ro.gva2kw.ng.0001.apn2.cache.amazonaws.com
+    port: 6379
+
+logging:
+  level:
+    org.hibernate.SQL: debug
+
+server:
+  port: 8080
+
+image:
+  path: image/
+
+oauth:
+  kakao:
+    redirect-uri:
+      http://localhost:8080/auth/login/kakao
