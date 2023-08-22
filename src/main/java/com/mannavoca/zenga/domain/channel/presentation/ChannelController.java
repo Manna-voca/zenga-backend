@@ -6,6 +6,7 @@ import com.mannavoca.zenga.domain.channel.application.dto.request.CreatingChanne
 import com.mannavoca.zenga.domain.channel.application.dto.response.ChannelResponseDto;
 import com.mannavoca.zenga.domain.channel.application.service.ChannelCreateUseCase;
 import com.mannavoca.zenga.domain.channel.application.service.ChannelReadUseCase;
+import com.mannavoca.zenga.domain.member.application.dto.response.MemberInfoResponseDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -37,5 +38,10 @@ public class ChannelController {
     @GetMapping("/{channelId}")
     public ResponseEntity<ResponseDto<ChannelResponseDto>> getChannelById(@PathVariable Long channelId) {
         return ResponseEntity.ok(ResponseDto.success(channelReadUseCase.getChannelById(channelId)));
+    }
+
+    @GetMapping("/{channelId}/members")
+    public ResponseEntity<ResponseDto<List<MemberInfoResponseDto>>> getAllMembersByChannelId(@PathVariable Long channelId) {
+        return ResponseEntity.ok(ResponseDto.success(channelReadUseCase.getAllMembersByChannelId(channelId)));
     }
 }
