@@ -1,4 +1,4 @@
-package com.mannavoca.zenga.domain.upload.presentation.dto.response;
+package com.mannavoca.zenga.domain.image.presentation.dto.response;
 
 import lombok.Getter;
 
