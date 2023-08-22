@@ -41,25 +41,25 @@ public class Comment extends BaseEntity {
     private List<Comment> children = new ArrayList<>();
 
     @Builder
-    public Comment(String content) {
+    public Comment(Party party, Member writer, String content) {
+        this.party = party;
+        this.writer = writer;
         this.content = content;
     }
 
-    public static Comment toEntity(String content) {
+    public static Comment toEntity(Party party, Member member, String content) {
         return Comment.builder()
+                .party(party)
+                .writer(member)
                 .content(content)
                 .build();
     }
 
-    public void updateParty(Party party) {
-        this.party = party;
-    }
-
-    public void updateWriter(Member writer) {
-        this.writer = writer;
-    }
-
     public void updateParent(Comment parent) {
         this.parent = parent;
+    }
+
+    public void updateContent(String content) {
+        this.content = content;
     }
 }
