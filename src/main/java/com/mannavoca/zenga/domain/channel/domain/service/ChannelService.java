@@ -18,10 +18,21 @@ public class ChannelService {
     private final ChannelRepository channelRepository;
     private final ChannelCodePublisher channelCodePublisher;
 
+    /**
+     * Channel ID로 Channel 조회
+     * @param id Channel ID
+     * @return Channel 객체
+     * TODO: 에러 처리 구현 필요
+     */
     public Channel getChannelById(Long id) {
-        return channelRepository.findById(id).orElseThrow(); // TODO: 에러 처리 로직
+        return channelRepository.findById(id).orElseThrow();
     }
 
+    /**
+     * Channel 생성
+     * @param creatingChannelRequestDto Channel 생성 요청 DTO
+     * @return 생성된 Channel 객체
+     */
     @Transactional
     public Channel createChannel(CreatingChannelRequestDto creatingChannelRequestDto) {
         Channel newChannel = ChannelMapper.mapCreatingChannelRequestDtoToChannel(creatingChannelRequestDto);
@@ -32,14 +43,25 @@ public class ChannelService {
     }
 
 
+    /**
+     * User ID로 Channel 조회
+     * @param userId User ID
+     * @return Channel 리스트
+     */
     public List<Channel> getAllChannelsByUserId(Long userId) {
         List<Channel> channelList = channelRepository.findAllChannelsByUserId(userId);
 
         return channelList;
     }
 
+    /**
+     * Channel Code로 Channel 조회
+     * @param code Channel Code
+     * @return Channel 객체
+     * TODO: 에러 처리 구현 필요
+     */
     public Channel getChannelByCode(String code) {
-        Channel channel = channelRepository.findByCode(code).orElseThrow(); // TODO: 에러 처리 로직
+        Channel channel = channelRepository.findByCode(code).orElseThrow();
 
         return channel;
     }
