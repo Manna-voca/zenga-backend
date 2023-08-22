@@ -1,5 +1,6 @@
 package com.mannavoca.zenga.domain.party.presentation;
 
+import com.mannavoca.zenga.common.ResponseCode.ResponseCode;
 import com.mannavoca.zenga.common.dto.ResponseDto;
 import com.mannavoca.zenga.domain.party.application.dto.request.CompletePartyRequestDto;
 import com.mannavoca.zenga.domain.party.application.dto.request.EditPartyInfoRequestDto;
@@ -25,7 +26,7 @@ public class PartyPatchController {
             )
     {
         CreatePartyResponseDto createPartyResponseDto = partyUpdateUseCase.editPartyInfo(channelId, editPartyInfoRequestDto);
-        return ResponseEntity.ok(ResponseDto.of(HttpStatus.OK.value(), "모임 정보 수정을 성공하였습니다.", createPartyResponseDto));
+        return ResponseEntity.ok(ResponseDto.of(ResponseCode.PARTY_UPDATED, createPartyResponseDto));
     }
 
     @PatchMapping("/finish")
@@ -36,6 +37,6 @@ public class PartyPatchController {
             )
     {
         CompletePartyResponseDto completePartyResponseDto = partyUpdateUseCase.uploadPartyCardAndComplete(channelId, completePartyRequestDto);
-        return ResponseEntity.ok(ResponseDto.of(HttpStatus.OK.value(), "모임 카드 생성에 성공하였습니다.", completePartyResponseDto));
+        return ResponseEntity.ok(ResponseDto.of(ResponseCode.PARTY_CARD_CREATED, completePartyResponseDto));
     }
 }

@@ -1,5 +1,6 @@
 package com.mannavoca.zenga.domain.party.presentation;
 
+import com.mannavoca.zenga.common.ResponseCode.ResponseCode;
 import com.mannavoca.zenga.common.dto.ResponseDto;
 import com.mannavoca.zenga.domain.party.application.service.PartyDeleteUseCase;
 import lombok.RequiredArgsConstructor;
@@ -24,7 +25,7 @@ public class PartyDeleteController {
             )
     {
         partyDeleteUseCase.cancelParty(channelId, partyId);
-        return ResponseEntity.ok(ResponseDto.of(HttpStatus.OK.value(), "모임 삭제를 성공하였습니다.", null));
+        return ResponseEntity.ok(ResponseDto.of(ResponseCode.PARTY_DELETED, null));
     }
 
     @DeleteMapping("/apply/cancel")
@@ -35,6 +36,6 @@ public class PartyDeleteController {
             )
     {
         partyDeleteUseCase.applyCancelParty(channelId, partyId);
-        return ResponseEntity.ok(ResponseDto.of(HttpStatus.OK.value(), "모임 가입 취소을 성공하였습니다.", null));
+        return ResponseEntity.ok(ResponseDto.of(ResponseCode.PARTY_JOIN_CANCELED, null));
     }
 }

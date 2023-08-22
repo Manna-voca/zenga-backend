@@ -1,5 +1,6 @@
 package com.mannavoca.zenga.domain.party.presentation;
 
+import com.mannavoca.zenga.common.ResponseCode.ResponseCode;
 import com.mannavoca.zenga.common.dto.ResponseDto;
 import com.mannavoca.zenga.domain.party.application.dto.request.CreatePartyRequestDto;
 import com.mannavoca.zenga.domain.party.application.dto.response.CreatePartyResponseDto;
@@ -23,7 +24,7 @@ public class PartyPostController {
             )
     {
         CreatePartyResponseDto createPartyResponseDto = partyCreateUseCase.createNewParty(channelId, createPartyRequestDto);
-        return ResponseEntity.ok(ResponseDto.of(HttpStatus.OK.value(), "모임 생성을 성공하였습니다.", createPartyResponseDto));
+        return ResponseEntity.ok(ResponseDto.of(ResponseCode.PARTY_CREATED, createPartyResponseDto));
     }
 
     @PostMapping("/apply")
@@ -34,6 +35,6 @@ public class PartyPostController {
             )
     {
         partyCreateUseCase.applyParty(channelId, partyId);
-        return ResponseEntity.ok(ResponseDto.of(HttpStatus.OK.value(), "모임 신청을 성공하였습니다.", null));
+        return ResponseEntity.ok(ResponseDto.success( null));
     }
 }

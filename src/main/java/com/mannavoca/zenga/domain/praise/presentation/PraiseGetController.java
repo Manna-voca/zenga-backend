@@ -1,5 +1,6 @@
 package com.mannavoca.zenga.domain.praise.presentation;
 
+import com.mannavoca.zenga.common.ResponseCode.ResponseCode;
 import com.mannavoca.zenga.common.dto.PageResponse;
 import com.mannavoca.zenga.common.dto.ResponseDto;
 import com.mannavoca.zenga.domain.praise.application.dto.response.CurrentTodoPraiseResponseDto;
@@ -25,7 +26,7 @@ public class PraiseGetController {
     public ResponseEntity<ResponseDto<CurrentTodoPraiseResponseDto>> getMyCurrentToDoPraise(@RequestParam Long channelId)
     {
         CurrentTodoPraiseResponseDto currentTodoPraiseResponseDto = praiseSearchUseCase.getCurrentTodoPraiseAndMemberList(channelId);
-        return ResponseEntity.ok(ResponseDto.of(200, "칭찬 보내기 데이터 조ㅅ에 성공했습니다.", currentTodoPraiseResponseDto));
+        return ResponseEntity.ok(ResponseDto.success(currentTodoPraiseResponseDto));
     }
 
     @GetMapping("/receive")
@@ -36,7 +37,7 @@ public class PraiseGetController {
             )
     {
         PageResponse<ReceivedPraiseInfoResponseDto> pageResponse = praiseSearchUseCase.getReceivedPraiseList(channelId, page);
-        return ResponseEntity.ok(ResponseDto.of(200, "받은 칭찬 리스트 조회에 성공했습니다.", pageResponse));
+        return ResponseEntity.ok(ResponseDto.success(pageResponse));
     }
 
     @GetMapping("/send")
@@ -47,6 +48,6 @@ public class PraiseGetController {
             )
     {
         PageResponse<SendPraiseInfoResponseDto> pageResponse = praiseSearchUseCase.getSendPraiseList(channelId, page);
-        return ResponseEntity.ok(ResponseDto.of(200, "보낸 칭찬 리스트 조회에 성공했습니다.", pageResponse));
+        return ResponseEntity.ok(ResponseDto.success(pageResponse));
     }
 }
