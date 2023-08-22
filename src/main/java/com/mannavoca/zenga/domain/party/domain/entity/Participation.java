@@ -11,13 +11,23 @@ import javax.persistence.*;
 
 @Getter
 @Entity
-@Table(name = "zg_participation")
+@Table(name = "zg_participation",
+        uniqueConstraints = {
+                @UniqueConstraint(
+                        name = "uk_member_id_party_id",
+                        columnNames = {"member_id", "party_id"}
+                )
+        }
+)
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Participation extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private Long id;
+
+    @Column(name = "is_maker")
+    private Boolean isMaker;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "member_id")
@@ -28,7 +38,8 @@ public class Participation extends BaseEntity {
     private Party party;
 
     @Builder
-    public Participation(Member member, Party party) {
+    public Participation(Boolean isMaker, Member member, Party party) {
+        this.isMaker = isMaker;
         this.member = member;
         this.party = party;
     }

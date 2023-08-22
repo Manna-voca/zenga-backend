@@ -1,6 +1,7 @@
 package com.mannavoca.zenga.domain.party.domain.entity;
 
 import com.mannavoca.zenga.common.infrastructure.domain.BaseEntity;
+import com.mannavoca.zenga.domain.channel.domain.entity.Channel;
 import com.mannavoca.zenga.domain.comment.domain.entity.Comment;
 import lombok.AccessLevel;
 import lombok.Builder;
@@ -30,14 +31,24 @@ public class Party extends BaseEntity {
     @Column(name="max_capacity")
     private Integer maxCapacity;
 
-    @Column(name="start_at")
-    private LocalDateTime startAt;
+    @Column(name="location")
+    private String location;
 
-    @Column(name="end_at")
-    private LocalDateTime endAt;
+    @Column(name="party_date")
+    private LocalDateTime partyDate;
 
     @Column(name="party_image_url")
     private String partyImageUrl;
+
+    @Column(name="card_image_url")
+    private String cardImageUrl;
+
+    @Column(name="is_open")
+    private Boolean isOpen;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "channel_id")
+    private Channel channel;
 
     @OneToMany(mappedBy = "party", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Comment> commentList;
@@ -46,12 +57,32 @@ public class Party extends BaseEntity {
     private List<Participation> participationList;
 
     @Builder
-    public Party(String title, String content, Integer maxCapacity, LocalDateTime startAt, LocalDateTime endAt, String partyImageUrl) {
+    public Party(String title, String content, Integer maxCapacity, String location, LocalDateTime partyDate, String partyImageUrl, String cardImageUrl, Channel channel, Boolean isOpen) {
         this.title = title;
         this.content = content;
         this.maxCapacity = maxCapacity;
-        this.startAt = startAt;
-        this.endAt = endAt;
+        this.location = location;
+        this.partyDate = partyDate;
+        this.partyImageUrl = partyImageUrl;
+        this.cardImageUrl = cardImageUrl;
+        this.isOpen = isOpen;
+        this.channel = channel;
+    }
+
+    public void updateIsOpen(Boolean isOpen) {
+        this.isOpen = isOpen;
+    }
+    public void updateCardImageUrl(String cardImageUrl) {
+        this.isOpen = false;
+        this.cardImageUrl = cardImageUrl;
+    }
+
+    public void editPartyInfo(String title, String content, Integer maxCapacity, String location, LocalDateTime partyDate, String partyImageUrl) {
+        this.title = title;
+        this.content = content;
+        this.maxCapacity = maxCapacity;
+        this.location = location;
+        this.partyDate = partyDate;
         this.partyImageUrl = partyImageUrl;
     }
 }
