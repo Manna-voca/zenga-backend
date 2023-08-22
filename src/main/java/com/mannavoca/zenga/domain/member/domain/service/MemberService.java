@@ -12,6 +12,7 @@ import com.mannavoca.zenga.domain.user.domain.entity.User;
 import com.mannavoca.zenga.domain.user.domain.service.UserFindService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Collections;
 import java.util.List;
@@ -41,6 +42,14 @@ public class MemberService {
                 .orElseThrow(() -> BusinessException.of(Error.DATA_NOT_FOUND));
     }
 
+    /**
+     * 새로운 Member 생성
+     * @param user User 객체
+     * @param channel Channel 객체
+     * @param creatingMemberRequestDto Member 생성 요청 DTO
+     * @return 생성된 Member 객체
+     */
+    @Transactional
     public Member createMember(User user, Channel channel, CreatingMemberRequestDto creatingMemberRequestDto) {
 
         Member member = Member.builder()
@@ -55,6 +64,11 @@ public class MemberService {
         return memberRepository.save(member);
     }
 
+    /**
+     * Channel ID로 Member 조회
+     * @param channelId Channel ID
+     * @return Member 리스트
+     */
     public List<Member> findAllMembersByChannelId(Long channelId) {
         return memberRepository.findAllMembersByChannelId(channelId);
     }

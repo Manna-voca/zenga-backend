@@ -24,6 +24,11 @@ public class AuthService {
     private final OAuthProperties oAuthProperties;
     private final UserFindService userFindService;
 
+    /**
+     * 카카오 인가 코드로 id_token을 받아옴
+     * @param code 카카오 인가 코드
+     * @return ID Token 값
+     */
     private String getIdToken(String code) {
         KakaoOAuthRequestDto kakaoOAuthRequestDto = KakaoOAuthRequestDto.builder()
                 .client_id(oAuthProperties.getClientId())
@@ -36,6 +41,11 @@ public class AuthService {
         return responseDto.getId_token();
     }
 
+    /**
+     * 카카오 인가 코드로 accessToken과 refreshToken을 생성
+     * @param code 카카오 인가 코드
+     * @return accessToken과 refreshToken을 담은 DTO
+     */
     public TokenResponseDto generateTokens(String code) {
         String idToken = getIdToken(code);
         String socialId = kakaoOIDCHelper.getPayloadFromIdToken(idToken).getSub();
@@ -48,6 +58,11 @@ public class AuthService {
                 .build();
     }
 
+    /**
+     * 리프레시 토큰으로 accessToken과 refreshToken을 재발급
+     * @param refreshTokenDto refreshToken을 담은 DTO
+     * @return accessToken과 refreshToken을 담은 DTO
+     */
     public TokenResponseDto refreshTokens(RefreshTokensRequestDto refreshTokenDto) {
         String refreshToken = refreshTokenDto.getRefreshToken();
         jwtProvider.validateRefreshToken(refreshToken); // 저장된 리프레시와 받은 리프레시가 일치하는 지 검증
