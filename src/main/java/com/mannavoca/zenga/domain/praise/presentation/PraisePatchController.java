@@ -1,5 +1,6 @@
 package com.mannavoca.zenga.domain.praise.presentation;
 
+import com.mannavoca.zenga.common.ResponseCode.ResponseCode;
 import com.mannavoca.zenga.common.dto.ResponseDto;
 import com.mannavoca.zenga.domain.praise.application.dto.request.ChooseMemberPraiseRequestDto;
 import com.mannavoca.zenga.domain.praise.application.dto.response.CurrentTodoPraiseResponseDto;
@@ -20,7 +21,7 @@ public class PraisePatchController {
     public ResponseEntity<ResponseDto<CurrentTodoPraiseResponseDto>> getMyCurrentToDoPraiseShuffle(@RequestParam Long channelId)
     {
         CurrentTodoPraiseResponseDto currentTodoPraiseResponseDto = praiseUpdateUseCase.getAgainCurrentTodoPraiseAndMemberList(channelId);
-        return ResponseEntity.ok(ResponseDto.of(200, "칭찬 보내기 셔플 데이터 조회에 성공했습니다.", currentTodoPraiseResponseDto));
+        return ResponseEntity.ok(ResponseDto.success(currentTodoPraiseResponseDto));
     }
 
     @PatchMapping("/choice")
@@ -30,6 +31,6 @@ public class PraisePatchController {
             )
     {
         praiseUpdateUseCase.choosePraise(chooseMemberPraiseRequestDto);
-        return ResponseEntity.ok(ResponseDto.of(200, "칭찬 보내기에 성공했습니다.", null));
+        return ResponseEntity.ok(ResponseDto.success(null));
     }
 }
