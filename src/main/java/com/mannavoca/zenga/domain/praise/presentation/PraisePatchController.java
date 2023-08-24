@@ -31,6 +31,6 @@ public class PraisePatchController {
             )
     {
         praiseUpdateUseCase.choosePraise(chooseMemberPraiseRequestDto);
-        return ResponseEntity.ok(ResponseDto.success(null));
+        return ResponseEntity.ok(ResponseDto.success());
     }
 }

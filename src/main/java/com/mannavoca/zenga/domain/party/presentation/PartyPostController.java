@@ -35,6 +35,6 @@ public class PartyPostController {
             )
     {
         partyCreateUseCase.applyParty(channelId, partyId);
-        return ResponseEntity.ok(ResponseDto.success( null));
+        return ResponseEntity.ok(ResponseDto.success());
     }
 }
