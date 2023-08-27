@@ -40,4 +40,11 @@ public class ResponseDto<T> {
                 .data(data)
                 .build();
     }
+
+    public static <T> ResponseDto<T> success() {
+        return ResponseDto.<T>builder()
+                .code(ResponseCode.OK)
+                .message(ResponseCode.OK.getMessage())
+                .build();
+    }
 }
