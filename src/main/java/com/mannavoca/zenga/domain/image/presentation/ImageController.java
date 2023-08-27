@@ -1,5 +1,6 @@
 package com.mannavoca.zenga.domain.image.presentation;
 
+import com.mannavoca.zenga.common.dto.ResponseDto;
 import com.mannavoca.zenga.common.infrastructure.s3.S3UploadService;
 import com.mannavoca.zenga.domain.image.presentation.dto.response.UploadResponseDto;
 import lombok.RequiredArgsConstructor;
@@ -18,10 +19,9 @@ public class ImageController {
     private final S3UploadService s3UploadService;
 
     @PostMapping("/upload")
-    public ResponseEntity<UploadResponseDto> uploadFile(@RequestPart("image") MultipartFile multipartFile){
+    public ResponseEntity<ResponseDto<UploadResponseDto>> uploadFile(@RequestPart("image") MultipartFile multipartFile){
             String url = s3UploadService.uploadImg(multipartFile);
-            // TODO 응답 포맷 어캐할지 얘기하고 리턴 포맷만 바꿔주면 됨
-//            return ResponseEntity.ok(UploadResponseDto.of(url));
-            return null;
+            
+            return ResponseEntity.ok(ResponseDto.success(UploadResponseDto.of(url)));
     }
 }
