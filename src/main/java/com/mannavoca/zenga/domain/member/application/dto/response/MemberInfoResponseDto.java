@@ -13,6 +13,4 @@ public class MemberInfoResponseDto {
     private String name;
     private String introduction;
     private LevelType level;
-    private Long userId;
-    private Long channelId;
 }
