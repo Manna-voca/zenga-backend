@@ -9,12 +9,13 @@ import java.time.LocalTime;
 import java.util.List;
 
 public enum TimeSectionType implements CodeValue {
-    A("a", "6-10", LocalTime.of(6, 0), LocalTime.of(9, 59)),
-    B("b", "10-14", LocalTime.of(10, 0), LocalTime.of(13, 59)),
-    C("c", "14-18", LocalTime.of(14, 0), LocalTime.of(17, 59)),
-    D("d", "18-22", LocalTime.of(18, 0), LocalTime.of(21, 59)),
-    E("e", "22-2", LocalTime.of(22, 0), LocalTime.of(1, 59)),
-    F("f","2-6", LocalTime.of(2, 0), LocalTime.of(5, 59));
+    A("a", "0-4", LocalTime.of(0, 0), LocalTime.of(3, 59)),
+    B("b", "4-8", LocalTime.of(4, 0), LocalTime.of(7, 59)),
+    C("c", "8-12", LocalTime.of(8, 0), LocalTime.of(11, 59)),
+    D("d", "12-16", LocalTime.of(12, 0), LocalTime.of(15, 59)),
+    E("e", "16-20", LocalTime.of(16, 0), LocalTime.of(19, 59)),
+
+    F("f","20-24", LocalTime.of(20, 0), LocalTime.of(23, 59));
 
     private String code;
     private String value;
@@ -33,8 +34,7 @@ public enum TimeSectionType implements CodeValue {
 
         for (TimeSectionType section : TimeSectionType.values()) {
             if (section == E) { // Special case because it spans over midnight
-                if ((time.isAfter(section.startTime) || time.isBefore(section.endTime))
-                        && (time.isBefore(section.endTime.plusMinutes(1)))) {
+                if (time.isAfter(section.startTime) || time.isBefore(section.endTime.plusMinutes(1))) {
                     return section;
                 }
             } else if (time.isAfter(section.startTime) && time.isBefore(section.endTime.plusMinutes(1))) {
