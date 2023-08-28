@@ -39,7 +39,7 @@ public class MemberPraiseRepositoryImpl implements MemberPraiseRepositoryCustom 
     }
 
     @Override
-    public Optional<MemberPraise> findTodayTodoPraise(Long memberId) {
+    public Optional<MemberPraise> findCurrentTodoPraise(Long memberId) {
         LocalDateTime now = LocalDateTime.now();
         TimeSectionType timeSection = TimeSectionType.from(now);
 
@@ -49,7 +49,6 @@ public class MemberPraiseRepositoryImpl implements MemberPraiseRepositoryCustom 
                 .where(
                         memberPraise.praiseMember.id.eq(memberId)
                                 .and(memberPraise.timeSection.eq(timeSection))
-                                .and(memberPraise.praisedMember.isNull())
                                 .and(memberPraise.createdDate.year().eq(now.getYear()))
                                 .and(memberPraise.createdDate.month().eq(now.getMonthValue()))
                                 .and(memberPraise.createdDate.dayOfMonth().eq(now.getDayOfMonth()))
