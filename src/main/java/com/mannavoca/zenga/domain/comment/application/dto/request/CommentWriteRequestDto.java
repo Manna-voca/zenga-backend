@@ -9,6 +9,7 @@ import javax.annotation.Nullable;
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class CommentWriteRequestDto {
+    private Long channelId;
     private Long partyId;
     @Nullable
     private Long parentId;
