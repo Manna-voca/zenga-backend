@@ -34,19 +34,17 @@ public enum Error {
     USER_NOT_CORRECT_SMS_NUM(HttpStatus.BAD_REQUEST,"잘못된 인증 번호입니다.", 1001),
     USER_NICKNAME_DUPLICATION(HttpStatus.BAD_REQUEST,"중복된 닉네임입니다.", 1002),
 
+    // Praise
+    CANNOT_SHUFFLE(HttpStatus.BAD_REQUEST, "더 이상 셔플할 수 없습니다.", 1100),
+    ALREADY_PRAISED(HttpStatus.BAD_REQUEST, "이미 칭찬하기를 완료했습니다.", 1101),
+    NOT_MEMBER_PRAISE_OWNER(HttpStatus.BAD_REQUEST, "칭찬을 열 권한이 없습니다.", 1102),
 
-    // Field
-    TOO_MANY_INTEREST(HttpStatus.BAD_REQUEST,"관심 분야를 4개 이상 설정할 수 없습니다.", 1100),
-    INVALID_FIELD_TYPE(HttpStatus.BAD_REQUEST, "잘못된 분야 상수 값 입니다.", 1101),
-
-    // EventInstance
-    TOO_MANY_EVENT_FIELD(HttpStatus.BAD_REQUEST,"이벤트 분야를 4개 이상 설정할 수 없습니다.", 1200),
-
+    // Point
+    NOT_ENOUGH_POINT(HttpStatus.BAD_REQUEST, "포인트가 부족합니다.", 1102),
 
     // JWT
     INVALID_TOKEN(HttpStatus.BAD_REQUEST,"잘못된 토큰 요청", 7000),
     EXPIRED_TOKEN(HttpStatus.BAD_REQUEST,"토큰 만료되었습니다. 토큰 재발행 혹은 로그인을 다시 해주세요", 7001),
-
     ;
 
     private final HttpStatus httpStatus;
