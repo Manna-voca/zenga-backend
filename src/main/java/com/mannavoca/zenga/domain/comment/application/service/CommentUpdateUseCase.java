@@ -18,8 +18,8 @@ public class CommentUpdateUseCase {
     private final UserUtils userUtils;
     private final CommentService commentService;
 
-    public void updateCommentContent(Long channelId, CommentChangeRequestDto commentChangeRequestDto) {
-        Member writer = userUtils.getMember(channelId);
+    public void updateCommentContent(CommentChangeRequestDto commentChangeRequestDto) {
+        Member writer = userUtils.getMember(commentChangeRequestDto.getChannelId());
         Comment comment = commentService.findById(commentChangeRequestDto.getCommentId());
         if (!comment.getWriter().getId().equals(writer.getId())) {
             // 작성자만 수정 가능
