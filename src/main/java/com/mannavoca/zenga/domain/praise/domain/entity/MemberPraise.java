@@ -12,7 +12,7 @@ import javax.persistence.*;
 
 @Getter
 @Entity
-@Table(name = "zg_member_badge")
+@Table(name = "zg_member_praise")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class MemberPraise extends BaseEntity {
     @Id
@@ -38,7 +38,7 @@ public class MemberPraise extends BaseEntity {
     private Member praisedMember;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "badge_id")
+    @JoinColumn(name = "praise_id")
     private Praise praise;
 
     @Builder
@@ -57,5 +57,9 @@ public class MemberPraise extends BaseEntity {
 
     public void updatePraisedMember(Member praisedMember){
         this.praisedMember = praisedMember;
+    }
+
+    public void updateOpen(){
+        this.isOpen = true;
     }
 }
