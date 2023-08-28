@@ -8,6 +8,7 @@ import com.mannavoca.zenga.domain.member.domain.entity.enumType.LevelType;
 import com.mannavoca.zenga.domain.notification.domain.entity.Notification;
 import com.mannavoca.zenga.domain.party.domain.entity.Participation;
 import com.mannavoca.zenga.domain.point.domain.entity.Point;
+import com.mannavoca.zenga.domain.praise.domain.entity.Candidate;
 import com.mannavoca.zenga.domain.praise.domain.entity.MemberPraise;
 import com.mannavoca.zenga.domain.user.domain.entity.User;
 import lombok.AccessLevel;
@@ -58,6 +59,12 @@ public class Member extends BaseEntity {
 
     @OneToMany(mappedBy = "praisedMember", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<MemberPraise> memberPraiseList;
+
+    @OneToMany(mappedBy = "member", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Candidate> praiseMember;
+
+    @OneToMany(mappedBy = "candidate", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Candidate> candidateList;
 
     @OneToMany(mappedBy = "member", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<MemberBadge> memberBadgeList;

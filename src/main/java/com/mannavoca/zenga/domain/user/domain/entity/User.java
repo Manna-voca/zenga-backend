@@ -1,6 +1,7 @@
 package com.mannavoca.zenga.domain.user.domain.entity;
 
 import com.mannavoca.zenga.common.infrastructure.domain.BaseEntity;
+import com.mannavoca.zenga.domain.point.domain.entity.Point;
 import com.mannavoca.zenga.domain.user.application.dto.request.UserOnboardingRequestDto;
 import com.mannavoca.zenga.domain.user.domain.entity.enumType.GenderType;
 import com.mannavoca.zenga.domain.user.domain.entity.enumType.RoleType;
@@ -11,6 +12,7 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.time.LocalDate;
+import java.util.List;
 
 @Getter
 @Entity
@@ -36,6 +38,9 @@ public class User extends BaseEntity {
 
     @Column(name="social_id", unique = true)
     private String socialId;
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    private List<Point> points;
 
     @Builder
     public User(RoleType role, String name, GenderType gender, LocalDate birth, String socialId) {
