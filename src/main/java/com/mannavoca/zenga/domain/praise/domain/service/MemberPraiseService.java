@@ -5,6 +5,8 @@ import com.mannavoca.zenga.common.exception.BusinessException;
 import com.mannavoca.zenga.common.exception.Error;
 import com.mannavoca.zenga.domain.member.domain.entity.Member;
 import com.mannavoca.zenga.domain.praise.domain.entity.MemberPraise;
+import com.mannavoca.zenga.domain.praise.domain.entity.Praise;
+import com.mannavoca.zenga.domain.praise.domain.entity.enumType.TimeSectionType;
 import com.mannavoca.zenga.domain.praise.domain.repository.MemberPraiseRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -12,6 +14,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 
+import java.time.LocalDateTime;
 import java.util.Optional;
 
 @Slf4j
@@ -20,8 +23,17 @@ import java.util.Optional;
 public class MemberPraiseService {
     private final MemberPraiseRepository memberPraiseRepository;
 
-    public Optional<MemberPraise> findTodayTodoPraiseForMember(Long memberId){
-        return memberPraiseRepository.findTodayTodoPraise(memberId);
+    public Optional<MemberPraise> findCurrentTodoPraiseForMember(Long memberId){
+        return memberPraiseRepository.findCurrentTodoPraise(memberId);
+    }
+
+    public MemberPraise createNewMemberPraise(Member praiseMember, Praise praise) {
+        return memberPraiseRepository.save(
+                MemberPraise.builder()
+                        .timeSection(TimeSectionType.from(LocalDateTime.now()))
+                        .praiseMember(praiseMember).praisedMember(null)
+                        .praise(praise).build()
+        );
     }
 
     public void updatePlusShuffleCountMemberPraise(MemberPraise memberPraise) {
@@ -45,6 +57,11 @@ public class MemberPraiseService {
 
     public void updatePraisedMemberToMemberPraise(MemberPraise memberPraise, Member praisedMember) {
         memberPraise.updatePraisedMember(praisedMember);
+        memberPraiseRepository.save(memberPraise);
+    }
+
+    public void updateOpenMemberPraise(MemberPraise memberPraise) {
+        memberPraise.updateOpen();
         memberPraiseRepository.save(memberPraise);
     }
 }
