@@ -21,6 +21,6 @@ public class CommentPatchController {
             )
     {
         commentUpdateUseCase.updateCommentContent(channelId, changeRequestDto);
-        return ResponseEntity.ok(ResponseDto.of(200, "댓글 수정이 완료되었습니다.", null));
+        return ResponseEntity.ok(ResponseDto.success());
     }
 }
