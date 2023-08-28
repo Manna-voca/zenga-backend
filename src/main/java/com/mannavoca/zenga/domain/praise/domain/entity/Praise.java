@@ -11,7 +11,7 @@ import javax.persistence.*;
 
 @Getter
 @Entity
-@Table(name = "zg_badge")
+@Table(name = "zg_praise")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Praise extends BaseEntity {
     @Id
