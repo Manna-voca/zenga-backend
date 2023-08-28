@@ -18,8 +18,8 @@ public class CommentCreateUseCase {
     private final PartyService partyService;
     private final CommentService commentService;
 
-    public void createComment(Long channelId, CommentWriteRequestDto commentWriteRequestDto) {
-        Member writer = userUtils.getMember(channelId);
+    public void createComment(CommentWriteRequestDto commentWriteRequestDto) {
+        Member writer = userUtils.getMember(commentWriteRequestDto.getChannelId());
         Party party = partyService.getPartyById(commentWriteRequestDto.getPartyId());
         commentService.createComment(writer, party, commentWriteRequestDto);
     }

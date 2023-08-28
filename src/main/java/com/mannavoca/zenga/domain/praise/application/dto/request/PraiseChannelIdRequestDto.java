@@ -1,4 +1,4 @@
-package com.mannavoca.zenga.domain.comment.application.dto.request;
+package com.mannavoca.zenga.domain.praise.application.dto.request;
 
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -6,8 +6,6 @@ import lombok.NoArgsConstructor;
 
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class CommentChangeRequestDto {
+public class PraiseChannelIdRequestDto {
     private Long channelId;
-    private Long commentId;
-    private String content;
 }

@@ -16,8 +16,8 @@ import java.util.stream.Collectors;
 @Mapper
 public class PraiseMapper {
 
-    public static CurrentTodoPraiseResponseDto mapToCurrentTodoPraiseResponseDto(MemberPraise todayTodoPraiseForMember, List<Member> randomMembersByChannelId) {
-        List<CurrentTodoPraiseResponseDto.MemberInfoList> memberInfoLists = randomMembersByChannelId.stream()
+    public static CurrentTodoPraiseResponseDto mapToCurrentTodoPraiseResponseDto(MemberPraise currentTodoPraiseForMember, List<Member> candidates) {
+        List<CurrentTodoPraiseResponseDto.MemberInfoList> memberInfoLists = candidates.stream()
                 .map(member -> CurrentTodoPraiseResponseDto.MemberInfoList.builder()
                         .memberId(member.getId())
                         .name(member.getNickname())
@@ -25,9 +25,9 @@ public class PraiseMapper {
                         .build()
                 ).collect(Collectors.toList());
         return CurrentTodoPraiseResponseDto.builder()
-                .memberPraiseId(todayTodoPraiseForMember.getId())
-                .praise(todayTodoPraiseForMember.getPraise().getDescription())
-                .shuffleCount(todayTodoPraiseForMember.getShuffleCount())
+                .memberPraiseId(currentTodoPraiseForMember.getId())
+                .praise(currentTodoPraiseForMember.getPraise().getDescription())
+                .shuffleCount(currentTodoPraiseForMember.getShuffleCount())
                 .memberList(memberInfoLists)
                 .build();
     }
@@ -36,6 +36,7 @@ public class PraiseMapper {
         List<ReceivedPraiseInfoResponseDto> responseDtos = receivedPraiseList.getContent().stream()
                 .map(memberPraise -> ReceivedPraiseInfoResponseDto.builder()
                         .receivedPraiseId(memberPraise.getId())
+                        .isOpened(memberPraise.getIsOpen())
                         .praiseDescription(memberPraise.getPraise().getDescription())
                         .memberName(memberPraise.getIsOpen() ? memberPraise.getPraiseMember().getNickname() : "익명")
                         .memberProfileImageUrl(memberPraise.getIsOpen() ? memberPraise.getPraiseMember().getProfileImageUrl() : null)
