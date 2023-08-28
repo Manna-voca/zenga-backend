@@ -20,8 +20,7 @@ public class PraiseRepositoryImpl implements PraiseRepositoryCustom {
     public Praise findRandomPraise() {
         return queryFactory
                 .selectFrom(praise)
-                .orderBy(Expressions.numberTemplate(Double.class, "RAND()").asc()) // 또는 "RAND()" (DB에 따라 다름)
-                .limit(1)
-                .fetchOne();
+                .orderBy(Expressions.numberTemplate(Double.class, "function('rand')").asc()) // 또는 "RAND()" (DB에 따라 다름)
+                .fetchFirst();
     }
 }
