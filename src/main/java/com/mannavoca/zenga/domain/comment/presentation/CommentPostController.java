@@ -21,6 +21,6 @@ public class CommentPostController {
             )
     {
         commentCreateUseCase.createComment(channelId, commentWriteRequestDto);
-        return ResponseEntity.ok(ResponseDto.of(200, "댓글 작성이 완료되었습니다.", null));
+        return ResponseEntity.ok(ResponseDto.success());
     }
 }

@@ -28,7 +28,7 @@ public class CommentGetController {
             )
     {
         SliceResponse<CommentInfoResponseDto> parentCommentList = commentSearchUseCase.getParentCommentList(partyId, commentId, pageable);
-        return ResponseEntity.ok(ResponseDto.of(HttpStatus.OK.value(), "모임 댓글 조회 성공하였습니다.", parentCommentList));
+        return ResponseEntity.ok(ResponseDto.success(parentCommentList));
     }
 
     @GetMapping("/{commentId}")
@@ -38,6 +38,6 @@ public class CommentGetController {
             )
     {
         List<CommentInfoResponseDto> childCommentList = commentSearchUseCase.getChildCommentList(commentId);
-        return ResponseEntity.ok(ResponseDto.of(HttpStatus.OK.value(), "대댓글 조회을 성공하였습니다.", childCommentList));
+        return ResponseEntity.ok(ResponseDto.success(childCommentList));
     }
 }
