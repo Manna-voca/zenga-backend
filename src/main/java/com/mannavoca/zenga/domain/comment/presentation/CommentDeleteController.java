@@ -23,6 +23,6 @@ public class CommentDeleteController {
             )
     {
         commentDeleteUseCase.deleteComment(channelId, commentId);
-        return ResponseEntity.ok(ResponseDto.of(200, "댓글 삭제가 완료되었습니다.", null));
+        return ResponseEntity.ok(ResponseDto.success());
     }
 }
