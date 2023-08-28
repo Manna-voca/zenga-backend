@@ -16,6 +16,12 @@ public enum ResponseCode {
     PARTY_JOIN_CANCELED(HttpStatus.OK, "모임 가입을 취소하였습니다.", "P004"),
     PARTY_CARD_CREATED(HttpStatus.OK, "모임 카드 생성에 성공하였습니다.", "P005"),
     PARTY_CARD_DELETED(HttpStatus.OK, "모임 카드 삭제에 성공하였습니다.", "P006"),
+
+    // comment
+    COMMENT_CREATED(HttpStatus.OK, "댓글 생성을 성공하였습니다.", "C001"),
+    COMMENT_DELETED(HttpStatus.OK, "댓글 삭제를 성공하였습니다.", "C002"),
+    COMMENT_UPDATED(HttpStatus.OK, "댓글 수정을 성공하였습니다.", "C003"),
+    COMMENT_SEARCHING(HttpStatus.OK, "댓글 조회를 성공하였습니다.", "C004"),
     ;
 
     private final HttpStatus httpStatus;
