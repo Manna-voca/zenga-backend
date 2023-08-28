@@ -10,7 +10,7 @@ import java.util.Optional;
 public interface MemberPraiseRepositoryCustom {
     List<MemberPraise> findAllNotPraised();
 
-    Optional<MemberPraise> findTodayTodoPraise(Long memberId);
+    Optional<MemberPraise> findCurrentTodoPraise(Long memberId);
 
     Page<MemberPraise> getReceivedPraiseList(Long memberId, Pageable pageable);
 
