@@ -1,9 +1,7 @@
 package com.mannavoca.zenga.domain.praise.presentation;
 
-import com.mannavoca.zenga.common.ResponseCode.ResponseCode;
 import com.mannavoca.zenga.common.dto.PageResponse;
 import com.mannavoca.zenga.common.dto.ResponseDto;
-import com.mannavoca.zenga.domain.praise.application.dto.response.CurrentTodoPraiseResponseDto;
 import com.mannavoca.zenga.domain.praise.application.dto.response.ReceivedPraiseInfoResponseDto;
 import com.mannavoca.zenga.domain.praise.application.dto.response.SendPraiseInfoResponseDto;
 import com.mannavoca.zenga.domain.praise.application.service.PraiseSearchUseCase;
@@ -22,18 +20,11 @@ import org.springframework.web.bind.annotation.RestController;
 public class PraiseGetController {
     private final PraiseSearchUseCase praiseSearchUseCase;
 
-    @GetMapping("/todo")
-    public ResponseEntity<ResponseDto<CurrentTodoPraiseResponseDto>> getMyCurrentToDoPraise(@RequestParam Long channelId)
-    {
-        CurrentTodoPraiseResponseDto currentTodoPraiseResponseDto = praiseSearchUseCase.getCurrentTodoPraiseAndMemberList(channelId);
-        return ResponseEntity.ok(ResponseDto.success(currentTodoPraiseResponseDto));
-    }
-
     @GetMapping("/receive")
     public ResponseEntity<ResponseDto<PageResponse<ReceivedPraiseInfoResponseDto>>> getReceivedPraiseList
             (
                     @RequestParam Long channelId,
-                    @RequestParam int page
+                    @RequestParam(required = false, defaultValue = "1") int page
             )
     {
         PageResponse<ReceivedPraiseInfoResponseDto> pageResponse = praiseSearchUseCase.getReceivedPraiseList(channelId, page);
@@ -44,7 +35,7 @@ public class PraiseGetController {
     public ResponseEntity<ResponseDto<PageResponse<SendPraiseInfoResponseDto>>> getDonePraiseList
             (
                     @RequestParam Long channelId,
-                    @RequestParam int page
+                    @RequestParam(required = false, defaultValue = "1") int page
             )
     {
         PageResponse<SendPraiseInfoResponseDto> pageResponse = praiseSearchUseCase.getSendPraiseList(channelId, page);
