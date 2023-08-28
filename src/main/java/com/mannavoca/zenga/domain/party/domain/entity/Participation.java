@@ -37,10 +37,14 @@ public class Participation extends BaseEntity {
     @JoinColumn(name = "party_id")
     private Party party;
 
+    @Column(name = "is_private")
+    private boolean isPrivate;
+
     @Builder
     public Participation(Boolean isMaker, Member member, Party party) {
         this.isMaker = isMaker;
         this.member = member;
         this.party = party;
+        this.isPrivate = false;
     }
 }
