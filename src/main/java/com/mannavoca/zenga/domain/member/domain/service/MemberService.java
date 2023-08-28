@@ -5,7 +5,6 @@ import com.mannavoca.zenga.common.exception.BusinessException;
 import com.mannavoca.zenga.common.exception.Error;
 import com.mannavoca.zenga.domain.channel.domain.entity.Channel;
 import com.mannavoca.zenga.domain.member.application.dto.request.CreatingMemberRequestDto;
-import com.mannavoca.zenga.domain.member.application.mapper.MemberMapper;
 import com.mannavoca.zenga.domain.member.domain.entity.Member;
 import com.mannavoca.zenga.domain.member.domain.repository.MemberRepository;
 import com.mannavoca.zenga.domain.user.domain.entity.User;
@@ -29,12 +28,12 @@ public class MemberService {
                 .orElseThrow(() -> BusinessException.of(Error.DATA_NOT_FOUND));
     }
 
-    public List<Member> find4RandomMembersByChannelId(Long memberId, Long channelId) {
+    public List<Member> find8RandomMembersByChannelId(Long memberId, Long channelId) {
         List<Member> membersByClubId = memberRepository.findMembersByChannelId(memberId, channelId);
 
         Collections.shuffle(membersByClubId);  // 리스트를 랜덤하게 섞는다.
         // 만약 리스트의 크기가 4 보다 작다면, 리스트의 모든 멤버를 반환한다.
-        return membersByClubId.subList(0, Math.min(membersByClubId.size(), 4));
+        return membersByClubId.subList(0, Math.min(membersByClubId.size(), 8));
     }
 
     public Member findMemberById(Long memberId) {
