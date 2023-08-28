@@ -98,4 +98,10 @@ public class Member extends BaseEntity {
         this.praiseModal = true;
         this.pointModal = true;
     }
+
+    public void updateProfile(String profileImageUrl, String nickname, String introduction) {
+        this.profileImageUrl = profileImageUrl;
+        this.nickname = nickname;
+        this.introduction = introduction;
+    }
 }
