@@ -1,8 +1,11 @@
 package com.mannavoca.zenga.common.config.security;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.mannavoca.zenga.common.logging.LoggingFilter;
 import com.mannavoca.zenga.common.security.jwt.JwtAuthenticationEntryPoint;
+import com.mannavoca.zenga.common.security.jwt.JwtExceptionFilter;
 import com.mannavoca.zenga.common.security.jwt.JwtAuthenticationFilter;
+import com.mannavoca.zenga.common.security.jwt.JwtProvider;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnWebApplication;
 import org.springframework.boot.autoconfigure.security.ConditionalOnDefaultWebSecurity;
@@ -26,8 +29,13 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @ConditionalOnWebApplication(type = ConditionalOnWebApplication.Type.SERVLET)
 public class SecurityConfig {
 
-    private final JwtAuthenticationFilter jwtAuthenticationFilter;
-    private final JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint;
+//    private final JwtAuthenticationFilter jwtAuthenticationFilter;
+//    private final JwtExceptionFilter jwtExceptionFilter;
+//    private final JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint;
+//    private final LoggingFilter loggingFilter;
+
+    private final JwtProvider jwtProvider;
+    private final ObjectMapper objectMapper;
 
     public PasswordEncoder getPasswordEncoder() {
         return PasswordEncoderFactories.createDelegatingPasswordEncoder();
@@ -59,7 +67,7 @@ public class SecurityConfig {
                 .antMatchers("/profile").permitAll()
                 .antMatchers("/auth/**").permitAll()
                 .antMatchers("/").permitAll()
-                .antMatchers("/favcion.ico").permitAll()
+                .antMatchers("/favicon.ico").permitAll()
                 .anyRequest().authenticated()   // 나머지 API 는 전부 인증 필요
 
                 .and()
@@ -71,10 +79,22 @@ public class SecurityConfig {
                 .frameOptions()
                 .sameOrigin()
 
+//                .and()
+//                .exceptionHandling()
+//                .authenticationEntryPoint(jwtAuthenticationEntryPoint)
+//
+//                .and()
+//                .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
+//                .addFilterBefore(jwtExceptionFilter, JwtAuthenticationFilter.class)
+//                .addFilterBefore(loggingFilter, JwtExceptionFilter.class)
                 .and()
-                .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
-                .addFilterBefore(jwtAuthenticationEntryPoint, JwtAuthenticationFilter.class)
-                .addFilterBefore(new LoggingFilter(), JwtAuthenticationEntryPoint.class)
+                .exceptionHandling()
+                .authenticationEntryPoint(new JwtAuthenticationEntryPoint(objectMapper))
+
+                .and()
+                .addFilterBefore(new JwtAuthenticationFilter(jwtProvider), UsernamePasswordAuthenticationFilter.class)
+                .addFilterBefore(new JwtExceptionFilter(), JwtAuthenticationFilter.class)
+                .addFilterBefore(new LoggingFilter(), JwtExceptionFilter.class)
 
                 .build();
     }
