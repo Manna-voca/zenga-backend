@@ -29,13 +29,13 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @ConditionalOnWebApplication(type = ConditionalOnWebApplication.Type.SERVLET)
 public class SecurityConfig {
 
-//    private final JwtAuthenticationFilter jwtAuthenticationFilter;
-//    private final JwtExceptionFilter jwtExceptionFilter;
-//    private final JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint;
-//    private final LoggingFilter loggingFilter;
+    private final JwtAuthenticationFilter jwtAuthenticationFilter;
+    private final JwtExceptionFilter jwtExceptionFilter;
+    private final JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint;
+    private final LoggingFilter loggingFilter;
 
-    private final JwtProvider jwtProvider;
-    private final ObjectMapper objectMapper;
+//    private final JwtProvider jwtProvider;
+//    private final ObjectMapper objectMapper;
 
     public PasswordEncoder getPasswordEncoder() {
         return PasswordEncoderFactories.createDelegatingPasswordEncoder();
@@ -79,22 +79,22 @@ public class SecurityConfig {
                 .frameOptions()
                 .sameOrigin()
 
-//                .and()
-//                .exceptionHandling()
-//                .authenticationEntryPoint(jwtAuthenticationEntryPoint)
-//
-//                .and()
-//                .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
-//                .addFilterBefore(jwtExceptionFilter, JwtAuthenticationFilter.class)
-//                .addFilterBefore(loggingFilter, JwtExceptionFilter.class)
                 .and()
                 .exceptionHandling()
-                .authenticationEntryPoint(new JwtAuthenticationEntryPoint(objectMapper))
+                .authenticationEntryPoint(jwtAuthenticationEntryPoint)
 
                 .and()
-                .addFilterBefore(new JwtAuthenticationFilter(jwtProvider), UsernamePasswordAuthenticationFilter.class)
-                .addFilterBefore(new JwtExceptionFilter(), JwtAuthenticationFilter.class)
-                .addFilterBefore(new LoggingFilter(), JwtExceptionFilter.class)
+                .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
+                .addFilterBefore(jwtExceptionFilter, JwtAuthenticationFilter.class)
+                .addFilterBefore(loggingFilter, JwtExceptionFilter.class)
+//                .and()
+//                .exceptionHandling()
+//                .authenticationEntryPoint(new JwtAuthenticationEntryPoint(objectMapper))
+//
+//                .and()
+//                .addFilterBefore(new JwtAuthenticationFilter(jwtProvider), UsernamePasswordAuthenticationFilter.class)
+//                .addFilterBefore(new JwtExceptionFilter(), JwtAuthenticationFilter.class)
+//                .addFilterBefore(new LoggingFilter(), JwtExceptionFilter.class)
 
                 .build();
     }
