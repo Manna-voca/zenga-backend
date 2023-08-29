@@ -4,6 +4,7 @@ import com.mannavoca.zenga.common.annotation.DomainService;
 import com.mannavoca.zenga.common.exception.BusinessException;
 import com.mannavoca.zenga.common.exception.Error;
 import com.mannavoca.zenga.domain.channel.domain.entity.Channel;
+import com.mannavoca.zenga.domain.member.domain.entity.enumType.State;
 import com.mannavoca.zenga.domain.party.application.dto.request.CreatePartyRequestDto;
 import com.mannavoca.zenga.domain.party.application.dto.request.EditPartyInfoRequestDto;
 import com.mannavoca.zenga.domain.party.domain.entity.Party;
@@ -12,6 +13,8 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;
+
+import java.util.List;
 
 @Slf4j
 @DomainService
@@ -57,5 +60,13 @@ public class PartyService {
                 editPartyInfoRequestDto.getPartyDate(),
                 editPartyInfoRequestDto.getPartyImageUrl());
         return partyRepository.save(party);
+    }
+
+    public List<Party> get2EachPartiesByMemberId(Long memberId) {
+        return partyRepository.find2EachPartiesByMemberId(memberId);
+    }
+
+    public Slice<Party> getPartiesByMemberIdAndState(Long memberId, State state, Long partyIdCursor, Pageable pageable) {
+        return partyRepository.findPartiesByMemberIdAndState(memberId, state, partyIdCursor, pageable);
     }
 }
