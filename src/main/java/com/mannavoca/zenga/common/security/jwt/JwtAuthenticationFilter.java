@@ -25,7 +25,6 @@ import java.util.List;
  * TODO : Authorities 설정 변경 필요 (현재는 ROLE_USER로 고정, enum으로 관리 필요)
  */
 @Slf4j
-@Component
 @RequiredArgsConstructor
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
