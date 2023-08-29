@@ -82,4 +82,14 @@ public class PartyService {
     public Slice<Party> getPartiesByMemberIdAndState(Long memberId, State state, Long partyIdCursor, Pageable pageable) {
         return partyRepository.findPartiesByMemberIdAndState(memberId, state, partyIdCursor, pageable);
     }
+
+    /**
+     * Party ID가 유효한지 검증
+     * @param partyId Party ID
+     */
+    public void validatePartyId(Long partyId) {
+        if (!partyRepository.existsById(partyId)) {
+            throw BusinessException.of(Error.PARTY_NOT_FOUND);
+        }
+    }
 }
