@@ -1,50 +1,47 @@
 package com.mannavoca.zenga.common.security.jwt;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.mannavoca.zenga.common.consts.IgnoredPathConst;
-import com.mannavoca.zenga.common.exception.Error;
-import com.mannavoca.zenga.common.security.exception.JwtException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.core.AuthenticationException;
+import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.stereotype.Component;
-import org.springframework.util.AntPathMatcher;
-import org.springframework.web.filter.OncePerRequestFilter;
 
-import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.time.LocalDateTime;
+import java.util.HashMap;
+import java.util.LinkedHashMap;
+import java.util.Map;
 
-/**
- * TODO : 에러 반환시에 사용자 정보를 로그로 남기기(?)
- */
-@Slf4j
-@Component
+import com.mannavoca.zenga.common.exception.Error;
+
 @RequiredArgsConstructor
-public class JwtAuthenticationEntryPoint extends OncePerRequestFilter {
+@Slf4j
+public class JwtAuthenticationEntryPoint implements AuthenticationEntryPoint {
 
     private final ObjectMapper objectMapper;
 
     @Override
-    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
-            throws ServletException, IOException {
-        try{
-            filterChain.doFilter(request, response);
-        } catch (JwtException e){
-            throw JwtException.of(Error.INVALID_TOKEN);
-        }
+    public void commence(HttpServletRequest request, HttpServletResponse response, AuthenticationException authException) throws IOException {
+        Error error = (Error) request.getAttribute("exception");
+
+        setResponse(response, error);
     }
 
-    @Override
-    protected boolean shouldNotFilter(HttpServletRequest request) {
-        String path = request.getRequestURI();
-        AntPathMatcher antPathMatcher = new AntPathMatcher();
-        for (String ignoredPath : IgnoredPathConst.IGNORED_PATHS) {
-            if(antPathMatcher.match(ignoredPath, path)) {
-                return false;
-            }
-        }
-        return true;
+    private void setResponse(HttpServletResponse response, Error error) throws IOException {
+        response.setContentType("application/json;charset=UTF-8");
+        response.setStatus(error.getHttpStatus().value());
+
+        Map<String, Object> responseMap = new LinkedHashMap<>();
+        responseMap.put("errorCode", error.getErrorCode());
+        responseMap.put("message", error.getMessage());
+        responseMap.put("timestamp", LocalDateTime.now());
+        responseMap.put("log", ""); // 형식 통일을 위해 넣음
+
+        String responseJson = objectMapper.writeValueAsString(responseMap);
+        response.getWriter().print(responseJson);
     }
 }
