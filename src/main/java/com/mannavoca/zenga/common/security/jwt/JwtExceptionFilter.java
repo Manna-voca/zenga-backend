@@ -19,6 +19,7 @@ import java.io.IOException;
 
 
 @Slf4j
+@Component
 public class JwtExceptionFilter extends OncePerRequestFilter {
 
     @Override
