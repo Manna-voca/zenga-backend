@@ -1,5 +1,7 @@
 package com.mannavoca.zenga.domain.user.domain.service;
 
+import com.mannavoca.zenga.common.exception.BusinessException;
+import com.mannavoca.zenga.common.exception.Error;
 import com.mannavoca.zenga.domain.user.domain.entity.User;
 import com.mannavoca.zenga.domain.user.domain.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -23,14 +25,16 @@ public class UserFindService {
     }
 
     public User findBySocialId(String socialId) {
-        return userRepository.findUserBySocialId(socialId).orElseThrow();
+        return userRepository.findUserBySocialId(socialId).orElseThrow(
+                () -> BusinessException.of(Error.USER_NOT_FOUND)
+        );
     }
 
     public User findById(Long id) {
-        return userRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("유저 없지롱")); // 에러 처리 로직 구현 필요
+        return userRepository.findById(id).orElseThrow(() -> BusinessException.of(Error.USER_NOT_FOUND));
     }
 
     public void validateUserId(Long id) {
-        userRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("유저 없지롱")); // 에러 처리 로직 구현 필요
+        userRepository.findById(id).orElseThrow(() -> BusinessException.of(Error.USER_NOT_FOUND));
     }
 }
