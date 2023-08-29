@@ -20,6 +20,7 @@ import com.mannavoca.zenga.common.exception.Error;
 
 @RequiredArgsConstructor
 @Slf4j
+@Component
 public class JwtAuthenticationEntryPoint implements AuthenticationEntryPoint {
 
     private final ObjectMapper objectMapper;
