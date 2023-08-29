@@ -62,10 +62,23 @@ public class PartyService {
         return partyRepository.save(party);
     }
 
+    /**
+     * 멤버 ID를 받아서 해당 멤버가 참여한 Party 리스트를 상태별로 2개씩 반환하는 메소드
+     * @param memberId 멤버 ID
+     * @return Party 리스트
+     */
     public List<Party> get2EachPartiesByMemberId(Long memberId) {
         return partyRepository.find2EachPartiesByMemberId(memberId);
     }
 
+    /**
+     * 멤버 ID와 상태, 커서, Pageable 객체를 받아서 해당 멤버가 참여한 Party 리스트를 페이징 후 상태별로 반환하고 메소드
+     * @param memberId 멤버 ID
+     * @param state 상태 - RECRUITING, IN_PROGRESS, COMPLETED
+     * @param partyIdCursor 커서
+     * @param pageable Pageable 객체
+     * @return Party Slice
+     */
     public Slice<Party> getPartiesByMemberIdAndState(Long memberId, State state, Long partyIdCursor, Pageable pageable) {
         return partyRepository.findPartiesByMemberIdAndState(memberId, state, partyIdCursor, pageable);
     }
