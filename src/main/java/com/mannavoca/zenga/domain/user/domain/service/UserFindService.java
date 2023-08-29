@@ -25,9 +25,7 @@ public class UserFindService {
     }
 
     public User findBySocialId(String socialId) {
-        return userRepository.findUserBySocialId(socialId).orElseThrow(
-                () -> BusinessException.of(Error.USER_NOT_FOUND)
-        );
+        return userRepository.findUserBySocialId(socialId).orElse(null);
     }
 
     public User findById(Long id) {
