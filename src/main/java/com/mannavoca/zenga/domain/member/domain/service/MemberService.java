@@ -71,4 +71,13 @@ public class MemberService {
     public List<Member> findAllMembersByChannelId(Long channelId) {
         return memberRepository.findAllMembersByChannelId(channelId);
     }
+
+    /** Member ID가 유효한지 검증
+     * @param memberId Member ID
+     */
+    public void validateMemberId(Long memberId) {
+        if (!memberRepository.existsById(memberId)) {
+            throw BusinessException.of(Error.MEMBER_NOT_FOUND);
+        }
+    }
 }
