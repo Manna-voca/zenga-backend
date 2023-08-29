@@ -27,6 +27,9 @@ public class MemberReadUseCase {
     private final ParticipationService participationService;
 
     public Slice<PartyTapResponseDto> getPartyListByMemberId(Long memberId, State state, Long partyIdCursor, Pageable pageable) {
+        memberService.validateMemberId(memberId);
+        partyService.validatePartyId(partyIdCursor);
+
         Slice<Party> partySlice = partyService.getPartiesByMemberIdAndState(memberId, state, partyIdCursor, pageable);
 
         Slice<PartyTapResponseDto> partyTapResponseDtoSlice = partySlice.map(party -> {
@@ -40,6 +43,7 @@ public class MemberReadUseCase {
     }
 
     public List<PartyTapResponseDto> getAll2PartyListByMemberId(Long memberId) {
+        memberService.validateMemberId(memberId);
         List<Party> partyList = partyService.get2EachPartiesByMemberId(memberId);
         return partyList.stream().map(party -> {
             Map<String, Object> partyMakerAndJoinerCount = participationService.getPartyMakerAndJoinerCount(party.getId());
