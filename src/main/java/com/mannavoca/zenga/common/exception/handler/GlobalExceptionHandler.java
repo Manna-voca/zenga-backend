@@ -5,9 +5,12 @@ import com.mannavoca.zenga.common.exception.BusinessException;
 import com.mannavoca.zenga.common.exception.Error;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
+import javax.validation.ConstraintViolationException;
 import javax.validation.ValidationException;
 
 
@@ -26,12 +29,21 @@ public class GlobalExceptionHandler {
                 .body(ErrorDto.of(e.getError().getErrorCode(), e.getError().getMessage(), log));
     }
 
-    @ExceptionHandler(value = {ValidationException.class})
-    public ResponseEntity<ErrorDto> handlerValidationException(ValidationException e) {
-        log.error("Status: {}, Message: {}", Error.INVALID_INPUT_VALUE.getErrorCode(), e.getMessage());
+    @ExceptionHandler(value = {ConstraintViolationException.class})
+    public ResponseEntity<ErrorDto> handlerValidationException(ConstraintViolationException e) {
+        log.error("Status: {}, Message: {}", Error.INVALID_API_INPUT_PARAMETER.getErrorCode(), e.getMessage());
 
         return ResponseEntity
-                .status(Error.INVALID_INPUT_VALUE.getHttpStatus())
-                .body(ErrorDto.of(Error.INVALID_INPUT_VALUE.getErrorCode(), Error.INVALID_INPUT_VALUE.getMessage(), e.getMessage()));
+                .status(Error.INVALID_API_INPUT_PARAMETER.getHttpStatus())
+                .body(ErrorDto.of(Error.INVALID_API_INPUT_PARAMETER.getErrorCode(), Error.INVALID_API_INPUT_PARAMETER.getMessage(), e.getMessage()));
+    }
+
+    @ExceptionHandler(value = {MethodArgumentNotValidException.class})
+    public ResponseEntity<ErrorDto> handlerValidationException(MethodArgumentNotValidException e) {
+        log.error("Status: {}, Message: {}", Error.INVALID_API_INPUT_BODY.getErrorCode(), e.getBindingResult());
+
+        return ResponseEntity
+                .status(Error.INVALID_API_INPUT_BODY.getHttpStatus())
+                .body(ErrorDto.of(Error.INVALID_API_INPUT_BODY.getErrorCode(), Error.INVALID_API_INPUT_BODY.getMessage(), e.getAllErrors().get(0).getDefaultMessage()));
     }
 }
