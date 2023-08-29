@@ -1,5 +1,7 @@
 package com.mannavoca.zenga.domain.auth.application.service.kakao;
 
+import com.mannavoca.zenga.common.exception.BusinessException;
+import com.mannavoca.zenga.common.exception.Error;
 import com.mannavoca.zenga.common.security.dto.OIDCDecodePayload;
 import com.mannavoca.zenga.common.security.dto.OIDCPublicKey;
 import com.mannavoca.zenga.common.security.dto.OIDCPublicKeysResponse;
@@ -29,7 +31,7 @@ public class KakaoOIDCHelper {
                         // 같은 kid를 가져온다.
                         .filter(o -> o.getKid().equals(kid))
                         .findFirst()
-                        .orElseThrow();
+                        .orElseThrow(() -> BusinessException.of(Error.KAKAO_OAUTH_FAILED3));
         // 검증이 된 토큰에서 바디를 꺼내온다.
         return jwtOIDCProvider.getOIDCTokenBody(
                 token, kakaoPublicKey.getN(), kakaoPublicKey.getE());
