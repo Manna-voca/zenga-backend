@@ -31,4 +31,14 @@ public class ChannelRepositoryImpl implements ChannelRepositoryCustom {
 
         return channelList;
     }
+
+    @Override
+    public boolean existsByChannelId(Long channelId) {
+        return queryFactory
+                .from(channel)
+                .where(
+                        channel.id.eq(channelId)
+                )
+                .fetchFirst() != null;
+    }
 }
