@@ -43,20 +43,20 @@ public class User extends BaseEntity {
     private List<Point> points;
 
     @Builder
-    public User(RoleType role, String name, GenderType gender, LocalDate birth, String socialId) {
-        this.role = role;
+    public User(String name, GenderType gender, LocalDate birth, String socialId) {
+        this.role = RoleType.USER;
         this.name = name;
         this.gender = gender;
         this.birth = birth;
         this.socialId = socialId;
     }
 
-    public static User toInitEntity(String socialId) {
-        return User.builder()
-                .role(RoleType.USER)
-                .socialId(socialId)
-                .build();
-    }
+//    public static User toInitEntity(String socialId) {
+//        return User.builder()
+//                .role(RoleType.USER)
+//                .socialId(socialId)
+//                .build();
+//    }
 
     public void onboardUser(UserOnboardingRequestDto userOnboardingRequestDto) {
         this.name = userOnboardingRequestDto.getName();
