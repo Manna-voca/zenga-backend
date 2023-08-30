@@ -34,8 +34,8 @@ public enum Error {
 
     // 사용자
     USER_NOT_FOUND(HttpStatus.NOT_FOUND,"사용자를 찾을 수 없습니다.", 1000),
-    USER_NOT_CORRECT_SMS_NUM(HttpStatus.BAD_REQUEST,"잘못된 인증 번호입니다.", 1001),
-    USER_NICKNAME_DUPLICATION(HttpStatus.BAD_REQUEST,"중복된 닉네임입니다.", 1002),
+
+//    USER_ALREADY_ONBOARDED(HttpStatus.CONFLICT,"이미 사용자 정보를 입력했습니다.", 1001),
 
     // Praise
     CANNOT_SHUFFLE(HttpStatus.BAD_REQUEST, "더 이상 셔플할 수 없습니다.", 1100),
