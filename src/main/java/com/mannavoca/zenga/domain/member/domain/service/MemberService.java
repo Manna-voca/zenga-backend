@@ -14,6 +14,8 @@ import com.mannavoca.zenga.domain.user.domain.entity.User;
 import com.mannavoca.zenga.domain.user.domain.service.UserFindService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Slice;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Collections;
@@ -52,7 +54,7 @@ public class MemberService {
      * @return 생성된 Member 객체
      */
     @Transactional
-    public Member createMember(User user, Channel channel, CreatingMemberRequestDto creatingMemberRequestDto) {
+    public Member createMember(final User user, final Channel channel, final CreatingMemberRequestDto creatingMemberRequestDto) {
 
         Member member = Member.builder()
                 .nickname(creatingMemberRequestDto.getNickname())
@@ -67,21 +69,45 @@ public class MemberService {
     }
 
     /**
-     * Channel ID로 Member 조회
-     * @param channelId Channel ID
-     * @return Member 리스트
+     * Channel ID로 Member 조회 (페이지네이션 적용)
+     *
+     * @param channelId      Channel ID
+     * @param memberIdCursor Member ID Cursor
+     * @param keyword
+     * @param pageable       Pageable 객체
+     * @return Member Slice
      */
-    public List<Member> findAllMembersByChannelId(Long channelId) {
-        return memberRepository.findAllMembersByChannelId(channelId);
+    public Slice<Member> findAllMemberSlicesByChannelIdAndKeyword(final Long channelId, final Long memberIdCursor, final String keyword, final Pageable pageable) {
+        return memberRepository.findAllMemberSlicesByChannelId(channelId, memberIdCursor, keyword, pageable);
+    }
+
+    /**
+     * User ID와 Channel ID로 Member가 있는지 유효성 검증
+     * @param userId User ID
+     * @param channelId Channel ID
+     */
+    public void validateMemberPermissionByUserIdAndChannelId(final Long userId, final Long channelId) {
+        if (!memberRepository.existsByUserIdAndChannelId(userId, channelId)) {
+            throw BusinessException.of(Error.NOT_MEMBER_OF_CHANNEL);
+        }
     }
 
     /** Member ID가 유효한지 검증
      * @param memberId Member ID
      */
-    public void validateMemberId(Long memberId) {
-        if (!memberRepository.existsById(memberId)) {
+    public void validateMemberId(final Long memberId) {
+        if (!memberRepository.existsByMemberId(memberId)) {
             throw BusinessException.of(Error.MEMBER_NOT_FOUND);
         }
+    }
+
+    /**
+     * Channel ID를 가진 Member 개수 조회
+     * @param channelId Channel ID
+     * @return 해당 Channel ID를 가진 Member 개수
+     */
+    public Long countMemberByChannelId(final Long channelId) {
+        return memberRepository.countMemberByChannelId(channelId);
     }
 
     public MemberInfoResponseDto updateMember(Long userId, Long memberId, UpdateMemberRequestDto requestDto) {
