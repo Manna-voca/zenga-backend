@@ -19,6 +19,7 @@ public enum Error {
     KAKAO_OAUTH_FAILED(HttpStatus.BAD_REQUEST,"KAKAO 토큰이 만료되었습니다.", 910),
     KAKAO_OAUTH_FAILED2(HttpStatus.BAD_REQUEST,"KAKAO 토큰이 올바르지 않습니다.", 911),
     KAKAO_OAUTH_FAILED3(HttpStatus.INTERNAL_SERVER_ERROR, "KAKAO 공개 서버와의 통신이 불안정합니다. 다시 시도해주세요.", 912),
+    KAKAO_OAUTH_FAILED4(HttpStatus.BAD_REQUEST,"KAKAO 인가 코드가 유효하지 않습니다.", 913),
     APPLE_OIDC_FAILED(HttpStatus.BAD_REQUEST,"Apple OAuth Identity Token 형식이 올바르지 않습니다.", 920),
     APPLE_OIDC_FAILED2(HttpStatus.BAD_REQUEST,"Apple OAuth 로그인 중 Identity Token 유효기간이 만료됐습니다.", 921),
     APPLE_OIDC_FAILED3(HttpStatus.BAD_REQUEST,"Apple OAuth Identity Token 값이 올바르지 않습니다.", 922),
