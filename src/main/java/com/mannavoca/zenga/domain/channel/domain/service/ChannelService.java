@@ -1,6 +1,8 @@
 package com.mannavoca.zenga.domain.channel.domain.service;
 
 import com.mannavoca.zenga.common.annotation.DomainService;
+import com.mannavoca.zenga.common.exception.BusinessException;
+import com.mannavoca.zenga.common.exception.Error;
 import com.mannavoca.zenga.domain.channel.application.dto.request.CreatingChannelRequestDto;
 import com.mannavoca.zenga.domain.channel.application.mapper.ChannelMapper;
 import com.mannavoca.zenga.domain.channel.domain.entity.Channel;
@@ -22,10 +24,10 @@ public class ChannelService {
      * Channel ID로 Channel 조회
      * @param id Channel ID
      * @return Channel 객체
-     * TODO: 에러 처리 구현 필요
+     * @throws BusinessException (Error.CHANNEL_NOT_FOUND) Channel을 찾을 수 없을 경우
      */
-    public Channel getChannelById(Long id) {
-        return channelRepository.findById(id).orElseThrow();
+    public Channel getChannelById(final Long id) {
+        return channelRepository.findById(id).orElseThrow(() -> BusinessException.of(Error.CHANNEL_NOT_FOUND));
     }
 
     /**
@@ -34,7 +36,7 @@ public class ChannelService {
      * @return 생성된 Channel 객체
      */
     @Transactional
-    public Channel createChannel(CreatingChannelRequestDto creatingChannelRequestDto) {
+    public Channel createChannel(final CreatingChannelRequestDto creatingChannelRequestDto) {
         Channel newChannel = ChannelMapper.mapCreatingChannelRequestDtoToChannel(creatingChannelRequestDto);
         channelRepository.save(newChannel);
         channelCodePublisher.publishCode(newChannel);
@@ -48,21 +50,28 @@ public class ChannelService {
      * @param userId User ID
      * @return Channel 리스트
      */
-    public List<Channel> getAllChannelsByUserId(Long userId) {
-        List<Channel> channelList = channelRepository.findAllChannelsByUserId(userId);
+    public List<Channel> getAllChannelsByUserId(final Long userId) {
 
-        return channelList;
+        return channelRepository.findAllChannelsByUserId(userId);
     }
 
     /**
      * Channel Code로 Channel 조회
      * @param code Channel Code
      * @return Channel 객체
-     * TODO: 에러 처리 구현 필요
+     * @throws BusinessException (Error.CHANNEL_NOT_FOUND) Channel을 찾을 수 없을 경우
      */
-    public Channel getChannelByCode(String code) {
-        Channel channel = channelRepository.findByCode(code).orElseThrow();
+    public Channel getChannelByCode(final String code) {
 
-        return channel;
+        return channelRepository.findByCode(code).orElseThrow(() -> BusinessException.of(Error.CHANNEL_NOT_FOUND));
+    }
+
+    /** Channel ID의 유효성 검사
+     * @param channelId Channel ID
+     */
+    public void validateChannelId(Long channelId) {
+        if(!channelRepository.existsByChannelId(channelId)){
+            throw BusinessException.of(Error.CHANNEL_NOT_FOUND);
+        }
     }
 }
