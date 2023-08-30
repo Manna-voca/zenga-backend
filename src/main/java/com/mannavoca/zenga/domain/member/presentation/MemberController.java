@@ -1,5 +1,6 @@
 package com.mannavoca.zenga.domain.member.presentation;
 
+import com.google.firebase.database.annotations.NotNull;
 import com.mannavoca.zenga.common.dto.ResponseDto;
 import com.mannavoca.zenga.common.dto.SliceResponse;
 import com.mannavoca.zenga.common.util.SecurityUtils;
@@ -11,17 +12,16 @@ import com.mannavoca.zenga.domain.member.application.service.MemberCreateUseCase
 import com.mannavoca.zenga.domain.member.application.service.MemberModalCheckUseCase;
 import com.mannavoca.zenga.domain.member.application.service.MemberReadUseCase;
 import com.mannavoca.zenga.domain.member.domain.entity.enumType.State;
-import com.mannavoca.zenga.domain.party.application.dto.response.PartyDetailInfoResponseDto;
 import com.mannavoca.zenga.domain.party.application.dto.response.PartyTapResponseDto;
 import com.mannavoca.zenga.domain.member.domain.service.MemberService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Slice;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.List;
 
 @RequiredArgsConstructor
 @RestController
@@ -56,6 +56,11 @@ public class MemberController {
     @PostMapping("{memberId}")
     public ResponseEntity<ResponseDto<MemberInfoResponseDto>> updateMember(@PathVariable("memberId") Long memberId, @Valid UpdateMemberRequestDto updateMemberRequestDto) {
         Long userId = SecurityUtils.getUserId();
+
+        return ResponseEntity.ok(ResponseDto.success(memberService.updateMember(userId, memberId, updateMemberRequestDto)));
+    }
+
+    @PostMapping
     
     
     @GetMapping("/{memberId}/parties/all")
@@ -63,9 +68,6 @@ public class MemberController {
             @PathVariable Long memberId
     ) {
         return ResponseEntity.ok(ResponseDto.success(memberReadUseCase.getAll2PartyListByMemberId(memberId)));
-    }
-
-        return ResponseEntity.ok(ResponseDto.success(memberService.updateMember(userId, memberId, updateMemberRequestDto)));
     }
 
 }
