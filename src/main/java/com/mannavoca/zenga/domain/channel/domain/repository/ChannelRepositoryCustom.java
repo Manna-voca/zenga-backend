@@ -6,4 +6,6 @@ import java.util.List;
 
 public interface ChannelRepositoryCustom {
     List<Channel> findAllChannelsByUserId(Long userId);
+
+    boolean existsByChannelId(Long channelId);
 }
