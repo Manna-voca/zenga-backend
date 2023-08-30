@@ -49,6 +49,12 @@ public class Member extends BaseEntity {
     @Column(name="introduction")
     private String introduction;
 
+    @Column(name="praise_modal")
+    private Boolean praiseModal;
+
+    @Column(name="point_modal")
+    private Boolean pointModal;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
     private User user;
@@ -89,5 +95,7 @@ public class Member extends BaseEntity {
         this.introduction = introduction;
         this.user = user;
         this.channel = channel;
+        this.praiseModal = true;
+        this.pointModal = true;
     }
 }
