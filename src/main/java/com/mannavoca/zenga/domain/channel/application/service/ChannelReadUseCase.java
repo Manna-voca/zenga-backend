@@ -1,15 +1,17 @@
 package com.mannavoca.zenga.domain.channel.application.service;
 
 import com.mannavoca.zenga.common.annotation.UseCase;
+import com.mannavoca.zenga.common.util.UserUtils;
 import com.mannavoca.zenga.domain.channel.application.dto.response.ChannelResponseDto;
 import com.mannavoca.zenga.domain.channel.application.mapper.ChannelMapper;
 import com.mannavoca.zenga.domain.channel.domain.service.ChannelService;
 import com.mannavoca.zenga.domain.member.application.dto.response.MemberInfoResponseDto;
 import com.mannavoca.zenga.domain.member.application.mapper.MemberMapper;
 import com.mannavoca.zenga.domain.member.domain.service.MemberService;
-import com.mannavoca.zenga.domain.user.domain.service.UserFindService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Slice;
 
 import java.util.List;
 
@@ -18,24 +20,36 @@ import java.util.List;
 @UseCase
 public class ChannelReadUseCase {
     private final ChannelService channelService;
-    private final UserFindService userFindService;
     private final MemberService memberService;
+    private final UserUtils userUtils;
 
-    public ChannelResponseDto getChannelById(Long channelId) {
+    public ChannelResponseDto getChannelById(final Long channelId) {
+        channelService.validateChannelId(channelId);
+        memberService.validateMemberPermissionByUserIdAndChannelId(userUtils.getUser().getId(), channelId);
+
         return ChannelMapper.mapChannelToChannelResponseDto(channelService.getChannelById(channelId));
     }
 
-    public List<ChannelResponseDto> getAllChannelsByUserId(Long userId) {
-        userFindService.validateUserId(userId);
+    public List<ChannelResponseDto> getAllChannels() {
 
-        return ChannelMapper.mapChannelListToChannelResponseDtoList(channelService.getAllChannelsByUserId(userId));
+        return ChannelMapper.mapChannelListToChannelResponseDtoList(channelService.getAllChannelsByUserId(userUtils.getUser().getId()));
     }
 
-    public ChannelResponseDto getChannelByCode(String code) {
+    public ChannelResponseDto getChannelByCode(final String code) {
         return ChannelMapper.mapChannelToChannelResponseDto(channelService.getChannelByCode(code));
     }
 
-    public List<MemberInfoResponseDto> getAllMembersByChannelId(Long channelId) {
-        return MemberMapper.MapMemberListToMemberInfoResponseDtoList(memberService.findAllMembersByChannelId(channelId));
+    public Boolean getChannelValidityById(Long channelId) {
+        channelService.validateChannelId(channelId);
+
+        return memberService.countMemberByChannelId(channelId) >= ChannelService.CHANNEL_VALIDITY_MEMBER_COUNT;
     }
+
+    public Slice<MemberInfoResponseDto> searchAllMembersByChannelId(final Long channelId, final Long memberIdCursor, final String keyword, final Pageable pageable){
+        channelService.validateChannelId(channelId);
+        memberService.validateMemberPermissionByUserIdAndChannelId(userUtils.getUser().getId(), channelId);
+
+        return MemberMapper.MapMemberSliceToMemberInfoResponseDtoList(memberService.findAllMemberSlicesByChannelIdAndKeyword(channelId, memberIdCursor, keyword, pageable));
+    }
+
 }
