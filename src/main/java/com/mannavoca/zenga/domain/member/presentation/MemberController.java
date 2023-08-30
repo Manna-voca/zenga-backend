@@ -5,7 +5,9 @@ import com.mannavoca.zenga.common.dto.SliceResponse;
 import com.mannavoca.zenga.common.util.SecurityUtils;
 import com.mannavoca.zenga.domain.member.application.dto.request.CreatingMemberRequestDto;
 import com.mannavoca.zenga.domain.member.application.dto.response.MemberInfoResponseDto;
+import com.mannavoca.zenga.domain.member.application.dto.response.MemberModalPermitResponseDto;
 import com.mannavoca.zenga.domain.member.application.service.MemberCreateUseCase;
+import com.mannavoca.zenga.domain.member.application.service.MemberModalCheckUseCase;
 import com.mannavoca.zenga.domain.member.application.service.MemberReadUseCase;
 import com.mannavoca.zenga.domain.member.domain.entity.enumType.State;
 import com.mannavoca.zenga.domain.party.application.dto.response.PartyDetailInfoResponseDto;
@@ -25,12 +27,19 @@ import java.util.List;
 @RestController
 @RequestMapping("/members")
 public class MemberController {
+    private final MemberModalCheckUseCase memberModalCheckUseCase;
     private final MemberCreateUseCase memberCreateUseCase;
     private final MemberReadUseCase memberReadUseCase;
 
     @PostMapping
     public ResponseEntity<ResponseDto<MemberInfoResponseDto>> createMember(@RequestBody CreatingMemberRequestDto creatingMemberRequestDto) {
         return ResponseEntity.ok(ResponseDto.success(memberCreateUseCase.createMember(creatingMemberRequestDto)));
+    }
+
+    @GetMapping("/modal/{channelId}")
+    public ResponseEntity<ResponseDto<MemberModalPermitResponseDto>> getMemberInfo(@PathVariable Long channelId) {
+        MemberModalPermitResponseDto memberModalPermit = memberModalCheckUseCase.getMemberModalPermit(channelId);
+        return ResponseEntity.ok(ResponseDto.success(memberModalPermit));
     }
 
     @GetMapping("/{memberId}/parties")
