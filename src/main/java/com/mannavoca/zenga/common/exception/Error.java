@@ -45,6 +45,7 @@ public enum Error {
 
     // Member
     MEMBER_NOT_FOUND(HttpStatus.NOT_FOUND,"멤버를 찾을 수 없습니다.", 1300),
+    NOT_MEMBER_OF_CHANNEL(HttpStatus.FORBIDDEN,"채널을 열람할 권한이 없습니다.", 1301),
 
     // Party
     PARTY_NOT_FOUND(HttpStatus.NOT_FOUND, "모임을 찾을 수 없습니다.", 1400),
