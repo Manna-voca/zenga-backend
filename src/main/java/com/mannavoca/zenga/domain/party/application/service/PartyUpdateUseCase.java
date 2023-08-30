@@ -15,9 +15,13 @@ import com.mannavoca.zenga.domain.party.domain.entity.Participation;
 import com.mannavoca.zenga.domain.party.domain.entity.Party;
 import com.mannavoca.zenga.domain.party.domain.service.ParticipationService;
 import com.mannavoca.zenga.domain.party.domain.service.PartyService;
+import com.mannavoca.zenga.domain.point.application.service.PointPolicyUseCase;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Slf4j
 @UseCase
@@ -28,6 +32,7 @@ public class PartyUpdateUseCase {
     private final ChannelService channelService;
     private final PartyService partyService;
     private final ParticipationService participationService;
+    private final PointPolicyUseCase pointPolicyUseCase;
 
     public CreatePartyResponseDto editPartyInfo(EditPartyInfoRequestDto editPartyInfoRequestDto) {
         Member member = userUtils.getMember(editPartyInfoRequestDto.getChannelId());
@@ -50,6 +55,10 @@ public class PartyUpdateUseCase {
         checkIsPartyMaker(member, party);
 
         Party completedPartyAndUploadCard = partyService.completePartyAndUploadCard(party, completePartyRequestDto.getPartyCardImageUrl());
+
+        List<Member> participationMemberList = party.getParticipationList().stream().map(Participation::getMember).collect(Collectors.toList());
+        pointPolicyUseCase.accumulatePointByParty(participationMemberList, party.getChannel().getName());
+
         return PartyMapper.mapToCompletePartyResponseDto(completedPartyAndUploadCard);
     }
 
