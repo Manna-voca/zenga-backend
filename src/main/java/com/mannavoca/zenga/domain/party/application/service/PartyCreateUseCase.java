@@ -7,6 +7,7 @@ import com.mannavoca.zenga.common.util.UserUtils;
 import com.mannavoca.zenga.domain.channel.domain.entity.Channel;
 import com.mannavoca.zenga.domain.channel.domain.service.ChannelService;
 import com.mannavoca.zenga.domain.member.domain.entity.Member;
+import com.mannavoca.zenga.domain.party.application.dto.request.ApplyPartyRequestDto;
 import com.mannavoca.zenga.domain.party.application.dto.request.CreatePartyRequestDto;
 import com.mannavoca.zenga.domain.party.application.dto.response.CreatePartyResponseDto;
 import com.mannavoca.zenga.domain.party.application.mapper.PartyMapper;
@@ -37,12 +38,12 @@ public class PartyCreateUseCase {
         return PartyMapper.mapToCreatePartyResponseDto(newParty, partyMaker);
     }
 
-    public void applyParty(Long channelId, Long partyId) {
-        Member applyMember = userUtils.getMember(channelId);
-        if (participationService.isAlreadyApplied(applyMember.getId(), partyId)) {
+    public void applyParty(ApplyPartyRequestDto applyPartyRequestDto) {
+        Member applyMember = userUtils.getMember(applyPartyRequestDto.getChannelId());
+        if (participationService.isAlreadyApplied(applyMember.getId(), applyPartyRequestDto.getPartyId())) {
             throw BusinessException.of(Error.INTERNAL_SERVER_ERROR); // TODO: 예외 처리 따로 해야함
         }
-        Party party = partyService.getPartyById(partyId);
+        Party party = partyService.getPartyById(applyPartyRequestDto.getPartyId());
         participationService.createNewParticipation(false, applyMember, party);
     }
 }

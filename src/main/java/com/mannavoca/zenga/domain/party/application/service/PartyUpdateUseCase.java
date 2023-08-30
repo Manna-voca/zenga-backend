@@ -29,8 +29,8 @@ public class PartyUpdateUseCase {
     private final PartyService partyService;
     private final ParticipationService participationService;
 
-    public CreatePartyResponseDto editPartyInfo(Long channelId, EditPartyInfoRequestDto editPartyInfoRequestDto) {
-        Member member = userUtils.getMember(channelId);
+    public CreatePartyResponseDto editPartyInfo(EditPartyInfoRequestDto editPartyInfoRequestDto) {
+        Member member = userUtils.getMember(editPartyInfoRequestDto.getChannelId());
         Party party = partyService.getPartyById(editPartyInfoRequestDto.getPartyId());
 
         checkIsPartyMaker(member, party);
@@ -43,8 +43,8 @@ public class PartyUpdateUseCase {
         return PartyMapper.mapToCreatePartyResponseDto(updatedParty, member);
     }
 
-    public CompletePartyResponseDto uploadPartyCardAndComplete(Long channelId, CompletePartyRequestDto completePartyRequestDto) {
-        Member member = userUtils.getMember(channelId);
+    public CompletePartyResponseDto uploadPartyCardAndComplete(CompletePartyRequestDto completePartyRequestDto) {
+        Member member = userUtils.getMember(completePartyRequestDto.getChannelId());
         Party party = partyService.getPartyById(completePartyRequestDto.getPartyId());
 
         checkIsPartyMaker(member, party);
