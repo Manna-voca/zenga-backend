@@ -17,6 +17,8 @@ import java.util.List;
 @Slf4j
 @DomainService
 public class ChannelService {
+    public static final long CHANNEL_VALIDITY_MEMBER_COUNT = 10;
+
     private final ChannelRepository channelRepository;
     private final ChannelCodePublisher channelCodePublisher;
 
