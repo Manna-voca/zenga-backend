@@ -6,7 +6,6 @@ import com.mannavoca.zenga.domain.party.application.dto.request.CreatePartyReque
 import com.mannavoca.zenga.domain.party.application.dto.response.CreatePartyResponseDto;
 import com.mannavoca.zenga.domain.party.application.service.PartyCreateUseCase;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -19,11 +18,10 @@ public class PartyPostController {
     @PostMapping("/create")
     public ResponseEntity<ResponseDto<CreatePartyResponseDto>> createNewParty
             (
-                    @RequestParam Long channelId,
                     @RequestBody CreatePartyRequestDto createPartyRequestDto
             )
     {
-        CreatePartyResponseDto createPartyResponseDto = partyCreateUseCase.createNewParty(channelId, createPartyRequestDto);
+        CreatePartyResponseDto createPartyResponseDto = partyCreateUseCase.createNewParty(createPartyRequestDto);
         return ResponseEntity.ok(ResponseDto.of(ResponseCode.PARTY_CREATED, createPartyResponseDto));
     }
 

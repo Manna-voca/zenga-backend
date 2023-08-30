@@ -27,9 +27,9 @@ public class PartyCreateUseCase {
     private final PartyService partyService;
     private final ParticipationService participationService;
 
-    public CreatePartyResponseDto createNewParty(Long channelId, CreatePartyRequestDto createPartyRequestDto) {
-        Member partyMaker = userUtils.getMember(channelId);
-        Channel channel = channelService.getChannelById(channelId);
+    public CreatePartyResponseDto createNewParty(CreatePartyRequestDto createPartyRequestDto) {
+        Member partyMaker = userUtils.getMember(createPartyRequestDto.getChannelId());
+        Channel channel = channelService.getChannelById(createPartyRequestDto.getChannelId());
 
         Party newParty = partyService.createNewParty(createPartyRequestDto, channel);
         participationService.createNewParticipation(true, partyMaker, newParty);
