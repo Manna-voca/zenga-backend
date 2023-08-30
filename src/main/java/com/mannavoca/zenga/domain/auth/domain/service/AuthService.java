@@ -1,5 +1,7 @@
 package com.mannavoca.zenga.domain.auth.domain.service;
 
+import com.mannavoca.zenga.common.exception.BusinessException;
+import com.mannavoca.zenga.common.exception.Error;
 import com.mannavoca.zenga.common.security.jwt.JwtProvider;
 import com.mannavoca.zenga.common.security.oauth.OAuthProperties;
 import com.mannavoca.zenga.domain.auth.application.dto.request.KakaoOAuthRequestDto;
@@ -28,6 +30,7 @@ public class AuthService {
      * 카카오 인가 코드로 id_token을 받아옴
      * @param code 카카오 인가 코드
      * @return ID Token 값
+     * @throws BusinessException Error.KAKAO_OAUTH_FAILED4 인가 코드가 유효하지 않은 경우
      */
     private String getIdToken(String code) {
         KakaoOAuthRequestDto kakaoOAuthRequestDto = KakaoOAuthRequestDto.builder()
@@ -37,7 +40,13 @@ public class AuthService {
                 .code(code)
                 .build();
 
-        KakaoOAuthResponseDto responseDto = kakaoOAuthClient.getKakaoOAuthToken(kakaoOAuthRequestDto);
+        KakaoOAuthResponseDto responseDto = null;
+        try {
+            responseDto = kakaoOAuthClient.getKakaoOAuthToken(kakaoOAuthRequestDto);
+        } catch (Exception e) {
+            log.error("카카오 OAuth 토큰 요청 실패", e);
+            throw BusinessException.of(Error.KAKAO_OAUTH_FAILED4);
+        }
         return responseDto.getId_token();
     }
 
