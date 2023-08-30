@@ -16,7 +16,7 @@ public class ChannelMapper {
                 .name(channel.getName())
 //                .capacity(channel.getCapacity())
                 .logoImageUrl(channel.getLogoImageUrl())
-                .description(channel.getDescription())
+//                .description(channel.getDescription())
 //                .finishedAt(channel.getFinishedAt())
                 .code(channel.getCode())
                 .build();
@@ -27,7 +27,7 @@ public class ChannelMapper {
                 .name(creatingChannelRequestDto.getName())
 //                .capacity(creatingChannelRequestDto.getCapacity())
                 .logoImageUrl(creatingChannelRequestDto.getLogoImageUrl())
-                .description(creatingChannelRequestDto.getDescription())
+//                .description(creatingChannelRequestDto.getDescription())
 //                .finishedAt(creatingChannelRequestDto.getFinishedAt())
                 .build();
     }

@@ -49,6 +49,9 @@ public enum Error {
     // Party
     PARTY_NOT_FOUND(HttpStatus.NOT_FOUND, "모임을 찾을 수 없습니다.", 1400),
 
+    // Channel
+    CHANNEL_NOT_FOUND(HttpStatus.NOT_FOUND, "채널을 찾을 수 없습니다.", 1500),
+
     // Validation
     INVALID_API_INPUT_PARAMETER(HttpStatus.BAD_REQUEST,"API 유효성 검증에 실패했습니다. Parameter를 확인해주세요.", 2000),
     INVALID_API_INPUT_BODY(HttpStatus.BAD_REQUEST,"API 유효성 검증에 실패했습니다. Body를 확인해주세요.", 2001),

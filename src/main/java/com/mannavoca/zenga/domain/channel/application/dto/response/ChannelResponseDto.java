@@ -11,7 +11,7 @@ public class ChannelResponseDto {
     private String name;
     //    private Integer capacity;
     private String logoImageUrl;
-    private String description;
+//    private String description;
     private String code;
 //    private LocalDateTime finishedAt;
 }
