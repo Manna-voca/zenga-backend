@@ -51,4 +51,8 @@ public class ParticipationService {
     public Long getParticipationCountByPartyId(Long partyId) {
         return participationRepository.countByParty_Id(partyId);
     }
+
+    public Long getPartyMarkerId(Long partyId) {
+        return participationRepository.findPartyMarkerId(partyId);
+    }
 }
