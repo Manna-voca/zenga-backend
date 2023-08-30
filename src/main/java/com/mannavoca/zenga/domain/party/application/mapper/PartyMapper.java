@@ -47,9 +47,10 @@ public class PartyMapper {
 
     public static PartyDetailInfoResponseDto mapToPartyDetailInfoResponseDto(Party party, Member member) {
         Member partyMaker = party.getParticipationList().stream().filter(Participation::getIsMaker).map(Participation::getMember).findFirst().orElseThrow();
-        List<Member> joiner = party.getParticipationList().stream().filter(participation -> !participation.getIsMaker()).map(Participation::getMember).collect(Collectors.toList());
+        List<Member> joiner = party.getParticipationList().stream().map(Participation::getMember).collect(Collectors.toList());
         List<PartyDetailInfoResponseDto.JoinMemberInfo> joinMemberInfoList = joiner.stream().map(joinMember -> PartyDetailInfoResponseDto.JoinMemberInfo.builder()
                 .memberId(joinMember.getId())
+                .isMaker(joinMember.getId().equals(partyMaker.getId()))
                 .memberName(joinMember.getNickname())
                 .memberProfileImageUrl(joinMember.getProfileImageUrl())
                 .build()).collect(Collectors.toList());
@@ -66,7 +67,7 @@ public class PartyMapper {
     }
 
     public static PartyDetailInfoResponseDto.ButtonState determineButtonState(Party party, Member partyMaker, Member member, List<Member> joiner) {
-        if (!party.getCardImageUrl().isEmpty()) { return PartyDetailInfoResponseDto.ButtonState.END; }
+        if (party.getCardImageUrl() != null) { return PartyDetailInfoResponseDto.ButtonState.END; }
 
         boolean isMemberPartyMaker = partyMaker.getId().equals(member.getId());
         boolean isMemberJoiner = joiner.stream().anyMatch(joinMember -> joinMember.getId().equals(member.getId()));
