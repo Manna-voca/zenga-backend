@@ -6,6 +6,7 @@ import com.mannavoca.zenga.common.util.SecurityUtils;
 import com.mannavoca.zenga.domain.member.application.dto.request.CreatingMemberRequestDto;
 import com.mannavoca.zenga.domain.member.application.dto.request.GetMemberPartyRequestDto;
 import com.mannavoca.zenga.domain.member.application.dto.request.UpdateMemberRequestDto;
+import com.mannavoca.zenga.domain.member.application.dto.response.MemberDetailInfoResponseDto;
 import com.mannavoca.zenga.domain.member.application.dto.response.MemberInfoResponseDto;
 import com.mannavoca.zenga.domain.member.application.dto.response.MemberModalPermitResponseDto;
 import com.mannavoca.zenga.domain.member.application.service.MemberCreateUseCase;
@@ -67,7 +68,7 @@ public class MemberController {
     }
 
     @PostMapping("{memberId}")
-    public ResponseEntity<ResponseDto<MemberInfoResponseDto>> updateMember(@PathVariable("memberId") Long memberId, @Valid @RequestBody UpdateMemberRequestDto updateMemberRequestDto) {
+    public ResponseEntity<ResponseDto<MemberDetailInfoResponseDto>> updateMember(@PathVariable("memberId") Long memberId, @Valid @RequestBody UpdateMemberRequestDto updateMemberRequestDto) {
         Long userId = SecurityUtils.getUserId();
 
         return ResponseEntity.ok(ResponseDto.success(memberService.updateMember(userId, memberId, updateMemberRequestDto)));
