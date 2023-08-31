@@ -8,9 +8,11 @@ import com.mannavoca.zenga.domain.party.application.dto.response.CompletePartyRe
 import com.mannavoca.zenga.domain.party.application.dto.response.CreatePartyResponseDto;
 import com.mannavoca.zenga.domain.party.application.service.PartyUpdateUseCase;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PatchMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping(value="/party")
@@ -21,22 +23,20 @@ public class PartyPatchController {
     @PatchMapping("/edit")
     public ResponseEntity<ResponseDto<CreatePartyResponseDto>> editPartyInfo
             (
-                    @RequestParam Long channelId,
                     @RequestBody EditPartyInfoRequestDto editPartyInfoRequestDto
             )
     {
-        CreatePartyResponseDto createPartyResponseDto = partyUpdateUseCase.editPartyInfo(channelId, editPartyInfoRequestDto);
+        CreatePartyResponseDto createPartyResponseDto = partyUpdateUseCase.editPartyInfo(editPartyInfoRequestDto);
         return ResponseEntity.ok(ResponseDto.of(ResponseCode.PARTY_UPDATED, createPartyResponseDto));
     }
 
     @PatchMapping("/finish")
     public ResponseEntity<ResponseDto<CompletePartyResponseDto>> uploadPartyCardImage
             (
-                    @RequestParam Long channelId,
                     @RequestBody CompletePartyRequestDto completePartyRequestDto
             )
     {
-        CompletePartyResponseDto completePartyResponseDto = partyUpdateUseCase.uploadPartyCardAndComplete(channelId, completePartyRequestDto);
+        CompletePartyResponseDto completePartyResponseDto = partyUpdateUseCase.uploadPartyCardAndComplete(completePartyRequestDto);
         return ResponseEntity.ok(ResponseDto.of(ResponseCode.PARTY_CARD_CREATED, completePartyResponseDto));
     }
 }

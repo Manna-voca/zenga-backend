@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class CompletePartyRequestDto {
+    private Long channelId;
     private Long partyId;
     private String partyCardImageUrl;
 }

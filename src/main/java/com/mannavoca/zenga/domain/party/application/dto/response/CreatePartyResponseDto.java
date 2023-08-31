@@ -13,7 +13,7 @@ public class CreatePartyResponseDto {
     private String content;
     private Integer maxCapacity;
     private String location;
-    private LocalDateTime partyDate;
+    private String partyDate;
     private String partyImageUrl;
     private LocalDateTime createdAt;
     private Long openMemberId;
@@ -32,7 +32,7 @@ public class CreatePartyResponseDto {
     }
 
     @Builder
-    public CreatePartyResponseDto(Long partyId, String title, String content, Integer maxCapacity, String location, LocalDateTime partyDate, String partyImageUrl, LocalDateTime createdAt, Long openMemberId, String openMemberName, String openMemberProfileImageUrl, List<JoinMemberInfo> joinMemberInfo) {
+    public CreatePartyResponseDto(Long partyId, String title, String content, Integer maxCapacity, String location, String partyDate, String partyImageUrl, LocalDateTime createdAt, Long openMemberId, String openMemberName, String openMemberProfileImageUrl, List<JoinMemberInfo> joinMemberInfo) {
         this.partyId = partyId;
         this.title = title;
         this.content = content;
