@@ -21,7 +21,7 @@ public class CommentPatchController {
             (
                     @RequestBody CommentChangeRequestDto changeRequestDto
             )
-    {        
+    {
         commentUpdateUseCase.updateCommentContent(changeRequestDto);
         return ResponseEntity.ok(ResponseDto.success());
     }

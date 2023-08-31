@@ -5,6 +5,9 @@ import com.mannavoca.zenga.common.exception.BusinessException;
 import com.mannavoca.zenga.common.exception.Error;
 import com.mannavoca.zenga.domain.channel.domain.entity.Channel;
 import com.mannavoca.zenga.domain.member.application.dto.request.CreatingMemberRequestDto;
+import com.mannavoca.zenga.domain.member.application.mapper.MemberMapper;
+import com.mannavoca.zenga.domain.member.application.dto.request.UpdateMemberRequestDto;
+import com.mannavoca.zenga.domain.member.application.dto.response.MemberInfoResponseDto;
 import com.mannavoca.zenga.domain.member.domain.entity.Member;
 import com.mannavoca.zenga.domain.member.domain.repository.MemberRepository;
 import com.mannavoca.zenga.domain.user.domain.entity.User;
@@ -71,4 +74,28 @@ public class MemberService {
     public List<Member> findAllMembersByChannelId(Long channelId) {
         return memberRepository.findAllMembersByChannelId(channelId);
     }
+
+    /** Member ID가 유효한지 검증
+     * @param memberId Member ID
+     */
+    public void validateMemberId(Long memberId) {
+        if (!memberRepository.existsById(memberId)) {
+            throw BusinessException.of(Error.MEMBER_NOT_FOUND);
+        }
+    }
+
+    public MemberInfoResponseDto updateMember(Long userId, Long memberId, UpdateMemberRequestDto requestDto) {
+
+        Member member = memberRepository.findById(memberId)
+                .orElseThrow(() -> BusinessException.of(Error.DATA_NOT_FOUND));
+
+        if (!member.getUser().getId().equals(userId)) {
+            throw BusinessException.of(Error.NOT_AUTHORIZED);
+        }
+
+        member.updateProfile(requestDto.getProfileImageUrl(), requestDto.getName(), requestDto.getDescription());
+
+        return MemberInfoResponseDto.of(member);
+    }
+
 }

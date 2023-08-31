@@ -27,6 +27,7 @@ public enum Error {
     APPLE_OIDC_FAILED7(HttpStatus.BAD_REQUEST,"Apple OAuth Claims 값이 올바르지 않습니다.", 926),
     EMAIL_DUPLICATION(HttpStatus.BAD_REQUEST,"이미 가입된 일반 계정입니다.", 930),
     NCP_SMS_FAILED(HttpStatus.INTERNAL_SERVER_ERROR,"SMS 전송 에러입니다. 다시 시도해주세요", 950),
+    NOT_AUTHORIZED(HttpStatus.UNAUTHORIZED,"권한이 없습니다.", 960),
 
 
     // 사용자
@@ -40,12 +41,17 @@ public enum Error {
     NOT_MEMBER_PRAISE_OWNER(HttpStatus.BAD_REQUEST, "칭찬을 열 권한이 없습니다.", 1102),
 
     // Point
-    NOT_ENOUGH_POINT(HttpStatus.BAD_REQUEST, "포인트가 부족합니다.", 1102),
+    NOT_ENOUGH_POINT(HttpStatus.BAD_REQUEST, "포인트가 부족합니다.", 1200),
+
+    // Member
+    MEMBER_NOT_FOUND(HttpStatus.NOT_FOUND,"멤버를 찾을 수 없습니다.", 1300),
+
+    // Party
+    PARTY_NOT_FOUND(HttpStatus.NOT_FOUND, "모임을 찾을 수 없습니다.", 1400),
 
     // JWT
     INVALID_TOKEN(HttpStatus.BAD_REQUEST,"잘못된 토큰 요청", 7000),
-    EXPIRED_TOKEN(HttpStatus.BAD_REQUEST,"토큰 만료되었습니다. 토큰 재발행 혹은 로그인을 다시 해주세요", 7001),
-    ;
+    EXPIRED_TOKEN(HttpStatus.BAD_REQUEST,"토큰 만료되었습니다. 토큰 재발행 혹은 로그인을 다시 해주세요", 7001);
 
     private final HttpStatus httpStatus;
     private final String message;
