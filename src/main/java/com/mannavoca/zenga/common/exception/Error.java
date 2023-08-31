@@ -48,6 +48,7 @@ public enum Error {
     // Member
     MEMBER_NOT_FOUND(HttpStatus.NOT_FOUND,"멤버를 찾을 수 없습니다.", 1300),
     NOT_MEMBER_OF_CHANNEL(HttpStatus.FORBIDDEN,"채널을 열람할 권한이 없습니다.", 1301),
+    MEMBER_ALREADY_EXISTS(HttpStatus.CONFLICT, "이미 채널에 가입한 사용자입니다.", 1302),
 
     // Party
     PARTY_NOT_FOUND(HttpStatus.NOT_FOUND, "모임을 찾을 수 없습니다.", 1400),
@@ -61,7 +62,9 @@ public enum Error {
 
     // JWT
     INVALID_TOKEN(HttpStatus.BAD_REQUEST,"유효하지 않은 토큰입니다.", 7000),
-    EXPIRED_TOKEN(HttpStatus.BAD_REQUEST,"토큰이 만료되었습니다. 토큰 재발행 혹은 로그인을 다시 해주세요.", 7001);
+    EXPIRED_TOKEN(HttpStatus.BAD_REQUEST,"토큰이 만료되었습니다. 토큰 재발행 혹은 로그인을 다시 해주세요.", 7001)
+
+    ;
 
     private final HttpStatus httpStatus;
     private final String message;
