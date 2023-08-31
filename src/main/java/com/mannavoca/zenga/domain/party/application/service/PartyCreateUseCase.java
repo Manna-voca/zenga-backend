@@ -40,7 +40,7 @@ public class PartyCreateUseCase {
 
     public void applyParty(ApplyPartyRequestDto applyPartyRequestDto) {
         Member applyMember = userUtils.getMember(applyPartyRequestDto.getChannelId());
-        if (participationService.isAlreadyApplied(applyMember.getId(), applyPartyRequestDto.getPartyId())) {
+        if (participationService.isAlreadyApplied(applyPartyRequestDto.getPartyId(), applyMember.getId())) {
             throw BusinessException.of(Error.INTERNAL_SERVER_ERROR); // TODO: 예외 처리 따로 해야함
         }
         Party party = partyService.getPartyById(applyPartyRequestDto.getPartyId());
