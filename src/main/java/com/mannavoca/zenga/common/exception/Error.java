@@ -27,6 +27,7 @@ public enum Error {
     APPLE_OIDC_FAILED7(HttpStatus.BAD_REQUEST,"Apple OAuth Claims 값이 올바르지 않습니다.", 926),
     EMAIL_DUPLICATION(HttpStatus.BAD_REQUEST,"이미 가입된 일반 계정입니다.", 930),
     NCP_SMS_FAILED(HttpStatus.INTERNAL_SERVER_ERROR,"SMS 전송 에러입니다. 다시 시도해주세요", 950),
+    NOT_AUTHORIZED(HttpStatus.UNAUTHORIZED,"권한이 없습니다.", 960),
 
 
     // 사용자

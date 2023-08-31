@@ -1,5 +1,6 @@
 package com.mannavoca.zenga.domain.party.domain.repository;
 
+import com.mannavoca.zenga.domain.member.domain.entity.Member;
 import com.mannavoca.zenga.domain.party.domain.entity.Participation;
 import org.springframework.data.jpa.repository.JpaRepository;
 
@@ -15,4 +16,6 @@ public interface ParticipationRepository extends JpaRepository<Participation, Lo
     void deleteAllByParty_Id(Long partyId);
 
     Long countByParty_Id(Long partyId);
+
+    List<Participation> findAllByMember(Member member);
 }
