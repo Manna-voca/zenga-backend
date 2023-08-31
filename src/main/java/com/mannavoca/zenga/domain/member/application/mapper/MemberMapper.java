@@ -24,4 +24,7 @@ public class MemberMapper {
         return memberSlice.map(MemberMapper::mapMemberToMemberInfoResponseDto);
     }
 
+    public static List<MemberInfoResponseDto> mapMemberListToMemberInfoResponseDtoList(List<Member> memberList) {
+        return memberList.stream().map(MemberMapper::mapMemberToMemberInfoResponseDto).collect(Collectors.toList());
+    }
 }

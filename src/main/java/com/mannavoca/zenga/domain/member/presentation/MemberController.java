@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.persistence.Enumerated;
 import javax.validation.Valid;
+import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.util.List;
 
@@ -31,6 +32,16 @@ import java.util.List;
 public class MemberController {
     private final MemberCreateUseCase memberCreateUseCase;
     private final MemberReadUseCase memberReadUseCase;
+
+    @GetMapping("/info")
+    public ResponseEntity<ResponseDto<MemberInfoResponseDto>> getMemberInfo(@RequestParam @NotNull final Long channelId) {
+        return ResponseEntity.ok(ResponseDto.success(memberReadUseCase.getMemberInfoByChannelId(channelId)));
+    }
+
+    @GetMapping
+    public ResponseEntity<ResponseDto<List<MemberInfoResponseDto>>> getMemberInfoList() {
+        return ResponseEntity.ok(ResponseDto.success(memberReadUseCase.getMemberInfoList()));
+    }
 
     @PostMapping
     public ResponseEntity<ResponseDto<MemberInfoResponseDto>> createMember(@Valid @RequestBody final CreatingMemberRequestDto creatingMemberRequestDto) {
