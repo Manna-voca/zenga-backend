@@ -1,7 +1,7 @@
 package com.mannavoca.zenga.domain.member.domain.entity;
 
 import com.mannavoca.zenga.common.infrastructure.domain.BaseEntity;
-import com.mannavoca.zenga.domain.badge.domain.entity.MemberBadge;
+import com.mannavoca.zenga.domain.block.domain.entity.MemberBlock;
 import com.mannavoca.zenga.domain.channel.domain.entity.Channel;
 import com.mannavoca.zenga.domain.comment.domain.entity.Comment;
 import com.mannavoca.zenga.domain.member.domain.entity.enumType.LevelType;
@@ -73,7 +73,7 @@ public class Member extends BaseEntity {
     private List<Candidate> candidateList;
 
     @OneToMany(mappedBy = "member", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<MemberBadge> memberBadgeList;
+    private List<MemberBlock> memberBlockList;
 
     @OneToMany(mappedBy = "member", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Point> pointList;

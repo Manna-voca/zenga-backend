@@ -1,4 +1,4 @@
-package com.mannavoca.zenga.domain.badge.domain.entity;
+package com.mannavoca.zenga.domain.block.domain.entity;
 
 import com.mannavoca.zenga.common.infrastructure.domain.BaseEntity;
 import com.mannavoca.zenga.domain.member.domain.entity.Member;
@@ -11,16 +11,16 @@ import javax.persistence.*;
 
 @Getter
 @Entity
-@Table(name = "zg_member_badge",
+@Table(name = "zg_member_block",
         uniqueConstraints = {
             @UniqueConstraint(
-                    name = "uk_badge_id_member_id",
-                    columnNames = {"badge_id","member_id"}
+                    name = "uk_block_id_member_id",
+                    columnNames = {"block_id","member_id"}
             )
         }
 )
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class MemberBadge extends BaseEntity {
+public class MemberBlock extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
@@ -31,12 +31,12 @@ public class MemberBadge extends BaseEntity {
     private Member member;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "badge_id")
-    private Badge badge;
+    @JoinColumn(name = "block_id")
+    private Block block;
 
     @Builder
-    public MemberBadge(Member member, Badge badge) {
+    public MemberBlock(Member member, Block block) {
         this.member = member;
-        this.badge = badge;
+        this.block = block;
     }
 }
