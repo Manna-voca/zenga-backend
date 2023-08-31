@@ -1,5 +1,6 @@
 package com.mannavoca.zenga.domain.party.domain.repository;
 
+import com.mannavoca.zenga.domain.member.domain.entity.Member;
 import com.mannavoca.zenga.domain.party.domain.entity.Participation;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -22,4 +23,6 @@ public interface ParticipationRepository extends JpaRepository<Participation, Lo
     Long findPartyMarkerId(Long partyId);
 
     Optional<Participation> findByParty_IdAndMember_Id(Long partyId, Long memberId);
+  
+    List<Participation> findAllByMember(Member member);
 }
