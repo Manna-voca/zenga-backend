@@ -1,6 +1,10 @@
 package com.mannavoca.zenga.domain.member.application.service;
 
 import com.mannavoca.zenga.common.annotation.UseCase;
+import com.mannavoca.zenga.common.util.UserUtils;
+import com.mannavoca.zenga.domain.channel.domain.service.ChannelService;
+import com.mannavoca.zenga.domain.member.application.dto.response.MemberInfoResponseDto;
+import com.mannavoca.zenga.domain.member.application.mapper.MemberMapper;
 import com.mannavoca.zenga.domain.member.domain.entity.Member;
 import com.mannavoca.zenga.domain.member.domain.entity.enumType.State;
 import com.mannavoca.zenga.domain.member.domain.service.MemberService;
@@ -23,8 +27,10 @@ import java.util.stream.Collectors;
 @UseCase
 public class MemberReadUseCase {
     private final MemberService memberService;
+    private final ChannelService channelService;
     private final PartyService partyService;
     private final ParticipationService participationService;
+    private final UserUtils userUtils;
 
     public Slice<PartyTapResponseDto> getPartyListByMemberId(final Long memberId, final State state, final Long partyIdCursor, final Pageable pageable) {
         memberService.validateMemberId(memberId);
@@ -53,5 +59,16 @@ public class MemberReadUseCase {
             Member partyMaker = (Member) partyMakerAndJoinerCount.get("maker");
             Integer joinMemberCount = (Integer) partyMakerAndJoinerCount.get("joinerCount");
             return PartyMapper.mapToPartyTapResponseDto(party, partyMaker, joinMemberCount);}).collect(Collectors.toList());
+    }
+
+    public MemberInfoResponseDto getMemberInfoByChannelId(final Long channelId) {
+        channelService.validateChannelId(channelId);
+        final Member member = memberService.findMemberByUserId(userUtils.getUser().getId(), channelId);
+
+        return MemberMapper.mapMemberToMemberInfoResponseDto(member);
+    }
+
+    public List<MemberInfoResponseDto> getMemberInfoList() {
+        return MemberMapper.mapMemberListToMemberInfoResponseDtoList(memberService.getMemberListByUserId(userUtils.getUser().getId()));
     }
 }
