@@ -27,7 +27,7 @@ public class MemberService {
 
     public Member findMemberByUserId(Long userId, Long channelId) {
         return memberRepository.findMemberByUser_IdAndChannel_Id(userId, channelId)
-                .orElseThrow(() -> BusinessException.of(Error.DATA_NOT_FOUND));
+                .orElseThrow(() -> BusinessException.of(Error.MEMBER_NOT_FOUND));
     }
 
     public List<Member> find8RandomMembersByChannelId(Long memberId, Long channelId) {
@@ -40,7 +40,7 @@ public class MemberService {
 
     public Member findMemberById(Long memberId) {
         return memberRepository.findById(memberId)
-                .orElseThrow(() -> BusinessException.of(Error.DATA_NOT_FOUND));
+                .orElseThrow(() -> BusinessException.of(Error.MEMBER_NOT_FOUND));
     }
 
     /**
@@ -70,7 +70,7 @@ public class MemberService {
      *
      * @param channelId      Channel ID
      * @param memberIdCursor Member ID Cursor
-     * @param keyword
+     * @param keyword        검색 키워드
      * @param pageable       Pageable 객체
      * @return Member Slice
      */
@@ -79,13 +79,26 @@ public class MemberService {
     }
 
     /**
-     * User ID와 Channel ID로 Member가 있는지 유효성 검증
+     * User ID와 Channel ID로 Member가 있는지 권한 검증
      * @param userId User ID
      * @param channelId Channel ID
+     * @throws BusinessException Error.NOT_MEMBER_OF_CHANNEL 멤버가 아닌 경우
      */
     public void validateMemberPermissionByUserIdAndChannelId(final Long userId, final Long channelId) {
         if (!memberRepository.existsByUserIdAndChannelId(userId, channelId)) {
             throw BusinessException.of(Error.NOT_MEMBER_OF_CHANNEL);
+        }
+    }
+
+    /**
+     * User ID와 Channel ID로 Member가 이미 존재하는지 검증
+     * @param userId User ID
+     * @param channelId Channel ID
+     * @throws BusinessException Error.MEMBER_ALREADY_EXISTS 이미 존재하는 경우
+     */
+    public void validateMemberAlreadyExistsByUserIdAndChannelId(final Long userId, final Long channelId) {
+        if (memberRepository.existsByUserIdAndChannelId(userId, channelId)) {
+            throw BusinessException.of(Error.MEMBER_ALREADY_EXISTS);
         }
     }
 
