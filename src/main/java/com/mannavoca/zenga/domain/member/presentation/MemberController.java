@@ -11,9 +11,8 @@ import com.mannavoca.zenga.domain.member.application.dto.response.MemberModalPer
 import com.mannavoca.zenga.domain.member.application.service.MemberCreateUseCase;
 import com.mannavoca.zenga.domain.member.application.service.MemberModalCheckUseCase;
 import com.mannavoca.zenga.domain.member.application.service.MemberReadUseCase;
-import com.mannavoca.zenga.domain.member.domain.entity.enumType.State;
-import com.mannavoca.zenga.domain.party.application.dto.response.PartyTapResponseDto;
 import com.mannavoca.zenga.domain.member.domain.service.MemberService;
+import com.mannavoca.zenga.domain.party.application.dto.response.PartyTapResponseDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
@@ -21,9 +20,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
-import javax.persistence.Enumerated;
 import javax.validation.Valid;
-import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.util.List;
 
@@ -70,7 +67,7 @@ public class MemberController {
     }
 
     @PostMapping("{memberId}")
-    public ResponseEntity<ResponseDto<MemberInfoResponseDto>> updateMember(@PathVariable("memberId") Long memberId, @Valid UpdateMemberRequestDto updateMemberRequestDto) {
+    public ResponseEntity<ResponseDto<MemberInfoResponseDto>> updateMember(@PathVariable("memberId") Long memberId, @Valid @RequestBody UpdateMemberRequestDto updateMemberRequestDto) {
         Long userId = SecurityUtils.getUserId();
 
         return ResponseEntity.ok(ResponseDto.success(memberService.updateMember(userId, memberId, updateMemberRequestDto)));
