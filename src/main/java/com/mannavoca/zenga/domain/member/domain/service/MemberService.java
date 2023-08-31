@@ -119,4 +119,8 @@ public class MemberService {
     public Long countMemberByChannelId(final Long channelId) {
         return memberRepository.countMemberByChannelId(channelId);
     }
+
+    public List<Member> getMemberListByUserId(final Long userId) {
+        return memberRepository.findAllByUser_Id(userId);
+    }
 }
