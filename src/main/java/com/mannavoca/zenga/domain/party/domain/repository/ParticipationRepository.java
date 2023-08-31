@@ -5,6 +5,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface ParticipationRepository extends JpaRepository<Participation, Long> {
     List<Participation> findParticipationByParty_Id(Long partyId);
@@ -19,4 +20,6 @@ public interface ParticipationRepository extends JpaRepository<Participation, Lo
 
     @Query("select p.member.id from Participation p where p.party.id = ?1 and p.isMaker = true")
     Long findPartyMarkerId(Long partyId);
+
+    Optional<Participation> findByParty_IdAndMember_Id(Long partyId, Long memberId);
 }
