@@ -47,6 +47,9 @@ public class ChannelReadUseCase {
 
     public Slice<MemberInfoResponseDto> searchAllMembersByChannelId(final Long channelId, final Long memberIdCursor, final String keyword, final Pageable pageable){
         channelService.validateChannelId(channelId);
+        if (memberIdCursor != null) {
+            memberService.validateMemberId(memberIdCursor);
+        }
         memberService.validateMemberPermissionByUserIdAndChannelId(userUtils.getUser().getId(), channelId);
 
         return MemberMapper.MapMemberSliceToMemberInfoResponseDtoList(memberService.findAllMemberSlicesByChannelIdAndKeyword(channelId, memberIdCursor, keyword, pageable));

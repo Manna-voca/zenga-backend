@@ -56,18 +56,10 @@ public class ChannelController {
     @GetMapping("/{channelId}/members")
     public ResponseEntity<SliceResponse<MemberInfoResponseDto>> getAllMembersByChannelId(
             @PathVariable @NotNull(message = "채널 ID는 필수입니다.") final Long channelId,
-            @ModelAttribute SearchChannelMemberRequestDto searchChannelMemberRequestDto,
+            @ModelAttribute final SearchChannelMemberRequestDto searchChannelMemberRequestDto,
             @PageableDefault final Pageable pageable
     ) {
         return ResponseEntity.ok(SliceResponse.of(channelReadUseCase.searchAllMembersByChannelId(channelId, searchChannelMemberRequestDto.getCursor(), searchChannelMemberRequestDto.getKeyword(), pageable)));
     }
 
-//    @GetMapping("/{channelId}/members")
-//    public ResponseEntity<SliceResponse<MemberInfoResponseDto>> getAllMembersByChannelId(
-//            @PathVariable @NotNull(message = "채널 ID는 필수입니다.") final Long channelId,
-//            @RequestParam(required = false) final Long cursor,
-//            @PageableDefault final Pageable pageable
-//    ) {
-//        return ResponseEntity.ok(SliceResponse.of(channelReadUseCase.getAllMembersByChannelId(channelId, cursor, pageable)));
-//    }
 }
