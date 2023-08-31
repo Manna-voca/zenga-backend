@@ -59,9 +59,6 @@ public class MemberController {
 
         return ResponseEntity.ok(ResponseDto.success(memberService.updateMember(userId, memberId, updateMemberRequestDto)));
     }
-
-    @PostMapping
-    
     
     @GetMapping("/{memberId}/parties/all")
     public ResponseEntity<ResponseDto<List<PartyTapResponseDto>>> getAll2PartyList(
