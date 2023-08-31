@@ -14,18 +14,4 @@ public class MemberInfoResponseDto {
     private String name;
     private String introduction;
     private LevelType level;
-    private Long userId;
-    private Long channelId;
-
-    public static MemberInfoResponseDto of(Member member) {
-        return MemberInfoResponseDto.builder()
-                .id(member.getId())
-                .profileImageUrl(member.getProfileImageUrl())
-                .name(member.getUser().getName())
-                .introduction(member.getIntroduction())
-                .level(member.getLevel())
-                .userId(member.getUser().getId())
-                .channelId(member.getChannel().getId())
-                .build();
-    }
 }
