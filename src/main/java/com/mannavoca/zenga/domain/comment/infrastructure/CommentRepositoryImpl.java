@@ -21,18 +21,30 @@ public class CommentRepositoryImpl implements CommentRepositoryCustom {
 
     @Override
     public Slice<Comment> findAllParentCommentInParty(Long partyId, Long commentId, Pageable pageable) {
-        List<Comment> comments = queryFactory
-                .select(comment)
+        List<Long> parentCommentIds = queryFactory
+                .select(comment.id)
                 .from(comment)
                 .where(
                         comment.party.id.eq(partyId)
-                        .and(comment.parent.isNull()),
+                                .and(comment.parent.isNull()),
                         gtCommentId(commentId)
                 )
                 .orderBy(comment.id.asc())
-                .limit(pageable.getPageSize()+1)
+                .limit(pageable.getPageSize() + 1)
                 .fetch();
-        return checkLastPage(pageable, comments);
+        Slice<Long> checkedLastPage = checkLastPage(pageable, parentCommentIds);
+        List<Comment> commentList = queryFactory
+                .select(comment)
+                .from(comment)
+                .innerJoin(comment.writer).fetchJoin()
+                .leftJoin(comment.parent).fetchJoin()
+                .where(
+                        comment.id.in(parentCommentIds)
+                                .or(comment.parent.id.in(parentCommentIds))
+                )
+                .orderBy(comment.parent.id.asc().nullsFirst(), comment.createdDate.asc())
+                .fetch();
+        return new SliceImpl<>(commentList, pageable, checkedLastPage.hasNext());
     }
 
     @Override
@@ -53,7 +65,7 @@ public class CommentRepositoryImpl implements CommentRepositoryCustom {
     }
 
 
-    private Slice<Comment> checkLastPage(Pageable pageable, List<Comment> results) {
+    private <T> Slice<T> checkLastPage(Pageable pageable, List<T> results) {
         boolean hasNext = false;
         // 조회한 결과 개수가 요청한 페이지 사이즈보다 크면 뒤에 더 있음, next = true
         if (results.size() > pageable.getPageSize()) {

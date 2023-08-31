@@ -9,6 +9,7 @@ import java.time.LocalDateTime;
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class CreatePartyRequestDto {
+    private Long channelId;
     private String title;
     private String content;
     private Integer maxCapacity;

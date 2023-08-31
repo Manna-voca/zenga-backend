@@ -61,6 +61,15 @@ public class ParticipationService {
         return participationRepository.countByParty_Id(partyId);
     }
 
+    public Long getPartyMarkerId(Long partyId) {
+        return participationRepository.findPartyMarkerId(partyId);
+    }
+
+    public Participation getParticipationByPartyIdAndMemberId(Long partyId, Long memberId) {
+        return participationRepository.findByParty_IdAndMember_Id(partyId, memberId)
+                .orElseThrow(() -> BusinessException.of(Error.DATA_NOT_FOUND));
+    }
+  
     public GetAlbumListResponseDto getAlbumList(GetAlbumListRequestDto getAlbumListRequestDto) {
         Long memberId = getAlbumListRequestDto.getMemberId();
 

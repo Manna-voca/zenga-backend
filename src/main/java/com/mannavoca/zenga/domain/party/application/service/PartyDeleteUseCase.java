@@ -37,12 +37,14 @@ public class PartyDeleteUseCase {
 
     public void applyCancelParty(Long channelId, Long partyId) {
         Member applyCancelMember = userUtils.getMember(channelId);
-        if (!participationService.isAlreadyApplied(applyCancelMember.getId(), partyId)) {
+        if (!participationService.isAlreadyApplied(partyId, applyCancelMember.getId())) {
             // TODO: 예외 처리 따로 해야함, 등록 정보가 없는 것
             throw BusinessException.of(Error.INTERNAL_SERVER_ERROR);
         }
 
-        checkIsPartyMaker(applyCancelMember, partyService.getPartyById(partyId));
+        if (participationService.getParticipationByPartyIdAndMemberId(partyId, applyCancelMember.getId()).getIsMaker()){
+            throw BusinessException.of(Error.INTERNAL_SERVER_ERROR); // TODO: 예외 처리 따로 해야함, 파티장이 취소 신청을 하는 경우
+        }
 
         participationService.deleteParticipation(partyId, applyCancelMember.getId());
     }
@@ -56,4 +58,5 @@ public class PartyDeleteUseCase {
             throw BusinessException.of(Error.DATA_NOT_FOUND); // TODO: 예외처리 따로 정의
         }
     }
+
 }

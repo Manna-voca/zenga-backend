@@ -29,12 +29,13 @@ public class PartyDetailInfoResponseDto {
     @AllArgsConstructor
     public static class JoinMemberInfo {
         private Long memberId;
+        private Boolean isMaker;
         private String memberName;
         private String memberProfileImageUrl;
     }
 
     public enum ButtonState {
-        // 차례대로 모임 참가하기, 모임 참가 취소, 모임 진행 중, 모임 종료, 모집 마감, 모임 카드 만들기를 의미함
+        // 차례대로 모임 참가하기, 모임 참가 취소, 모임 진행 중, 모임 완료, 모집 완료, 모임 카드 만들기를 의미함
         JOIN, JOIN_CANCEL, IN_PROGRESS, END, CLOSE, MAKE_CARD
     }
 
