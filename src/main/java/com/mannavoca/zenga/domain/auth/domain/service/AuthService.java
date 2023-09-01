@@ -1,5 +1,7 @@
 package com.mannavoca.zenga.domain.auth.domain.service;
 
+import com.mannavoca.zenga.common.exception.BusinessException;
+import com.mannavoca.zenga.common.exception.Error;
 import com.mannavoca.zenga.common.security.jwt.JwtProvider;
 import com.mannavoca.zenga.common.security.oauth.OAuthProperties;
 import com.mannavoca.zenga.domain.auth.application.dto.request.KakaoOAuthRequestDto;
@@ -28,6 +30,7 @@ public class AuthService {
      * 카카오 인가 코드로 id_token을 받아옴
      * @param code 카카오 인가 코드
      * @return ID Token 값
+     * @throws BusinessException Error.KAKAO_OAUTH_FAILED4 인가 코드가 유효하지 않은 경우
      */
     private String getIdToken(String code) {
         KakaoOAuthRequestDto kakaoOAuthRequestDto = KakaoOAuthRequestDto.builder()
@@ -37,7 +40,13 @@ public class AuthService {
                 .code(code)
                 .build();
 
-        KakaoOAuthResponseDto responseDto = kakaoOAuthClient.getKakaoOAuthToken(kakaoOAuthRequestDto);
+        KakaoOAuthResponseDto responseDto = null;
+        try {
+            responseDto = kakaoOAuthClient.getKakaoOAuthToken(kakaoOAuthRequestDto);
+        } catch (Exception e) {
+            log.error("카카오 OAuth 토큰 요청 실패", e);
+            throw BusinessException.of(Error.KAKAO_OAUTH_FAILED4);
+        }
         return responseDto.getId_token();
     }
 
@@ -46,7 +55,7 @@ public class AuthService {
      * @param code 카카오 인가 코드
      * @return accessToken과 refreshToken을 담은 DTO
      */
-    public TokenResponseDto generateTokens(String code) {
+    public TokenResponseDto generateTokens(final String code) {
         String idToken = getIdToken(code);
         String socialId = kakaoOIDCHelper.getPayloadFromIdToken(idToken).getSub();
         User user = userFindService.findOrCreateBySocialId(socialId);
@@ -63,8 +72,8 @@ public class AuthService {
      * @param refreshTokenDto refreshToken을 담은 DTO
      * @return accessToken과 refreshToken을 담은 DTO
      */
-    public TokenResponseDto refreshTokens(RefreshTokensRequestDto refreshTokenDto) {
-        String refreshToken = refreshTokenDto.getRefreshToken();
+    public TokenResponseDto refreshTokens(final RefreshTokensRequestDto refreshTokenDto) {
+        final String refreshToken = refreshTokenDto.getRefreshToken();
         jwtProvider.validateRefreshToken(refreshToken); // 저장된 리프레시와 받은 리프레시가 일치하는 지 검증
 
         Long userId = jwtProvider.extractId(refreshToken); // 리프레시 토큰에 담긴 userId가 실제로 존재하는 지 검증
