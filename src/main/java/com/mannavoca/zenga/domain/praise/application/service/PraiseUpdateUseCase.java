@@ -7,6 +7,7 @@ import com.mannavoca.zenga.common.util.UserUtils;
 import com.mannavoca.zenga.domain.member.domain.entity.Member;
 import com.mannavoca.zenga.domain.member.domain.service.MemberService;
 import com.mannavoca.zenga.domain.point.application.service.PointPolicyUseCase;
+import com.mannavoca.zenga.domain.praise.application.dto.event.PraisedMemberEventDto;
 import com.mannavoca.zenga.domain.praise.application.dto.request.ChooseMemberPraiseRequestDto;
 import com.mannavoca.zenga.domain.praise.application.dto.request.OpenMemberPraiseRequestDto;
 import com.mannavoca.zenga.domain.praise.application.dto.response.CurrentTodoPraiseResponseDto;
@@ -32,6 +33,7 @@ public class PraiseUpdateUseCase {
     private final PointPolicyUseCase pointPolicyUseCase;
     private final MemberPraiseService memberPraiseService;
     private final MemberService memberService;
+    private final PraiseUpdateEventListener praiseUpdateEventListener;
 
     public CurrentTodoPraiseResponseDto getAgainCurrentTodoPraiseAndMemberList(Long channelId) {
         Member member = userUtils.getMember(channelId);
@@ -54,6 +56,8 @@ public class PraiseUpdateUseCase {
         // 본인이 본인을 칭찬할 수 있는 경우를 그 전에 리스트 줄 때 막긴하는데 여기서도 막아야하나...?
         pointPolicyUseCase.accumulatePointByPraise(userUtils.getUser(), memberPraise.getPraiseMember(), praisedMember.getChannel().getName());
         memberPraiseService.updatePraisedMemberToMemberPraise(memberPraise, praisedMember);
+        praiseUpdateEventListener.checkPraiseCountAndUpdateMemberBlock(memberPraise.getPraiseMember().getId());
+        praiseUpdateEventListener.updatePraisedMemberBlock(PraisedMemberEventDto.of(praisedMember.getId(), memberPraise.getPraise().getCategory()));
     }
 
     public void openMemberPraise(OpenMemberPraiseRequestDto openMemberPraiseRequestDto) {
