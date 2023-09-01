@@ -33,6 +33,7 @@ public class PartyUpdateUseCase {
     private final PartyService partyService;
     private final ParticipationService participationService;
     private final PointPolicyUseCase pointPolicyUseCase;
+    private final PartyUpdateEventListener partyUpdateEventListener;
 
     public CreatePartyResponseDto editPartyInfo(EditPartyInfoRequestDto editPartyInfoRequestDto) {
         Member member = userUtils.getMember(editPartyInfoRequestDto.getChannelId());
@@ -58,6 +59,7 @@ public class PartyUpdateUseCase {
 
         List<Member> participationMemberList = party.getParticipationList().stream().map(Participation::getMember).collect(Collectors.toList());
         pointPolicyUseCase.accumulatePointByParty(participationMemberList, party.getChannel().getName());
+        partyUpdateEventListener.checkPartyCountAndUpdateMemberBlock(member.getId());
 
         return PartyMapper.mapToCompletePartyResponseDto(completedPartyAndUploadCard);
     }
