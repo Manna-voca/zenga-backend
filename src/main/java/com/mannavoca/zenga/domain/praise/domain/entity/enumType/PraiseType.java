@@ -1,11 +1,14 @@
 package com.mannavoca.zenga.domain.praise.domain.entity.enumType;
 
-
 import com.mannavoca.zenga.common.infrastructure.domain.CodeValue;
 
 public enum PraiseType implements CodeValue {
-    A("a", "a"),
-    B("b","b");
+
+    APPEARANCE("AP", "외적 칭찬"),
+    PERSONALITY("PE", "성격 칭찬"),
+    PASSION("PA", "도전・열정 칭찬"),
+    OTHERS("OT", "기타 칭찬"),
+    EFFORT("EF", "노력 칭찬");
 
     private String code;
     private String value;
@@ -14,10 +17,12 @@ public enum PraiseType implements CodeValue {
         this.code = code;
         this.value = value;
     }
+
     @Override
     public String getCode() {
         return code;
     }
+
     @Override
     public String getValue() {
         return value;
