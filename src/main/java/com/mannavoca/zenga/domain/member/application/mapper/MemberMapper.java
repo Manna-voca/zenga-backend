@@ -10,13 +10,15 @@ import java.util.stream.Collectors;
 
 @Mapper
 public class MemberMapper {
-    public static MemberInfoResponseDto mapMemberToMemberInfoResponseDto(Member member) {
+    public static MemberInfoResponseDto mapMemberToMemberInfoResponseDto(final Member member) {
         return MemberInfoResponseDto.builder()
                 .id(member.getId())
                 .profileImageUrl(member.getProfileImageUrl())
                 .name(member.getNickname())
                 .introduction(member.getIntroduction())
                 .level(member.getLevel())
+                .userId(member.getUser().getId())
+                .channelId(member.getChannel().getId())
                 .build();
     }
 
