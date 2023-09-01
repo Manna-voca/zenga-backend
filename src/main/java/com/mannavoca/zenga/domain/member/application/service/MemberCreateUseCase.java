@@ -21,9 +21,10 @@ public class MemberCreateUseCase {
     private final ChannelService channelService;
     private final UserUtils userUtils;
 
-    public MemberInfoResponseDto createMember(CreatingMemberRequestDto creatingMemberRequestDto) {
+    public MemberInfoResponseDto createMember(final CreatingMemberRequestDto creatingMemberRequestDto) {
         User user = userUtils.getUser();
         Channel channel = channelService.getChannelById(creatingMemberRequestDto.getChannelId());
+        memberService.validateMemberAlreadyExistsByUserIdAndChannelId(user.getId(), channel.getId());
 
         return MemberMapper.mapMemberToMemberInfoResponseDto(memberService.createMember(user, channel, creatingMemberRequestDto));
     }

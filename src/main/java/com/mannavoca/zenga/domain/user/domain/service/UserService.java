@@ -1,6 +1,7 @@
 package com.mannavoca.zenga.domain.user.domain.service;
 
-import com.mannavoca.zenga.domain.user.application.dto.request.UserOnboardingRequestDto;
+import com.mannavoca.zenga.common.exception.BusinessException;
+import com.mannavoca.zenga.domain.user.application.dto.request.UpdatingUserInfoRequestDto;
 import com.mannavoca.zenga.domain.user.domain.entity.User;
 import com.mannavoca.zenga.domain.user.domain.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -28,24 +29,15 @@ public class UserService {
 
     /**
      * User 온보딩
-     * @param userId User ID
-     * @param userOnboardingRequestDto User 온보딩 요청 DTO
+     * @param user User 객체
+     * @param updatingUserInfoRequestDto User 온보딩 요청 DTO
      * @return 온보딩된 User 객체
+     * @throws BusinessException Error.USER_ALREADY_ONBOARDED 유저가 이미 온보딩한 경우
      */
     @Transactional
-    public User onboardUser(Long userId, UserOnboardingRequestDto userOnboardingRequestDto) {
-        User user = userRepository.findById(userId).orElseThrow(); // TODO: 에러 처리 로직 구현 필요
-        user.onboardUser(userOnboardingRequestDto);
-        return userRepository.save(user);
-    }
+    public User updateUser(User user, final UpdatingUserInfoRequestDto updatingUserInfoRequestDto) {
 
-    /**
-     * User 정보 조회
-     * @param userId User ID
-     * @return User 객체
-     */
-    public User getUserInfo(Long userId) {
-        User user = userRepository.findById(userId).orElseThrow(); // TODO: 에러 처리 로직 구현 필요
-        return user;
+        user.updateUser(updatingUserInfoRequestDto);
+        return userRepository.save(user);
     }
 }
