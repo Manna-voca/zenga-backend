@@ -7,13 +7,13 @@ import com.mannavoca.zenga.domain.praise.domain.entity.enumType.PraiseType;
 
 public enum BlockType implements CodeValue {
 
-    PINK("PINK", "분홍색", PraiseType.APPEARANCE),
-    ORANGE("ORANGE", "주황색", PraiseType.PERSONALITY),
-    SKY_BLUE("SKY_BLUE", "하늘색", PraiseType.PASSION),
-    LIGHT_GREEN("LIGHT_GREEN", "연두색", PraiseType.OTHERS),
-    YELLOW("YELLOW", "노란색", PraiseType.EFFORT),
-    PURPLE("PURPLE", "보라색", PraiseType.EFFORT),
-    LIGHT_BROWN("LIGHT_BROWN", "연갈색", PraiseType.EFFORT);
+    PINK("PINK", "외모 칭찬", PraiseType.APPEARANCE),
+    ORANGE("ORANGE", "인격 칭찬", PraiseType.PERSONALITY),
+    SKY_BLUE("SKY_BLUE", "도전/열정 칭찬", PraiseType.PASSION),
+    LIGHT_GREEN("LIGHT_GREEN", "기타 칭찬", PraiseType.OTHERS),
+    YELLOW("YELLOW", "모임 참여", null),
+    PURPLE("PURPLE", "노력 칭찬", PraiseType.EFFORT),
+    LIGHT_BROWN("LIGHT_BROWN", "칭찬하기", PraiseType.EFFORT);
 
     private String code;
     private String value;
