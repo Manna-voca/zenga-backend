@@ -7,16 +7,20 @@ import com.mannavoca.zenga.common.util.UserUtils;
 import com.mannavoca.zenga.domain.channel.domain.entity.Channel;
 import com.mannavoca.zenga.domain.channel.domain.service.ChannelService;
 import com.mannavoca.zenga.domain.member.domain.entity.Member;
+import com.mannavoca.zenga.domain.notification.domain.service.NotificationService;
 import com.mannavoca.zenga.domain.party.application.dto.request.ApplyPartyRequestDto;
 import com.mannavoca.zenga.domain.party.application.dto.request.CreatePartyRequestDto;
 import com.mannavoca.zenga.domain.party.application.dto.response.CreatePartyResponseDto;
 import com.mannavoca.zenga.domain.party.application.mapper.PartyMapper;
+import com.mannavoca.zenga.domain.party.domain.entity.Participation;
 import com.mannavoca.zenga.domain.party.domain.entity.Party;
 import com.mannavoca.zenga.domain.party.domain.service.ParticipationService;
 import com.mannavoca.zenga.domain.party.domain.service.PartyService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.stream.Collectors;
 
 @Slf4j
 @UseCase
@@ -27,6 +31,7 @@ public class PartyCreateUseCase {
     private final ChannelService channelService;
     private final PartyService partyService;
     private final ParticipationService participationService;
+    private final NotificationService notificationService;
 
     public CreatePartyResponseDto createNewParty(CreatePartyRequestDto createPartyRequestDto) {
         Member partyMaker = userUtils.getMember(createPartyRequestDto.getChannelId());
@@ -45,5 +50,13 @@ public class PartyCreateUseCase {
         }
         Party party = partyService.getPartyById(applyPartyRequestDto.getPartyId());
         participationService.createNewParticipation(false, applyMember, party);
+
+        if (party.isFull()) {
+            Member maker = party.getParticipationList().stream().filter(Participation::getIsMaker)
+                    .collect(Collectors.toList()).get(0).getMember();
+
+            notificationService.createFullPartyNotification(maker, party);
+        }
+
     }
 }

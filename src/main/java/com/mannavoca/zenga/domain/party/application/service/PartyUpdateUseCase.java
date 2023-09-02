@@ -6,6 +6,7 @@ import com.mannavoca.zenga.common.exception.Error;
 import com.mannavoca.zenga.common.util.UserUtils;
 import com.mannavoca.zenga.domain.channel.domain.service.ChannelService;
 import com.mannavoca.zenga.domain.member.domain.entity.Member;
+import com.mannavoca.zenga.domain.notification.domain.service.NotificationService;
 import com.mannavoca.zenga.domain.party.application.dto.request.CompletePartyRequestDto;
 import com.mannavoca.zenga.domain.party.application.dto.request.EditPartyInfoRequestDto;
 import com.mannavoca.zenga.domain.party.application.dto.response.CompletePartyResponseDto;
@@ -33,6 +34,7 @@ public class PartyUpdateUseCase {
     private final PartyService partyService;
     private final ParticipationService participationService;
     private final PointPolicyUseCase pointPolicyUseCase;
+    private final NotificationService notificationService;
 
     public CreatePartyResponseDto editPartyInfo(EditPartyInfoRequestDto editPartyInfoRequestDto) {
         Member member = userUtils.getMember(editPartyInfoRequestDto.getChannelId());
@@ -57,8 +59,11 @@ public class PartyUpdateUseCase {
         Party completedPartyAndUploadCard = partyService.completePartyAndUploadCard(party, completePartyRequestDto.getPartyCardImageUrl());
 
         List<Member> participationMemberList = party.getParticipationList().stream().map(Participation::getMember).collect(Collectors.toList());
-        pointPolicyUseCase.accumulatePointByParty(participationMemberList, party.getChannel().getName());
+        pointPolicyUseCase.accumulatePointByParty(participationMemberList, party);
 
+        participationMemberList.forEach(
+                participationMember -> notificationService.createCardNotification(participationMember, completedPartyAndUploadCard)
+        );
         return PartyMapper.mapToCompletePartyResponseDto(completedPartyAndUploadCard);
     }
 
