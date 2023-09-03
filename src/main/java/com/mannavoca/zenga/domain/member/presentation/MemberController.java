@@ -3,6 +3,7 @@ package com.mannavoca.zenga.domain.member.presentation;
 import com.mannavoca.zenga.common.dto.ResponseDto;
 import com.mannavoca.zenga.common.dto.SliceResponse;
 import com.mannavoca.zenga.common.util.SecurityUtils;
+import com.mannavoca.zenga.domain.block.application.dto.response.BlockInfoResponseDto;
 import com.mannavoca.zenga.domain.member.application.dto.request.CreatingMemberRequestDto;
 import com.mannavoca.zenga.domain.member.application.dto.request.GetMemberPartyRequestDto;
 import com.mannavoca.zenga.domain.member.application.dto.request.UpdateMemberRequestDto;
@@ -80,4 +81,10 @@ public class MemberController {
         return ResponseEntity.ok(ResponseDto.success(memberReadUseCase.getAll2PartyListByMemberId(memberId)));
     }
 
+    @GetMapping("/{memberId}/blocks")
+    public ResponseEntity<ResponseDto<List<BlockInfoResponseDto>>> getAllBlocksByMemberId(
+            @PathVariable @NotNull(message = "멤버 ID는 필수입니다.") final Long memberId
+    ) {
+        return ResponseEntity.ok(ResponseDto.success(memberReadUseCase.getAllBlocksByMemberId(memberId)));
+    }
 }
