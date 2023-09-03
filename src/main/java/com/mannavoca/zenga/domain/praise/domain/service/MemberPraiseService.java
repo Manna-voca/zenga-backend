@@ -68,4 +68,8 @@ public class MemberPraiseService {
     public Long getFinishedMemberPraiseCountByPraiseId(final Long praiseId) {
         return memberPraiseRepository.countFinishedPraiseByMemberId(praiseId);
     }
+
+    public Boolean existsReceivedPraiseByMemberId(final Long memberId) {
+        return memberPraiseRepository.existsReceivedPraiseByMemberId(memberId);
+    }
 }

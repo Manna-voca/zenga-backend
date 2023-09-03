@@ -1,6 +1,5 @@
 package com.mannavoca.zenga.domain.party.application.service;
 
-import com.mannavoca.zenga.domain.block.domain.entity.enumType.BlockPartyMapping;
 import com.mannavoca.zenga.domain.block.domain.entity.enumType.BlockType;
 import com.mannavoca.zenga.domain.block.domain.service.BlockService;
 import com.mannavoca.zenga.domain.block.domain.service.MemberBlockService;
@@ -18,22 +17,30 @@ import org.springframework.transaction.event.TransactionalEventListener;
 @RequiredArgsConstructor
 @Component
 public class PartyUpdateEventListener {
-    private final PartyService partyService;
     private final ParticipationService participationService;
     private final BlockService blockService;
     private final MemberBlockService memberBlockService;
     private final MemberService memberService;
 
-    @Async
-    @Transactional(propagation = Propagation.REQUIRES_NEW)
+    @Transactional(propagation = Propagation.REQUIRED)
     @TransactionalEventListener
     public void checkPartyCountAndUpdateMemberBlock(Long memberId){
         Member member = memberService.findMemberById(memberId);
         Long partyCount = participationService.getParticipationCountByMemberId(memberId);
-        Long memberBlockCount = memberBlockService.getMemberBlockCountByMemberIdAndBlockType(memberId, BlockType.YELLOW);
-        Long requiredPartyCount = BlockPartyMapping.getRequiredPartyCountByMemberBlockCount(memberBlockCount);
-        if (requiredPartyCount != null && partyCount >= requiredPartyCount) {
-            memberBlockService.createMemberBlock(member, blockService.findBlockByBlockType(BlockType.YELLOW));
+
+        switch (partyCount.intValue()){
+            case 1:
+                memberBlockService.createMemberBlock(member, blockService.findBlockByBlockType(BlockType.YELLOW1));
+                break;
+            case 10:
+                memberBlockService.createMemberBlock(member, blockService.findBlockByBlockType(BlockType.YELLOW10));
+                break;
+            case 30:
+                memberBlockService.createMemberBlock(member, blockService.findBlockByBlockType(BlockType.YELLOW30));
+                break;
+            case 50:
+                memberBlockService.createMemberBlock(member, blockService.findBlockByBlockType(BlockType.YELLOW50));
+                break;
         }
     }
 }
