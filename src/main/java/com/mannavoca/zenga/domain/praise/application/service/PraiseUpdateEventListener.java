@@ -1,16 +1,12 @@
 package com.mannavoca.zenga.domain.praise.application.service;
 
 import com.mannavoca.zenga.domain.block.domain.entity.Block;
-import com.mannavoca.zenga.domain.block.domain.entity.enumType.BlockPraiseMapping;
 import com.mannavoca.zenga.domain.block.domain.entity.enumType.BlockType;
 import com.mannavoca.zenga.domain.block.domain.service.BlockService;
 import com.mannavoca.zenga.domain.block.domain.service.MemberBlockService;
 import com.mannavoca.zenga.domain.member.domain.entity.Member;
 import com.mannavoca.zenga.domain.member.domain.service.MemberService;
 import com.mannavoca.zenga.domain.praise.application.dto.event.PraisedMemberEventDto;
-import com.mannavoca.zenga.domain.praise.domain.entity.MemberPraise;
-import com.mannavoca.zenga.domain.praise.domain.entity.Praise;
-import com.mannavoca.zenga.domain.praise.domain.entity.enumType.PraiseType;
 import com.mannavoca.zenga.domain.praise.domain.service.MemberPraiseService;
 import com.mannavoca.zenga.domain.praise.domain.service.PraiseService;
 import lombok.RequiredArgsConstructor;
@@ -29,19 +25,25 @@ public class PraiseUpdateEventListener {
     private final MemberService memberService;
     private final BlockService blockService;
 
-    @Async
-    @Transactional(propagation = Propagation.REQUIRES_NEW)
+    @Transactional(propagation = Propagation.REQUIRED)
     @TransactionalEventListener
-    public void checkPraiseCountAndUpdateMemberBlock(Long memberId){ // 칭찬을 한 경우
-        Long praiseCount = memberPraiseService.getFinishedMemberPraiseCountByPraiseId(memberId);
-        Long memberBlockCount = memberBlockService.getMemberBlockCountByMemberIdAndBlockType(memberId, BlockType.LIGHT_BROWN);
-        Member member = memberService.findMemberById(memberId);
-        Block block = blockService.findBlockByBlockType(BlockType.LIGHT_BROWN);
+    public void checkPraiseCountAndUpdateMemberBlock(final Long memberId){ // 칭찬을 한 경우
+        final Long praiseCount = memberPraiseService.getFinishedMemberPraiseCountByPraiseId(memberId);
+        final Member member = memberService.findMemberById(memberId);
 
-        // 멤버의 연갈색 블록 개수를 세어와서 0, 1, 2, 3에 따라 경우에 따라 나눔
-        Long requiredPraiseCount = BlockPraiseMapping.getRequiredPraiseCountByMemberBlockCount(memberBlockCount);
-        if (requiredPraiseCount != null && praiseCount >= requiredPraiseCount) {
-            memberBlockService.createMemberBlock(member, block);
+        switch (praiseCount.intValue()){
+            case 1:
+                memberBlockService.createMemberBlock(member, blockService.findBlockByBlockType(BlockType.LIGHT_BROWN1));
+                break;
+            case 10:
+                memberBlockService.createMemberBlock(member, blockService.findBlockByBlockType(BlockType.LIGHT_BROWN10));
+                break;
+            case 50:
+                memberBlockService.createMemberBlock(member, blockService.findBlockByBlockType(BlockType.LIGHT_BROWN50));
+                break;
+            case 100:
+                memberBlockService.createMemberBlock(member, blockService.findBlockByBlockType(BlockType.LIGHT_BROWN100));
+                break;
         }
 
     }
@@ -49,10 +51,17 @@ public class PraiseUpdateEventListener {
     @Async
     @Transactional(propagation = Propagation.REQUIRES_NEW)
     @TransactionalEventListener
-    public void updatePraisedMemberBlock(PraisedMemberEventDto praisedMemberEventDto){
-        Member praisedMember = memberService.findMemberById(praisedMemberEventDto.getPraisedMemberId());
-        Block block = blockService.findBlockByBlockType(BlockType.fromPraiseType(praisedMemberEventDto.getPraiseType()));
+    public void updatePraisedMemberBlock(final PraisedMemberEventDto praisedMemberEventDto){
+        final Member praisedMember = memberService.findMemberById(praisedMemberEventDto.getPraisedMemberId());
+        if (memberPraiseService.existsReceivedPraiseByMemberId(praisedMember.getId())) {
+            BlockType foundBlockType = BlockType.getFirstOneFromBlockType(BlockType.fromPraiseType(praisedMemberEventDto.getPraiseType()));
+            Block foundBlock = blockService.findBlockByBlockType(foundBlockType);
+            memberBlockService.createMemberBlock(praisedMember, foundBlock);
+        }
+        else {
+            Block block = blockService.findBlockByBlockType(BlockType.fromPraiseType(praisedMemberEventDto.getPraiseType()));
+            memberBlockService.createMemberBlock(praisedMember, block);
+        }
 
-        memberBlockService.createMemberBlock(praisedMember, block);
     }
 }
