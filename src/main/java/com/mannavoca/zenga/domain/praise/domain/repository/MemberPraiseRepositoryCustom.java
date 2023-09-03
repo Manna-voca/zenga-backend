@@ -17,4 +17,6 @@ public interface MemberPraiseRepositoryCustom {
     Page<MemberPraise> getMyCompletePraiseList(Long memberId, Pageable pageable);
 
     Long countFinishedPraiseByMemberId(Long memberId);
+
+    Boolean existsReceivedPraiseByMemberId(Long memberId);
 }
