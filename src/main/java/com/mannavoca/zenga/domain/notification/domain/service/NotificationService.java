@@ -3,6 +3,7 @@ package com.mannavoca.zenga.domain.notification.domain.service;
 import com.mannavoca.zenga.common.exception.BusinessException;
 import com.mannavoca.zenga.common.exception.Error;
 import com.mannavoca.zenga.common.util.SecurityUtils;
+import com.mannavoca.zenga.domain.channel.domain.entity.Channel;
 import com.mannavoca.zenga.domain.member.domain.entity.Member;
 import com.mannavoca.zenga.domain.member.domain.repository.MemberRepository;
 import com.mannavoca.zenga.domain.notification.presentation.dto.response.response.GetNotificationListResponseDto;
@@ -71,6 +72,12 @@ public class NotificationService {
     public void createCardNotification(Member member, Party party) {
 
             Notification notification = Notification.createNotification("카드가 만들어졌어요!", member, "모임: " + party.getTitle());
+            notificationRepository.save(notification);
+    }
+
+    public void createChannelOpenedNotification(Member member, Channel channel) {
+
+            Notification notification = Notification.createNotification("채널이 개설되었어요!", member, "채널: " + channel.getName());
             notificationRepository.save(notification);
     }
 }
