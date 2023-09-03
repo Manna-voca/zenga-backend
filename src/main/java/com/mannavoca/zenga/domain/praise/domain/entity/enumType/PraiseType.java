@@ -8,7 +8,7 @@ public enum PraiseType implements CodeValue {
     PERSONALITY("PE", "성격 칭찬"),
     PASSION("PA", "도전・열정 칭찬"),
     OTHERS("OT", "기타 칭찬"),
-    EFFORT("EF", "노력 칭찬");
+    ABILITY("AB", "능력 칭찬");
 
     private String code;
     private String value;
