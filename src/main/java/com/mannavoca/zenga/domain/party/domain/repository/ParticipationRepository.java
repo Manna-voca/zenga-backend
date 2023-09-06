@@ -25,4 +25,6 @@ public interface ParticipationRepository extends JpaRepository<Participation, Lo
     Optional<Participation> findByParty_IdAndMember_Id(Long partyId, Long memberId);
   
     List<Participation> findAllByMember(Member member);
+
+    Long countByMember_Id(Long memberId);
 }

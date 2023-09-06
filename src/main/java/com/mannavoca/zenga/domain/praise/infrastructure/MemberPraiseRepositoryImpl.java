@@ -100,4 +100,25 @@ public class MemberPraiseRepositoryImpl implements MemberPraiseRepositoryCustom 
 
         return PageableExecutionUtils.getPage(memberPraiseList, pageable, countQuery::fetchOne);
     }
+
+    @Override
+    public Long countFinishedPraiseByMemberId(final Long memberId) {
+        return queryFactory.select(memberPraise.count())
+                .from(memberPraise)
+                .where(
+                        memberPraise.praiseMember.isNotNull(), memberPraise.praiseMember.id.eq(memberId)
+                )
+                .fetchOne();
+    }
+
+    @Override
+    public Boolean existsReceivedPraiseByMemberId(final Long memberId) {
+        return Optional.ofNullable(queryFactory.select(memberPraise.count())
+                .from(memberPraise)
+                .where(
+                        memberPraise.praisedMember.isNotNull(), memberPraise.praisedMember.id.eq(memberId)
+                )
+                .fetchOne()).orElse(0L) > 0;
+    }
+
 }
