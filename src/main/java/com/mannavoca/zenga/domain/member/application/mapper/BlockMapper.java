@@ -9,18 +9,18 @@ import java.util.stream.Collectors;
 
 @Mapper
 public class BlockMapper {
-    public static BlockInfoResponseDto mapBlockToBlockInfoResponseDto(final Block block) {
-        return BlockInfoResponseDto.builder()
-                .id(block.getId())
-                .description(block.getDescription())
-                .createdAt(block.getCreatedDate().toString())
-                .blockType(block.getBlockType())
-                .build();
-    }
-
-    public static List<BlockInfoResponseDto> mapBlockListToBlockInfoResponseDtoList(final List<Block> blockList) {
-        return blockList.stream()
-                .map(BlockMapper::mapBlockToBlockInfoResponseDto)
-                .collect(Collectors.toList());
-    }
+//    public static BlockInfoResponseDto mapBlockToBlockInfoResponseDto(final Block block) {
+//        return BlockInfoResponseDto.builder()
+//                .id(block.getId())
+//                .description(block.getDescription())
+//                .createdAt(block.getCreatedDate().toString())
+//                .blockType(block.getBlockType())
+//                .build();
+//    }
+//
+//    public static List<BlockInfoResponseDto> mapBlockListToBlockInfoResponseDtoList(final List<Block> blockList) {
+//        return blockList.stream()
+//                .map(BlockMapper::mapBlockToBlockInfoResponseDto)
+//                .collect(Collectors.toList());
+//    }
 }
