@@ -39,6 +39,7 @@ public class BlockRepositoryImpl implements BlockRepositoryCustom {
                 .from(block)
                 .join(block.memberBlockList, memberBlock)
                 .where(memberBlock.member.id.eq(memberId))
+                .orderBy(memberBlock.id.desc())
                 .fetch();
     }
 
