@@ -3,6 +3,7 @@ package com.mannavoca.zenga.domain.block.domain.service;
 import com.mannavoca.zenga.common.annotation.DomainService;
 import com.mannavoca.zenga.common.exception.BusinessException;
 import com.mannavoca.zenga.common.exception.Error;
+import com.mannavoca.zenga.domain.block.application.dto.response.BlockInfoResponseDto;
 import com.mannavoca.zenga.domain.block.domain.entity.Block;
 import com.mannavoca.zenga.domain.block.domain.entity.enumType.BlockType;
 import com.mannavoca.zenga.domain.block.domain.repository.BlockRepository;
@@ -20,7 +21,7 @@ public class BlockService {
         return blockRepository.findByBlockType(blockType).orElseThrow(() -> BusinessException.of(Error.BLOCK_NOT_FOUND));
     }
 
-    public List<Block> findAllByMemberId(final Long memberId) {
-        return blockRepository.findAllByMemberId(memberId);
+    public List<BlockInfoResponseDto> findAllByMemberId(final Long memberId) {
+        return blockRepository.findAllBlockInfoListByMemberId(memberId);
     }
 }
