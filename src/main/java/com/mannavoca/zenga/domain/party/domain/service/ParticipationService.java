@@ -63,6 +63,10 @@ public class ParticipationService {
         return participationRepository.countByParty_Id(partyId);
     }
 
+    public Long getParticipationCountByMemberId(Long memberId) {
+        return participationRepository.countByMember_Id(memberId);
+    }
+
     public Long getPartyMarkerId(Long partyId) {
         return participationRepository.findPartyMarkerId(partyId);
     }

@@ -9,6 +9,7 @@ import com.mannavoca.zenga.domain.member.domain.service.MemberService;
 import com.mannavoca.zenga.domain.notification.domain.entity.Notification;
 import com.mannavoca.zenga.domain.notification.domain.service.NotificationService;
 import com.mannavoca.zenga.domain.point.application.service.PointPolicyUseCase;
+import com.mannavoca.zenga.domain.praise.application.dto.event.PraisedMemberEventDto;
 import com.mannavoca.zenga.domain.praise.application.dto.request.ChooseMemberPraiseRequestDto;
 import com.mannavoca.zenga.domain.praise.application.dto.request.OpenMemberPraiseRequestDto;
 import com.mannavoca.zenga.domain.praise.application.dto.response.CurrentTodoPraiseResponseDto;
@@ -35,6 +36,7 @@ public class PraiseUpdateUseCase {
     private final MemberPraiseService memberPraiseService;
     private final MemberService memberService;
     private final NotificationService notificationService;
+    private final PraiseUpdateEventListener praiseUpdateEventListener;
 
     public CurrentTodoPraiseResponseDto getAgainCurrentTodoPraiseAndMemberList(Long channelId) {
         Member member = userUtils.getMember(channelId);
@@ -59,6 +61,8 @@ public class PraiseUpdateUseCase {
         memberPraiseService.updatePraisedMemberToMemberPraise(memberPraise, praisedMember);
 
         notificationService.createPraiseNotification(praisedMember, memberPraise.getPraise());
+        praiseUpdateEventListener.checkPraiseCountAndUpdateMemberBlock(memberPraise.getPraiseMember().getId());
+        praiseUpdateEventListener.updatePraisedMemberBlock(PraisedMemberEventDto.of(praisedMember.getId(), memberPraise.getPraise().getCategory()));
     }
 
     public void openMemberPraise(OpenMemberPraiseRequestDto openMemberPraiseRequestDto) {
