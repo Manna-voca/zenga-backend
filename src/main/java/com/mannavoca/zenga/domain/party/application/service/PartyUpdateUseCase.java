@@ -61,7 +61,6 @@ public class PartyUpdateUseCase {
 
         List<Member> participationMemberList = party.getParticipationList().stream().map(Participation::getMember).collect(Collectors.toList());
         pointPolicyUseCase.accumulatePointByParty(participationMemberList, party);
-        pointPolicyUseCase.accumulatePointByParty(participationMemberList, party.getChannel().getName());
         partyUpdateEventListener.checkPartyCountAndUpdateMemberBlock(member.getId());
 
         participationMemberList.forEach(
