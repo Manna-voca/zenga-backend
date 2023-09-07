@@ -10,6 +10,7 @@ import com.mannavoca.zenga.domain.album.application.dto.response.GetAlbumListRes
 import com.mannavoca.zenga.domain.album.application.dto.response.GetParticipationWithResponseDto;
 import com.mannavoca.zenga.domain.member.domain.entity.Member;
 import com.mannavoca.zenga.domain.member.domain.repository.MemberRepository;
+import com.mannavoca.zenga.domain.notification.domain.service.NotificationService;
 import com.mannavoca.zenga.domain.party.domain.entity.Participation;
 import com.mannavoca.zenga.domain.party.domain.entity.Party;
 import com.mannavoca.zenga.domain.party.domain.repository.ParticipationRepository;
@@ -28,8 +29,9 @@ public class ParticipationService {
     private final ParticipationRepository participationRepository;
 
     private final MemberRepository memberRepository;
+
     public void createNewParticipation(Boolean isMaker, Member member, Party party) {
-        participationRepository.save(
+        Participation participation = participationRepository.save(
                 Participation.builder()
                         .isMaker(isMaker)
                         .member(member)

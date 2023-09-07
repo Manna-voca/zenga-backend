@@ -85,4 +85,8 @@ public class Party extends BaseEntity {
         this.partyDate = partyDate;
         this.partyImageUrl = partyImageUrl;
     }
+
+    public boolean isFull() {
+        return this.participationList.size() >= this.maxCapacity;
+    }
 }

@@ -4,6 +4,8 @@ import com.mannavoca.zenga.common.annotation.UseCase;
 import com.mannavoca.zenga.common.exception.BusinessException;
 import com.mannavoca.zenga.common.exception.Error;
 import com.mannavoca.zenga.domain.member.domain.entity.Member;
+import com.mannavoca.zenga.domain.notification.domain.service.NotificationService;
+import com.mannavoca.zenga.domain.party.domain.entity.Party;
 import com.mannavoca.zenga.domain.point.domain.service.PointService;
 import com.mannavoca.zenga.domain.user.domain.entity.User;
 import lombok.RequiredArgsConstructor;
@@ -18,7 +20,7 @@ import java.util.Map;
 @RequiredArgsConstructor
 public class PointPolicyUseCase {
     private final PointService pointService;
-
+    private final NotificationService notificationService;
     // User 의 전체 포인트를 조회
     public Integer getUserTotalPoint(User user) {
         return pointService.countTotalPointByUserId(user.getId());
@@ -32,13 +34,17 @@ public class PointPolicyUseCase {
     }
 
     // Member 가 모임을 완료할 경우 100점 추가 (일주일에 3번)
-    public void accumulatePointByParty(List<Member> memberList, String channelName) {
+    public void accumulatePointByParty(List<Member> memberList, Party party) {
         // 이 로직에서 같은 모임에 다수의 Member 가 같은 User 를 가질 수 있으므로 distinct 처리
         Map<User, Member> userMemberMap = new LinkedHashMap<>();
         memberList.stream()
                 .filter(member -> isAvailableAccumulatePointByCase(member.getId(), 100))
                 .forEach(member -> userMemberMap.putIfAbsent(member.getUser(), member));
-        pointService.savePointHistoryBulk(userMemberMap, 100, "[ " + channelName + " ] 모임으로 인한 포인트 적립");
+        pointService.savePointHistoryBulk(userMemberMap, 100, "[ " + party.getChannel().getName() + " ] 모임으로 인한 포인트 적립");
+
+        memberList.forEach(
+                member -> notificationService.createPartyCompletedNotification(member, party)
+        );
     }
 
     // Member 가 포인트를 사용할 경우

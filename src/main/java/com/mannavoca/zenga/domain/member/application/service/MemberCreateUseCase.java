@@ -8,6 +8,7 @@ import com.mannavoca.zenga.domain.member.application.dto.request.CreatingMemberR
 import com.mannavoca.zenga.domain.member.application.dto.response.MemberInfoResponseDto;
 import com.mannavoca.zenga.domain.member.application.mapper.MemberMapper;
 import com.mannavoca.zenga.domain.member.domain.service.MemberService;
+import com.mannavoca.zenga.domain.notification.domain.service.NotificationService;
 import com.mannavoca.zenga.domain.user.domain.entity.User;
 import com.mannavoca.zenga.domain.user.domain.service.UserFindService;
 import lombok.RequiredArgsConstructor;
@@ -20,10 +21,18 @@ public class MemberCreateUseCase {
     private final MemberService memberService;
     private final ChannelService channelService;
     private final UserUtils userUtils;
+    private final NotificationService notificationService;
 
     public MemberInfoResponseDto createMember(final CreatingMemberRequestDto creatingMemberRequestDto) {
         User user = userUtils.getUser();
         Channel channel = channelService.getChannelById(creatingMemberRequestDto.getChannelId());
+
+        int minimumChannelMemberCount = 10;
+        if (channel.getMemberList().size() == minimumChannelMemberCount) {
+            channel.getMemberList().forEach(member -> {
+                notificationService.createChannelOpenedNotification(member, channel);
+            });
+        }
         memberService.validateMemberAlreadyExistsByUserIdAndChannelId(user.getId(), channel.getId());
 
         return MemberMapper.mapMemberToMemberInfoResponseDto(memberService.createMember(user, channel, creatingMemberRequestDto));
