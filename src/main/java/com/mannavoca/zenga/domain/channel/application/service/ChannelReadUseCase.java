@@ -3,6 +3,7 @@ package com.mannavoca.zenga.domain.channel.application.service;
 import com.mannavoca.zenga.common.annotation.UseCase;
 import com.mannavoca.zenga.common.util.UserUtils;
 import com.mannavoca.zenga.domain.channel.application.dto.response.ChannelResponseDto;
+import com.mannavoca.zenga.domain.channel.application.dto.response.ChannelValidityResponseDto;
 import com.mannavoca.zenga.domain.channel.application.mapper.ChannelMapper;
 import com.mannavoca.zenga.domain.channel.domain.service.ChannelService;
 import com.mannavoca.zenga.domain.member.application.dto.response.MemberInfoResponseDto;
@@ -39,10 +40,16 @@ public class ChannelReadUseCase {
         return ChannelMapper.mapChannelToChannelResponseDto(channelService.getChannelByCode(code));
     }
 
-    public Boolean getChannelValidityById(Long channelId) {
+    public ChannelValidityResponseDto getChannelValidityById(final Long channelId) {
         channelService.validateChannelId(channelId);
 
-        return memberService.countMemberByChannelId(channelId) >= ChannelService.CHANNEL_VALIDITY_MEMBER_COUNT;
+        final Long memberCount = memberService.countMemberByChannelId(channelId);
+
+        return ChannelValidityResponseDto
+                .builder()
+                .isValid(memberCount >= ChannelService.CHANNEL_VALIDITY_MEMBER_COUNT)
+                .memberCount(memberCount)
+                .build();
     }
 
     public Slice<MemberInfoResponseDto> searchAllMembersByChannelId(final Long channelId, final Long memberIdCursor, final String keyword, final Pageable pageable){
