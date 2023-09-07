@@ -2,8 +2,11 @@ package com.mannavoca.zenga.domain.member.application.service;
 
 import com.mannavoca.zenga.common.annotation.UseCase;
 import com.mannavoca.zenga.common.util.UserUtils;
+import com.mannavoca.zenga.domain.block.application.dto.response.BlockInfoResponseDto;
+import com.mannavoca.zenga.domain.block.domain.service.BlockService;
 import com.mannavoca.zenga.domain.channel.domain.service.ChannelService;
 import com.mannavoca.zenga.domain.member.application.dto.response.MemberInfoResponseDto;
+import com.mannavoca.zenga.domain.member.application.mapper.BlockMapper;
 import com.mannavoca.zenga.domain.member.application.mapper.MemberMapper;
 import com.mannavoca.zenga.domain.member.domain.entity.Member;
 import com.mannavoca.zenga.domain.member.domain.entity.enumType.State;
@@ -30,6 +33,7 @@ public class MemberReadUseCase {
     private final ChannelService channelService;
     private final PartyService partyService;
     private final ParticipationService participationService;
+    private final BlockService blockService;
     private final UserUtils userUtils;
 
     public Slice<PartyTapResponseDto> getPartyListByMemberId(final Long memberId, final State state, final Long partyIdCursor, final Pageable pageable) {
@@ -70,5 +74,9 @@ public class MemberReadUseCase {
 
     public List<MemberInfoResponseDto> getMemberInfoList() {
         return MemberMapper.mapMemberListToMemberInfoResponseDtoList(memberService.getMemberListByUserId(userUtils.getUser().getId()));
+    }
+
+    public List<BlockInfoResponseDto> getAllBlocksByMemberId(final Long memberId) {
+        return blockService.findAllByMemberId(memberId);
     }
 }

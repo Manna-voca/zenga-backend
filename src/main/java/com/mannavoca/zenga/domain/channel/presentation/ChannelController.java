@@ -5,6 +5,7 @@ import com.mannavoca.zenga.common.dto.SliceResponse;
 import com.mannavoca.zenga.domain.channel.application.dto.request.CreatingChannelRequestDto;
 import com.mannavoca.zenga.domain.channel.application.dto.request.SearchChannelMemberRequestDto;
 import com.mannavoca.zenga.domain.channel.application.dto.response.ChannelResponseDto;
+import com.mannavoca.zenga.domain.channel.application.dto.response.ChannelValidityResponseDto;
 import com.mannavoca.zenga.domain.channel.application.service.ChannelCreateUseCase;
 import com.mannavoca.zenga.domain.channel.application.service.ChannelReadUseCase;
 import com.mannavoca.zenga.domain.member.application.dto.response.MemberInfoResponseDto;
@@ -49,7 +50,7 @@ public class ChannelController {
     }
 
     @GetMapping("/{channelId}/validity")
-    public ResponseEntity<ResponseDto<Boolean>> getChannelValidityById(@PathVariable @NotNull(message = "채널 ID는 필수입니다.") final Long channelId){
+    public ResponseEntity<ResponseDto<ChannelValidityResponseDto>> getChannelValidityById(@PathVariable @NotNull(message = "채널 ID는 필수입니다.") final Long channelId){
         return ResponseEntity.ok(ResponseDto.success(channelReadUseCase.getChannelValidityById(channelId)));
     }
 

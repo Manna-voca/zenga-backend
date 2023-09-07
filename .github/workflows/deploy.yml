@@ -77,8 +77,8 @@ jobs:
         with:
           aws_access_key: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws_secret_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          application_name: Zenga-real
-          environment_name: Zenga-real-env
+          application_name: zenga-prod
+          environment_name: Zenga-prod-env
           version_label: github-action-${{ steps.current-time.outputs.time }}
           region: ap-northeast-2
           deployment_package: deploy/deploy.zip
