@@ -58,6 +58,18 @@ public class MemberController {
         return ResponseEntity.ok(ResponseDto.success(memberModalPermit));
     }
 
+    @PatchMapping("/modal/praise/{channelId}")
+    public ResponseEntity<ResponseDto<MemberModalPermitResponseDto>> changePraiseModalStatus(@PathVariable Long channelId) {
+        MemberModalPermitResponseDto memberModalPermit = memberModalCheckUseCase.changePraiseModalStatus(channelId);
+        return ResponseEntity.ok(ResponseDto.success(memberModalPermit));
+    }
+
+    @PatchMapping("/modal/point/{channelId}")
+    public ResponseEntity<ResponseDto<MemberModalPermitResponseDto>> changePointModalStatus(@PathVariable Long channelId) {
+        MemberModalPermitResponseDto memberModalPermit = memberModalCheckUseCase.changePointModalStatus(channelId);
+        return ResponseEntity.ok(ResponseDto.success(memberModalPermit));
+    }
+
     @GetMapping("/{memberId}/parties")
     public ResponseEntity<ResponseDto<SliceResponse<PartyTapResponseDto>>> getPartyList(
             @PathVariable @NotNull(message = "멤버 ID는 필수입니다.") final Long memberId,
