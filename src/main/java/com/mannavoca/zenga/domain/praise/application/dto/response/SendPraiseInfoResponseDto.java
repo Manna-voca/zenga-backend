@@ -9,15 +9,15 @@ import lombok.NoArgsConstructor;
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class SendPraiseInfoResponseDto {
-    private Long donePraiseId;
+    private Long memberPraiseId;
     private String praiseDescription;
     private PraiseType praiseType;
     private String memberName;
     private String memberProfileImageUrl;
 
     @Builder
-    public SendPraiseInfoResponseDto(Long donePraiseId, String praiseDescription, PraiseType praiseType, String memberName, String memberProfileImageUrl) {
-        this.donePraiseId = donePraiseId;
+    public SendPraiseInfoResponseDto(Long memberPraiseId, String praiseDescription, PraiseType praiseType, String memberName, String memberProfileImageUrl) {
+        this.memberPraiseId = memberPraiseId;
         this.praiseDescription = praiseDescription;
         this.praiseType = praiseType;
         this.memberName = memberName;
