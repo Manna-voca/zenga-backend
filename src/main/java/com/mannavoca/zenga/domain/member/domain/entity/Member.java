@@ -104,4 +104,12 @@ public class Member extends BaseEntity {
         this.nickname = nickname;
         this.introduction = introduction;
     }
+
+    public void updatePraiseModal(Boolean praiseModal) {
+        this.praiseModal = praiseModal;
+    }
+
+    public void updatePointModal(Boolean pointModal) {
+        this.pointModal = pointModal;
+    }
 }
