@@ -46,6 +46,18 @@ public class MemberService {
                 .orElseThrow(() -> BusinessException.of(Error.MEMBER_NOT_FOUND));
     }
 
+    public Member updatePointModal(Member member) {
+        member.updatePointModal(false);
+        memberRepository.save(member);
+        return member;
+    }
+
+    public Member updatePraiseModal(Member member) {
+        member.updatePraiseModal(false);
+        memberRepository.save(member);
+        return member;
+    }
+
     /**
      * 새로운 Member 생성
      * @param user User 객체
