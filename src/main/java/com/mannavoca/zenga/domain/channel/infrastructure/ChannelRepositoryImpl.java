@@ -50,6 +50,7 @@ public class ChannelRepositoryImpl implements ChannelRepositoryCustom {
                 .select(Projections.constructor(ChannelAndMemberIdResponseDto.class,
                         channel.id,
                         channel.name,
+                        channel.logoImageUrl,
                         channel.code,
                         member.id
                 ))
