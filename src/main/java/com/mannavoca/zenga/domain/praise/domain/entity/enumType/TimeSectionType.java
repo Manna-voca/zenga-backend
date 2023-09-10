@@ -33,7 +33,7 @@ public enum TimeSectionType implements CodeValue {
         LocalTime time = dateTime.toLocalTime();
 
         for (TimeSectionType section : TimeSectionType.values()) {
-            if (section == E) { // Special case because it spans over midnight
+            if (section == F) { // Special case because it spans over midnight
                 if (time.isAfter(section.startTime) || time.isBefore(section.endTime.plusMinutes(1))) {
                     return section;
                 }
