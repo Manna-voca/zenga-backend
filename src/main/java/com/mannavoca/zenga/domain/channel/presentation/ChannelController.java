@@ -4,6 +4,7 @@ import com.mannavoca.zenga.common.dto.ResponseDto;
 import com.mannavoca.zenga.common.dto.SliceResponse;
 import com.mannavoca.zenga.domain.channel.application.dto.request.CreatingChannelRequestDto;
 import com.mannavoca.zenga.domain.channel.application.dto.request.SearchChannelMemberRequestDto;
+import com.mannavoca.zenga.domain.channel.application.dto.response.ChannelAndMemberIdResponseDto;
 import com.mannavoca.zenga.domain.channel.application.dto.response.ChannelResponseDto;
 import com.mannavoca.zenga.domain.channel.application.dto.response.ChannelValidityResponseDto;
 import com.mannavoca.zenga.domain.channel.application.service.ChannelCreateUseCase;
@@ -30,7 +31,7 @@ public class ChannelController {
     private final ChannelReadUseCase channelReadUseCase;
 
     @GetMapping
-    public ResponseEntity<ResponseDto<List<ChannelResponseDto>>> getAllChannelsByUserId() {
+    public ResponseEntity<ResponseDto<List<ChannelAndMemberIdResponseDto>>> getAllChannelsByUserId() {
         return ResponseEntity.ok(ResponseDto.success(channelReadUseCase.getAllChannels()));
     }
 

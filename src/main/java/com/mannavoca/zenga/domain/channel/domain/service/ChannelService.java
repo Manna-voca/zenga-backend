@@ -4,6 +4,7 @@ import com.mannavoca.zenga.common.annotation.DomainService;
 import com.mannavoca.zenga.common.exception.BusinessException;
 import com.mannavoca.zenga.common.exception.Error;
 import com.mannavoca.zenga.domain.channel.application.dto.request.CreatingChannelRequestDto;
+import com.mannavoca.zenga.domain.channel.application.dto.response.ChannelAndMemberIdResponseDto;
 import com.mannavoca.zenga.domain.channel.application.mapper.ChannelMapper;
 import com.mannavoca.zenga.domain.channel.domain.entity.Channel;
 import com.mannavoca.zenga.domain.channel.domain.repository.ChannelRepository;
@@ -55,6 +56,17 @@ public class ChannelService {
     public List<Channel> getAllChannelsByUserId(final Long userId) {
 
         return channelRepository.findAllChannelsByUserId(userId);
+    }
+
+
+    /**
+     * User ID로 Channel 조회 후 멤버 id도 DTO에 담아 함께 반환
+     * @param userId User ID
+     * @return ChannelAndMemberIdResponseDto 리스트
+     */
+    public List<ChannelAndMemberIdResponseDto> getAllChannelsIncludingMemberIdByUserId(final Long userId) {
+
+        return channelRepository.findAllChannelsIncludingMemberIdByUserId(userId);
     }
 
     /**
