@@ -35,7 +35,7 @@ public class PraiseMapper {
     public static PageResponse<ReceivedPraiseInfoResponseDto> mapToReceivedPraiseInfoResponseDto(Page<MemberPraise> receivedPraiseList) {
         List<ReceivedPraiseInfoResponseDto> responseDtos = receivedPraiseList.getContent().stream()
                 .map(memberPraise -> ReceivedPraiseInfoResponseDto.builder()
-                        .receivedPraiseId(memberPraise.getId())
+                        .memberPraiseId(memberPraise.getId())
                         .isOpened(memberPraise.getIsOpen())
                         .praiseDescription(memberPraise.getPraise().getDescription())
                         .praiseType(memberPraise.getPraise().getCategory())
@@ -49,7 +49,7 @@ public class PraiseMapper {
     public static PageResponse<SendPraiseInfoResponseDto> mapToSendPraiseInfoResponseDto(Page<MemberPraise> myCompletePraiseList) {
         List<SendPraiseInfoResponseDto> responseDtos = myCompletePraiseList.getContent().stream()
                 .map(memberPraise -> SendPraiseInfoResponseDto.builder()
-                        .donePraiseId(memberPraise.getId())
+                        .memberPraiseId(memberPraise.getId())
                         .praiseDescription(memberPraise.getPraise().getDescription())
                         .praiseType(memberPraise.getPraise().getCategory())
                         .memberName(memberPraise.getPraisedMember().getNickname())

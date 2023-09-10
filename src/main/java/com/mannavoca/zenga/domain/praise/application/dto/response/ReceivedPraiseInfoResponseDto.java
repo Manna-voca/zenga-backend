@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class ReceivedPraiseInfoResponseDto {
-    private Long receivedPraiseId;
+    private Long memberPraiseId;
     private Boolean isOpened;
     private String praiseDescription;
     private PraiseType praiseType;
@@ -17,8 +17,8 @@ public class ReceivedPraiseInfoResponseDto {
     private String memberProfileImageUrl;
 
     @Builder
-    public ReceivedPraiseInfoResponseDto(Long receivedPraiseId, Boolean isOpened, String praiseDescription, PraiseType praiseType, String memberName, String memberProfileImageUrl) {
-        this.receivedPraiseId = receivedPraiseId;
+    public ReceivedPraiseInfoResponseDto(Long memberPraiseId, Boolean isOpened, String praiseDescription, PraiseType praiseType, String memberName, String memberProfileImageUrl) {
+        this.memberPraiseId = memberPraiseId;
         this.isOpened = isOpened;
         this.praiseDescription = praiseDescription;
         this.praiseType = praiseType;
