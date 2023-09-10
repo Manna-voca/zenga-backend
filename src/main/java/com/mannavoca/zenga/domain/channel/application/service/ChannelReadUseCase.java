@@ -2,6 +2,7 @@ package com.mannavoca.zenga.domain.channel.application.service;
 
 import com.mannavoca.zenga.common.annotation.UseCase;
 import com.mannavoca.zenga.common.util.UserUtils;
+import com.mannavoca.zenga.domain.channel.application.dto.response.ChannelAndMemberIdResponseDto;
 import com.mannavoca.zenga.domain.channel.application.dto.response.ChannelResponseDto;
 import com.mannavoca.zenga.domain.channel.application.dto.response.ChannelValidityResponseDto;
 import com.mannavoca.zenga.domain.channel.application.mapper.ChannelMapper;
@@ -31,9 +32,9 @@ public class ChannelReadUseCase {
         return ChannelMapper.mapChannelToChannelResponseDto(channelService.getChannelById(channelId));
     }
 
-    public List<ChannelResponseDto> getAllChannels() {
+    public List<ChannelAndMemberIdResponseDto> getAllChannels() {
 
-        return ChannelMapper.mapChannelListToChannelResponseDtoList(channelService.getAllChannelsByUserId(userUtils.getUser().getId()));
+        return channelService.getAllChannelsIncludingMemberIdByUserId(userUtils.getUser().getId());
     }
 
     public ChannelResponseDto getChannelByCode(final String code) {
