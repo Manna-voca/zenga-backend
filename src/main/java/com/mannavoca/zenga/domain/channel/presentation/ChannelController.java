@@ -59,7 +59,7 @@ public class ChannelController {
 
 
     @GetMapping("/info")
-    public ResponseEntity<ResponseDto<ChannelOwnershipInfoResponseDto>> getChannelByCode(@RequestParam @NotBlank(message = "채널 코드는 필수입니다.") final String code) {
+    public ResponseEntity<ResponseDto<ChannelResponseDto>> getChannelByCode(@RequestParam @NotBlank(message = "채널 코드는 필수입니다.") final String code) {
         return ResponseEntity.ok(ResponseDto.success(channelReadUseCase.getChannelByCode(code)));
     }
 
