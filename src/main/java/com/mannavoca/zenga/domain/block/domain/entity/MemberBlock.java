@@ -11,14 +11,7 @@ import javax.persistence.*;
 
 @Getter
 @Entity
-@Table(name = "zg_member_block",
-        uniqueConstraints = {
-            @UniqueConstraint(
-                    name = "uk_block_id_member_id",
-                    columnNames = {"block_id","member_id"}
-            )
-        }
-)
+@Table(name = "zg_member_block")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class MemberBlock extends BaseEntity {
     @Id
