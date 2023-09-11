@@ -9,6 +9,10 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 @Repository
-public interface NotificationRepository extends JpaRepository<Notification, Long> {
+public interface NotificationRepository extends JpaRepository<Notification, Long>, NotificationRepositoryCustom {
     List<Notification> findAllByMember(Member member);
+
+    void updateCheckByMemberIdAndIsCheck(Long memberId);
+
+    boolean hasUncheckedNotification(Long memberId);
 }
