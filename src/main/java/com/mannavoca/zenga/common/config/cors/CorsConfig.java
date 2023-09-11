@@ -14,7 +14,11 @@ public class CorsConfig {
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         CorsConfiguration config = new CorsConfiguration();
         config.setAllowCredentials(true);
-        config.addAllowedOrigin("*");
+        config.addAllowedOrigin("http://localhost:3000");
+        config.addAllowedOrigin("https://bucolic-empanada-eb0720.netlify.app");
+        config.addAllowedOrigin("http://bucolic-empanada-eb0720.netlify.app");
+        config.addAllowedOrigin("https://*.netlify.app");
+        config.addAllowedOrigin("https://*.zenga.club");
         config.addAllowedHeader("*");
         config.addAllowedMethod("*");
         config.addExposedHeader("*");
