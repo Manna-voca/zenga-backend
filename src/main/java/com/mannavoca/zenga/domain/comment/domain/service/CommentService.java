@@ -52,4 +52,13 @@ public class CommentService {
     public void deleteComment(Comment comment) {
         commentRepository.delete(comment);
     }
+
+    public Long partyCommentCount(Long partyId) {
+        return commentRepository.countPartyCommentAmount(partyId);
+    }
+
+    public Comment findLastCommentInParty(Long partyId) {
+        return commentRepository.findLastCommentByPartyId(partyId)
+                .orElse(null);
+    }
 }
