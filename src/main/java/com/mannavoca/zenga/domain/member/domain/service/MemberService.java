@@ -9,6 +9,7 @@ import com.mannavoca.zenga.domain.member.application.dto.request.UpdateMemberReq
 import com.mannavoca.zenga.domain.member.application.dto.response.MemberInfoResponseDto;
 import com.mannavoca.zenga.domain.member.application.mapper.MemberMapper;
 import com.mannavoca.zenga.domain.member.domain.entity.Member;
+import com.mannavoca.zenga.domain.member.domain.entity.enumType.LevelType;
 import com.mannavoca.zenga.domain.member.domain.repository.MemberRepository;
 import com.mannavoca.zenga.domain.user.domain.entity.User;
 import com.mannavoca.zenga.domain.user.domain.service.UserFindService;
@@ -27,6 +28,11 @@ import java.util.List;
 public class MemberService {
     private final MemberRepository memberRepository;
     private final UserFindService userFindService;
+
+    public Member getChannelMaker(Long channelId){
+        return memberRepository.findMemberByChannel_IdAndLevel(channelId, LevelType.MAINTAINER)
+                .orElseThrow(() -> BusinessException.of(Error.MEMBER_NOT_FOUND));
+    }
 
     public Member findMemberByUserId(Long userId, Long channelId) {
         return memberRepository.findMemberByUser_IdAndChannel_Id(userId, channelId)
