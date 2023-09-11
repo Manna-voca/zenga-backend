@@ -84,7 +84,7 @@ public class ChannelService {
     /** Channel ID의 유효성 검사
      * @param channelId Channel ID
      */
-    public void validateChannelId(Long channelId) {
+    public void validateChannelId(final Long channelId) {
         if(!channelRepository.existsByChannelId(channelId)){
             throw BusinessException.of(Error.CHANNEL_NOT_FOUND);
         }
