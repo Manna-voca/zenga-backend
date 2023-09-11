@@ -9,6 +9,7 @@ import com.mannavoca.zenga.domain.channel.application.dto.response.ChannelAndMem
 import com.mannavoca.zenga.domain.channel.application.dto.response.ChannelResponseDto;
 import com.mannavoca.zenga.domain.channel.application.dto.response.ChannelValidityResponseDto;
 import com.mannavoca.zenga.domain.channel.application.service.ChannelCreateUseCase;
+import com.mannavoca.zenga.domain.channel.application.service.ChannelDeleteUseCase;
 import com.mannavoca.zenga.domain.channel.application.service.ChannelReadUseCase;
 import com.mannavoca.zenga.domain.channel.application.service.ChannelUpdateUseCase;
 import com.mannavoca.zenga.domain.member.application.dto.response.MemberInfoResponseDto;
@@ -32,6 +33,7 @@ public class ChannelController {
     private final ChannelCreateUseCase channelCreateUseCase;
     private final ChannelReadUseCase channelReadUseCase;
     private final ChannelUpdateUseCase channelUpdateUseCase;
+    private final ChannelDeleteUseCase channelDeleteUseCase;
 
     @GetMapping
     public ResponseEntity<ResponseDto<List<ChannelAndMemberIdResponseDto>>> getAllChannelsByUserId() {
@@ -46,6 +48,12 @@ public class ChannelController {
     @PutMapping("/{channelId}")
     public ResponseEntity<ResponseDto<ChannelResponseDto>> updateChannel(@PathVariable @NotNull(message = "채널 ID는 필수입니다.") final Long channelId, @RequestBody final UpdatingChannelRequestDto updatingChannelRequestDto) {
         return ResponseEntity.ok(ResponseDto.success(channelUpdateUseCase.updateChannel(channelId, updatingChannelRequestDto)));
+    }
+
+    @DeleteMapping("/{channelId}")
+    public ResponseEntity<ResponseDto<?>> deleteChannel(@PathVariable @NotNull(message = "채널 ID는 필수입니다.") final Long channelId) {
+        channelDeleteUseCase.deleteChannel(channelId);
+        return ResponseEntity.ok(ResponseDto.success());
     }
 
 
