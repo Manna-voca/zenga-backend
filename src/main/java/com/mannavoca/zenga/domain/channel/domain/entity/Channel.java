@@ -1,6 +1,7 @@
 package com.mannavoca.zenga.domain.channel.domain.entity;
 
 import com.mannavoca.zenga.common.infrastructure.domain.BaseEntity;
+import com.mannavoca.zenga.domain.channel.application.dto.request.UpdatingChannelRequestDto;
 import com.mannavoca.zenga.domain.member.domain.entity.Member;
 import com.mannavoca.zenga.domain.party.domain.entity.Party;
 import lombok.*;
@@ -51,5 +52,10 @@ public class Channel extends BaseEntity {
         this.logoImageUrl = logoImageUrl;
         this.description = description;
         this.finishedAt = finishedAt;
+    }
+
+    public void updateChannel(UpdatingChannelRequestDto updatingChannelRequestDto) {
+        this.name = updatingChannelRequestDto.getName() == null ? this.name : updatingChannelRequestDto.getName();
+        this.logoImageUrl = updatingChannelRequestDto.getLogoImageUrl() == null ? this.logoImageUrl : updatingChannelRequestDto.getLogoImageUrl();
     }
 }
