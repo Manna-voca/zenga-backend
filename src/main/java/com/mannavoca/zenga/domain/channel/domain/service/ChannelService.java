@@ -96,9 +96,19 @@ public class ChannelService {
      * @param updatingChannelRequestDto 수정할 Channel 정보
      * @return 수정된 Channel 객체
      */
+    @Transactional
     public Channel updateChannel(Channel channel, final UpdatingChannelRequestDto updatingChannelRequestDto) {
         channel.updateChannel(updatingChannelRequestDto);
 
         return channelRepository.save(channel);
+    }
+
+    /**
+     * Channel ID로 Channel 삭제
+     * @param channelId Channel ID
+     */
+    @Transactional
+    public void deleteChannelById(final Long channelId) {
+        channelRepository.deleteById(channelId);
     }
 }
