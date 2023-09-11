@@ -3,6 +3,7 @@ package com.mannavoca.zenga.domain.notification.presentation;
 import com.mannavoca.zenga.common.dto.ResponseDto;
 import com.mannavoca.zenga.domain.notification.presentation.dto.response.response.GetNotificationListResponseDto;
 import com.mannavoca.zenga.domain.notification.domain.service.NotificationService;
+import com.mannavoca.zenga.domain.notification.presentation.dto.response.response.HasUncheckedNotificationResponseDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -31,10 +32,16 @@ public class NotificationController {
     }
 
     @PutMapping("check/all")
-    public ResponseEntity<ResponseDto> checkAllNotification(Long memberId) {
+    public ResponseEntity<ResponseDto> checkAllNotification(@PathVariable("memberId") Long memberId) {
 
         notificationService.checkAllNotification(memberId);
 
         return ResponseEntity.ok(ResponseDto.success());
+    }
+
+    @GetMapping("/member/{memberId}/has-uncheked")
+    public ResponseEntity<ResponseDto<HasUncheckedNotificationResponseDto>> hasUncheckedNotification(@PathVariable("memberId") Long memberId) {
+
+        return ResponseEntity.ok(ResponseDto.success(notificationService.hasUncheckedNotification(memberId)));
     }
 }
