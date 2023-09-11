@@ -41,10 +41,10 @@ public class ChannelReadUseCase {
         return channelService.getAllChannelsIncludingMemberIdByUserId(userUtils.getUser().getId());
     }
 
-    public ChannelOwnershipInfoResponseDto getChannelByCode(final String code) {
+    public ChannelResponseDto getChannelByCode(final String code) {
         Channel channel = channelService.getChannelByCode(code);
-        Boolean isOwner = userUtils.getMember(channel.getId()).getLevel().equals(LevelType.MAINTAINER);
-        return ChannelMapper.mapChannelToChannelOwnershipInfoResponseDto(channel, isOwner);
+//        Boolean isOwner = userUtils.getMember(channel.getId()).getLevel().equals(LevelType.MAINTAINER);
+        return ChannelMapper.mapChannelToChannelResponseDto(channel);
     }
 
     public ChannelValidityResponseDto getChannelValidityById(final Long channelId) {
