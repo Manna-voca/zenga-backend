@@ -4,6 +4,7 @@ import com.mannavoca.zenga.common.annotation.DomainService;
 import com.mannavoca.zenga.common.exception.BusinessException;
 import com.mannavoca.zenga.common.exception.Error;
 import com.mannavoca.zenga.domain.channel.application.dto.request.CreatingChannelRequestDto;
+import com.mannavoca.zenga.domain.channel.application.dto.request.UpdatingChannelRequestDto;
 import com.mannavoca.zenga.domain.channel.application.dto.response.ChannelAndMemberIdResponseDto;
 import com.mannavoca.zenga.domain.channel.application.mapper.ChannelMapper;
 import com.mannavoca.zenga.domain.channel.domain.entity.Channel;
@@ -87,5 +88,17 @@ public class ChannelService {
         if(!channelRepository.existsByChannelId(channelId)){
             throw BusinessException.of(Error.CHANNEL_NOT_FOUND);
         }
+    }
+
+    /**
+     * Channel 정보 수정
+     * @param channel 수정할 Channel 객체
+     * @param updatingChannelRequestDto 수정할 Channel 정보
+     * @return 수정된 Channel 객체
+     */
+    public Channel updateChannel(Channel channel, final UpdatingChannelRequestDto updatingChannelRequestDto) {
+        channel.updateChannel(updatingChannelRequestDto);
+
+        return channelRepository.save(channel);
     }
 }
