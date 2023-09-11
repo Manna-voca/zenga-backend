@@ -29,4 +29,12 @@ public class NotificationController {
 
         return ResponseEntity.ok(ResponseDto.success());
     }
+
+    @PutMapping("check/all")
+    public ResponseEntity<ResponseDto> checkAllNotification(Long memberId) {
+
+        notificationService.checkAllNotification(memberId);
+
+        return ResponseEntity.ok(ResponseDto.success());
+    }
 }

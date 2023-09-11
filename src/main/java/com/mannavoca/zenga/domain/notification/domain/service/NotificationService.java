@@ -80,4 +80,20 @@ public class NotificationService {
             Notification notification = Notification.createNotification("채널이 개설되었어요!", member, "채널: " + channel.getName());
             notificationRepository.save(notification);
     }
+
+    public void checkAllNotification(Long memberId) {
+
+            Long userId = SecurityUtils.getUserId();
+            Member member = memberRepository.findById(memberId).orElseThrow(() -> BusinessException.of(Error.DATA_NOT_FOUND));
+
+            if (Objects.equals(member.getUser().getId(), userId)) {
+                throw BusinessException.of(Error.NOT_AUTHORIZED);
+            }
+
+            List<Notification> notificationList = notificationRepository.findAllByMember(member);
+
+            for (Notification notification : notificationList) {
+                notification.check();
+            }
+    }
 }
