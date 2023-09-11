@@ -16,11 +16,15 @@ public class PartyDetailInfoResponseDto {
     private String location;
 
     private LocalDateTime createdAt;
+    private Long openMemberId;
     private String openMemberName;
     private String openMemberProfileImageUrl;
 
     private Integer maxCapacity;
     private List<JoinMemberInfo> joinMemberInfo;
+
+    private RoughCommentInfo roughCommentInfo;
+
     private ButtonState buttonState;
 
     @Getter
@@ -29,9 +33,22 @@ public class PartyDetailInfoResponseDto {
     @AllArgsConstructor
     public static class JoinMemberInfo {
         private Long memberId;
+        private Boolean isChannelMaker;
         private Boolean isMaker;
         private String memberName;
         private String memberProfileImageUrl;
+    }
+
+    @Getter
+    @Builder
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class RoughCommentInfo {
+        private Long partyCommentCount;
+        private Long commentWriterId;
+        private String commentWriterName;
+        private String commentWriterProfileImageUrl;
+        private String commentContent;
     }
 
     public enum ButtonState {
@@ -40,7 +57,11 @@ public class PartyDetailInfoResponseDto {
     }
 
     @Builder
-    public PartyDetailInfoResponseDto(Long partyId, String title, String content, Integer maxCapacity, String location, String partyDate, String partyImageUrl, LocalDateTime createdAt, String openMemberName, String openMemberProfileImageUrl, List<JoinMemberInfo> joinMemberInfo, ButtonState buttonState) {
+    public PartyDetailInfoResponseDto(Long partyId, String title, String content, Integer maxCapacity, String location,
+                                      String partyDate, String partyImageUrl, LocalDateTime createdAt,
+                                      Long openMemberId, String openMemberName, String openMemberProfileImageUrl,
+                                      RoughCommentInfo roughCommentInfo,
+                                      List<JoinMemberInfo> joinMemberInfo, ButtonState buttonState) {
         this.partyId = partyId;
         this.title = title;
         this.content = content;
@@ -49,8 +70,10 @@ public class PartyDetailInfoResponseDto {
         this.partyDate = partyDate;
         this.partyImageUrl = partyImageUrl;
         this.createdAt = createdAt;
+        this.openMemberId = openMemberId;
         this.openMemberName = openMemberName;
         this.openMemberProfileImageUrl = openMemberProfileImageUrl;
+        this.roughCommentInfo = roughCommentInfo;
         this.joinMemberInfo = joinMemberInfo;
         this.buttonState = buttonState;
     }

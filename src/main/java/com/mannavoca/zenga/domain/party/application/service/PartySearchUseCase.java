@@ -4,7 +4,10 @@ import com.mannavoca.zenga.common.annotation.UseCase;
 import com.mannavoca.zenga.common.dto.SliceResponse;
 import com.mannavoca.zenga.common.util.UserUtils;
 import com.mannavoca.zenga.domain.channel.domain.service.ChannelService;
+import com.mannavoca.zenga.domain.comment.domain.entity.Comment;
+import com.mannavoca.zenga.domain.comment.domain.service.CommentService;
 import com.mannavoca.zenga.domain.member.domain.entity.Member;
+import com.mannavoca.zenga.domain.member.domain.service.MemberService;
 import com.mannavoca.zenga.domain.party.application.dto.response.PartyDetailInfoResponseDto;
 import com.mannavoca.zenga.domain.party.application.dto.response.PartyTapResponseDto;
 import com.mannavoca.zenga.domain.party.application.mapper.PartyMapper;
@@ -25,6 +28,8 @@ import java.util.Map;
 @RequiredArgsConstructor
 public class PartySearchUseCase {
     private final UserUtils userUtils;
+    private final MemberService memberService;
+    private final CommentService commentService;
     private final ChannelService channelService;
     private final PartyService partyService;
     private final ParticipationService participationService;
@@ -44,6 +49,9 @@ public class PartySearchUseCase {
     public PartyDetailInfoResponseDto getPartyDetailInfo(Long partyId, Long channelId) {
         Member member = userUtils.getMember(channelId);
         Party party = partyService.getPartyById(partyId);
-        return PartyMapper.mapToPartyDetailInfoResponseDto(party, member);
+        Long channelMakerId = memberService.getChannelMaker(channelId).getId();
+        Long partyCommentCount = commentService.partyCommentCount(partyId);
+        Comment lastComment = commentService.findLastCommentInParty(partyId);
+        return PartyMapper.mapToPartyDetailInfoResponseDto(party, member, channelMakerId, partyCommentCount, lastComment);
     }
 }

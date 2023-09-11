@@ -1,6 +1,7 @@
 package com.mannavoca.zenga.domain.party.application.mapper;
 
 import com.mannavoca.zenga.common.annotation.Mapper;
+import com.mannavoca.zenga.domain.comment.domain.entity.Comment;
 import com.mannavoca.zenga.domain.member.domain.entity.Member;
 import com.mannavoca.zenga.domain.party.application.dto.response.CompletePartyResponseDto;
 import com.mannavoca.zenga.domain.party.application.dto.response.CreatePartyResponseDto;
@@ -47,22 +48,31 @@ public class PartyMapper {
                 .maxCapacity(party.getMaxCapacity()).partyImageUrl(party.getPartyImageUrl()).build();
     }
 
-    public static PartyDetailInfoResponseDto mapToPartyDetailInfoResponseDto(Party party, Member member) {
+    public static PartyDetailInfoResponseDto mapToPartyDetailInfoResponseDto(Party party, Member member, Long channelMakerId, Long partyCommentCount, Comment lastComment) {
         Member partyMaker = party.getParticipationList().stream().filter(Participation::getIsMaker).map(Participation::getMember).findFirst().orElseThrow();
         List<Member> joiner = party.getParticipationList().stream().map(Participation::getMember).collect(Collectors.toList());
         List<PartyDetailInfoResponseDto.JoinMemberInfo> joinMemberInfoList = joiner.stream().map(joinMember -> PartyDetailInfoResponseDto.JoinMemberInfo.builder()
                 .memberId(joinMember.getId())
+                .isChannelMaker(joinMember.getId().equals(channelMakerId))
                 .isMaker(joinMember.getId().equals(partyMaker.getId()))
                 .memberName(joinMember.getNickname())
                 .memberProfileImageUrl(joinMember.getProfileImageUrl())
                 .build()).collect(Collectors.toList());
+
+        PartyDetailInfoResponseDto.RoughCommentInfo commentInfo = PartyDetailInfoResponseDto.RoughCommentInfo.builder()
+                .partyCommentCount(partyCommentCount)
+                .commentContent(lastComment != null ? lastComment.getContent() : null)
+                .commentWriterId(lastComment != null ? lastComment.getWriter().getId() : null)
+                .commentWriterName(lastComment != null ? lastComment.getWriter().getNickname() : null)
+                .commentWriterProfileImageUrl(lastComment != null ? lastComment.getWriter().getProfileImageUrl() : null).build();
 
         return PartyDetailInfoResponseDto.builder()
                 .partyId(party.getId()).title(party.getTitle()).content(party.getContent()).partyImageUrl(party.getPartyImageUrl())
                 .partyDate(Optional.ofNullable(party.getPartyDate()).isEmpty() ? "날짜 미정" : party.getPartyDate().format(formatter))
                 .location(party.getLocation().isEmpty() ? "장소 미정" : party.getLocation())
                 .createdAt(party.getCreatedDate())
-                .openMemberName(partyMaker.getNickname()).openMemberProfileImageUrl(partyMaker.getProfileImageUrl())
+                .openMemberId(partyMaker.getId()).openMemberName(partyMaker.getNickname()).openMemberProfileImageUrl(partyMaker.getProfileImageUrl())
+                .roughCommentInfo(commentInfo)
                 .maxCapacity(party.getMaxCapacity()).joinMemberInfo(joinMemberInfoList)
                 .buttonState(determineButtonState(party, partyMaker, member, joiner))
                 .build();
