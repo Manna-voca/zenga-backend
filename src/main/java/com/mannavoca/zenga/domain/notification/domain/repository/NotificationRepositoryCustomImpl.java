@@ -18,4 +18,12 @@ public class NotificationRepositoryCustomImpl implements NotificationRepositoryC
                 .set(QNotification.notification.isCheck, true)
                 .execute();
     }
+
+    @Override
+    public boolean hasUncheckedNotification(Long memberId) {
+        return jpaQueryFactory.selectFrom(QNotification.notification)
+                .where(QNotification.notification.member.id.eq(memberId)
+                        .and(QNotification.notification.isCheck.eq(false)))
+                .fetchFirst() != null;
+    }
 }

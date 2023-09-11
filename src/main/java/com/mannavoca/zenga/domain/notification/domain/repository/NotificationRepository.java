@@ -13,4 +13,6 @@ public interface NotificationRepository extends JpaRepository<Notification, Long
     List<Notification> findAllByMember(Member member);
 
     void updateCheckByMemberIdAndIsCheck(Long memberId);
+
+    boolean hasUncheckedNotification(Long memberId);
 }

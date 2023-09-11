@@ -9,6 +9,7 @@ import com.mannavoca.zenga.domain.member.domain.repository.MemberRepository;
 import com.mannavoca.zenga.domain.notification.presentation.dto.response.response.GetNotificationListResponseDto;
 import com.mannavoca.zenga.domain.notification.domain.entity.Notification;
 import com.mannavoca.zenga.domain.notification.domain.repository.NotificationRepository;
+import com.mannavoca.zenga.domain.notification.presentation.dto.response.response.HasUncheckedNotificationResponseDto;
 import com.mannavoca.zenga.domain.party.domain.entity.Party;
 import com.mannavoca.zenga.domain.praise.domain.entity.Praise;
 import lombok.RequiredArgsConstructor;
@@ -82,18 +83,29 @@ public class NotificationService {
     }
 
     public void checkAllNotification(Long memberId) {
+        Long userId = SecurityUtils.getUserId();
+        Member member = memberRepository.findById(memberId).orElseThrow(() -> BusinessException.of(Error.DATA_NOT_FOUND));
 
-            Long userId = SecurityUtils.getUserId();
-            Member member = memberRepository.findById(memberId).orElseThrow(() -> BusinessException.of(Error.DATA_NOT_FOUND));
+        if (Objects.equals(member.getUser().getId(), userId)) {
+            throw BusinessException.of(Error.NOT_AUTHORIZED);
+        }
 
-            if (Objects.equals(member.getUser().getId(), userId)) {
-                throw BusinessException.of(Error.NOT_AUTHORIZED);
-            }
+        List<Notification> notificationList = notificationRepository.findAllByMember(member);
 
-            List<Notification> notificationList = notificationRepository.findAllByMember(member);
+        for (Notification notification : notificationList) {
+            notification.check();
+        }
+    }
 
-            for (Notification notification : notificationList) {
-                notification.check();
-            }
+    public HasUncheckedNotificationResponseDto hasUncheckedNotification(Long memberId) {
+
+        Long userId = SecurityUtils.getUserId();
+        Member member = memberRepository.findById(memberId).orElseThrow(() -> BusinessException.of(Error.DATA_NOT_FOUND));
+        if (Objects.equals(member.getUser().getId(), userId)) {
+            throw BusinessException.of(Error.NOT_AUTHORIZED);
+        }
+
+        return HasUncheckedNotificationResponseDto.of(notificationRepository.hasUncheckedNotification(member.getId()));
+
     }
 }
