@@ -5,6 +5,7 @@ import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -29,10 +30,16 @@ public class GetNotificationListResponseDto {
 
         private String content;
 
+        private LocalDateTime createdDate;
+
+        private boolean isCheck;
+
         public static NotificationDto of(Notification notification) {
             NotificationDto notificationDto = new NotificationDto();
             notificationDto.id = notification.getId();
             notificationDto.content = notification.getContent();
+            notificationDto.createdDate = notification.getCreatedDate();
+            notificationDto.isCheck = notification.getIsCheck();
             return notificationDto;
         }
     }
