@@ -3,6 +3,7 @@ package com.mannavoca.zenga.domain.comment.infrastructure;
 import com.mannavoca.zenga.domain.comment.domain.entity.Comment;
 import com.mannavoca.zenga.domain.comment.domain.repository.CommentRepositoryCustom;
 import com.querydsl.core.types.dsl.BooleanExpression;
+import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
@@ -11,6 +12,7 @@ import org.springframework.data.domain.SliceImpl;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 import static com.mannavoca.zenga.domain.comment.domain.entity.QComment.comment;
 
@@ -59,6 +61,30 @@ public class CommentRepositoryImpl implements CommentRepositoryCustom {
                 .orderBy(comment.id.asc())
                 .fetch();
     }
+
+    @Override
+    public Long countPartyCommentAmount(Long partyId) {
+        Long count = queryFactory
+                .select(comment.id.count())
+                .from(comment)
+                .where(comment.party.id.eq(partyId))
+                .fetchOne();
+        return count == null ? 0L : count;
+    }
+
+    @Override
+    public Optional<Comment> findLastCommentByPartyId(Long partyId) {
+        JPAQuery<Comment> query = queryFactory.select(comment)
+                .from(comment)
+                .innerJoin(comment.writer)
+                .fetchJoin()
+                .where(comment.party.id.eq(partyId))
+                .orderBy(comment.id.desc())
+                .limit(1);
+
+        return Optional.ofNullable(query.fetchOne());
+    }
+
 
     private BooleanExpression gtCommentId(Long commentId) {
         return commentId != null ? comment.id.gt(commentId) : null;
