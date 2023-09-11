@@ -4,11 +4,14 @@ import com.mannavoca.zenga.common.dto.ResponseDto;
 import com.mannavoca.zenga.common.dto.SliceResponse;
 import com.mannavoca.zenga.domain.channel.application.dto.request.CreatingChannelRequestDto;
 import com.mannavoca.zenga.domain.channel.application.dto.request.SearchChannelMemberRequestDto;
+import com.mannavoca.zenga.domain.channel.application.dto.request.UpdatingChannelRequestDto;
 import com.mannavoca.zenga.domain.channel.application.dto.response.ChannelAndMemberIdResponseDto;
 import com.mannavoca.zenga.domain.channel.application.dto.response.ChannelResponseDto;
 import com.mannavoca.zenga.domain.channel.application.dto.response.ChannelValidityResponseDto;
 import com.mannavoca.zenga.domain.channel.application.service.ChannelCreateUseCase;
+import com.mannavoca.zenga.domain.channel.application.service.ChannelDeleteUseCase;
 import com.mannavoca.zenga.domain.channel.application.service.ChannelReadUseCase;
+import com.mannavoca.zenga.domain.channel.application.service.ChannelUpdateUseCase;
 import com.mannavoca.zenga.domain.member.application.dto.response.MemberInfoResponseDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
@@ -29,6 +32,8 @@ import java.util.List;
 public class ChannelController {
     private final ChannelCreateUseCase channelCreateUseCase;
     private final ChannelReadUseCase channelReadUseCase;
+    private final ChannelUpdateUseCase channelUpdateUseCase;
+    private final ChannelDeleteUseCase channelDeleteUseCase;
 
     @GetMapping
     public ResponseEntity<ResponseDto<List<ChannelAndMemberIdResponseDto>>> getAllChannelsByUserId() {
@@ -39,6 +44,18 @@ public class ChannelController {
     public ResponseEntity<ResponseDto<ChannelResponseDto>> createNewChannel(@Valid @RequestBody final CreatingChannelRequestDto creatingChannelRequestDto) {
         return ResponseEntity.ok(ResponseDto.success(channelCreateUseCase.createChannel(creatingChannelRequestDto)));
     }
+
+    @PutMapping("/{channelId}")
+    public ResponseEntity<ResponseDto<ChannelResponseDto>> updateChannel(@PathVariable @NotNull(message = "채널 ID는 필수입니다.") final Long channelId, @RequestBody final UpdatingChannelRequestDto updatingChannelRequestDto) {
+        return ResponseEntity.ok(ResponseDto.success(channelUpdateUseCase.updateChannel(channelId, updatingChannelRequestDto)));
+    }
+
+    @DeleteMapping("/{channelId}")
+    public ResponseEntity<ResponseDto<?>> deleteChannel(@PathVariable @NotNull(message = "채널 ID는 필수입니다.") final Long channelId) {
+        channelDeleteUseCase.deleteChannel(channelId);
+        return ResponseEntity.ok(ResponseDto.success());
+    }
+
 
     @GetMapping("/info")
     public ResponseEntity<ResponseDto<ChannelResponseDto>> getChannelByCode(@RequestParam @NotBlank(message = "채널 코드는 필수입니다.") final String code) {
