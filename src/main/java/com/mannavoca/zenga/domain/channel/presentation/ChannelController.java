@@ -6,6 +6,7 @@ import com.mannavoca.zenga.domain.channel.application.dto.request.CreatingChanne
 import com.mannavoca.zenga.domain.channel.application.dto.request.SearchChannelMemberRequestDto;
 import com.mannavoca.zenga.domain.channel.application.dto.request.UpdatingChannelRequestDto;
 import com.mannavoca.zenga.domain.channel.application.dto.response.ChannelAndMemberIdResponseDto;
+import com.mannavoca.zenga.domain.channel.application.dto.response.ChannelOwnershipInfoResponseDto;
 import com.mannavoca.zenga.domain.channel.application.dto.response.ChannelResponseDto;
 import com.mannavoca.zenga.domain.channel.application.dto.response.ChannelValidityResponseDto;
 import com.mannavoca.zenga.domain.channel.application.service.ChannelCreateUseCase;
@@ -58,12 +59,12 @@ public class ChannelController {
 
 
     @GetMapping("/info")
-    public ResponseEntity<ResponseDto<ChannelResponseDto>> getChannelByCode(@RequestParam @NotBlank(message = "채널 코드는 필수입니다.") final String code) {
+    public ResponseEntity<ResponseDto<ChannelOwnershipInfoResponseDto>> getChannelByCode(@RequestParam @NotBlank(message = "채널 코드는 필수입니다.") final String code) {
         return ResponseEntity.ok(ResponseDto.success(channelReadUseCase.getChannelByCode(code)));
     }
 
     @GetMapping("/{channelId}")
-    public ResponseEntity<ResponseDto<ChannelResponseDto>> getChannelById(@PathVariable @NotNull(message = "채널 ID는 필수입니다.") final Long channelId) {
+    public ResponseEntity<ResponseDto<ChannelOwnershipInfoResponseDto>> getChannelById(@PathVariable @NotNull(message = "채널 ID는 필수입니다.") final Long channelId) {
         return ResponseEntity.ok(ResponseDto.success(channelReadUseCase.getChannelById(channelId)));
     }
 

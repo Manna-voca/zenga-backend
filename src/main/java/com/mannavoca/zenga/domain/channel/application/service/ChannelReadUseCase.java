@@ -3,12 +3,15 @@ package com.mannavoca.zenga.domain.channel.application.service;
 import com.mannavoca.zenga.common.annotation.UseCase;
 import com.mannavoca.zenga.common.util.UserUtils;
 import com.mannavoca.zenga.domain.channel.application.dto.response.ChannelAndMemberIdResponseDto;
+import com.mannavoca.zenga.domain.channel.application.dto.response.ChannelOwnershipInfoResponseDto;
 import com.mannavoca.zenga.domain.channel.application.dto.response.ChannelResponseDto;
 import com.mannavoca.zenga.domain.channel.application.dto.response.ChannelValidityResponseDto;
 import com.mannavoca.zenga.domain.channel.application.mapper.ChannelMapper;
+import com.mannavoca.zenga.domain.channel.domain.entity.Channel;
 import com.mannavoca.zenga.domain.channel.domain.service.ChannelService;
 import com.mannavoca.zenga.domain.member.application.dto.response.MemberInfoResponseDto;
 import com.mannavoca.zenga.domain.member.application.mapper.MemberMapper;
+import com.mannavoca.zenga.domain.member.domain.entity.enumType.LevelType;
 import com.mannavoca.zenga.domain.member.domain.service.MemberService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -25,11 +28,12 @@ public class ChannelReadUseCase {
     private final MemberService memberService;
     private final UserUtils userUtils;
 
-    public ChannelResponseDto getChannelById(final Long channelId) {
+    public ChannelOwnershipInfoResponseDto getChannelById(final Long channelId) {
         channelService.validateChannelId(channelId);
         memberService.validateMemberPermissionByUserIdAndChannelId(userUtils.getUser().getId(), channelId);
+        Boolean isOwner = userUtils.getMember(channelId).getLevel().equals(LevelType.MAINTAINER);
 
-        return ChannelMapper.mapChannelToChannelResponseDto(channelService.getChannelById(channelId));
+        return ChannelMapper.mapChannelToChannelOwnershipInfoResponseDto(channelService.getChannelById(channelId), isOwner);
     }
 
     public List<ChannelAndMemberIdResponseDto> getAllChannels() {
@@ -37,8 +41,10 @@ public class ChannelReadUseCase {
         return channelService.getAllChannelsIncludingMemberIdByUserId(userUtils.getUser().getId());
     }
 
-    public ChannelResponseDto getChannelByCode(final String code) {
-        return ChannelMapper.mapChannelToChannelResponseDto(channelService.getChannelByCode(code));
+    public ChannelOwnershipInfoResponseDto getChannelByCode(final String code) {
+        Channel channel = channelService.getChannelByCode(code);
+        Boolean isOwner = userUtils.getMember(channel.getId()).getLevel().equals(LevelType.MAINTAINER);
+        return ChannelMapper.mapChannelToChannelOwnershipInfoResponseDto(channel, isOwner);
     }
 
     public ChannelValidityResponseDto getChannelValidityById(final Long channelId) {
