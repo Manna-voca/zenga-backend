@@ -2,6 +2,7 @@ package com.mannavoca.zenga.domain.channel.application.mapper;
 
 import com.mannavoca.zenga.common.annotation.Mapper;
 import com.mannavoca.zenga.domain.channel.application.dto.request.CreatingChannelRequestDto;
+import com.mannavoca.zenga.domain.channel.application.dto.response.ChannelOwnershipInfoResponseDto;
 import com.mannavoca.zenga.domain.channel.application.dto.response.ChannelResponseDto;
 import com.mannavoca.zenga.domain.channel.domain.entity.Channel;
 
@@ -36,5 +37,15 @@ public class ChannelMapper {
         return channelList.stream()
                 .map(ChannelMapper::mapChannelToChannelResponseDto)
                 .collect(Collectors.toList());
+    }
+
+    public static ChannelOwnershipInfoResponseDto mapChannelToChannelOwnershipInfoResponseDto(Channel channel, Boolean isOwner) {
+        return ChannelOwnershipInfoResponseDto.builder()
+                .id(channel.getId())
+                .name(channel.getName())
+                .logoImageUrl(channel.getLogoImageUrl())
+                .code(channel.getCode())
+                .isOwner(isOwner)
+                .build();
     }
 }
