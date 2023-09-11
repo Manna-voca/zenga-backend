@@ -30,6 +30,9 @@ public class S3UploadService {
     @Value("${cloud.aws.s3.img_bucket}")
     private String bucket;
 
+    @Value("${cdn.url}")
+    private String cloudFrontUrl;
+
     public List<String> uploadImgList(List<MultipartFile> imgList) {
 
         if(Objects.isNull(imgList)) return null;
@@ -59,7 +62,9 @@ public class S3UploadService {
         } catch (IOException e) {
             throw BusinessException.of(Error.FILE_UPLOAD_ERROR);
         }
-        return amazonS3.getUrl(bucket, fileName).toString();
+        String s3Path = amazonS3.getUrl(bucket, fileName).getPath();
+        String cdnUrl = cloudFrontUrl + s3Path;
+        return cdnUrl;
     }
 
     //파일명 난수화
