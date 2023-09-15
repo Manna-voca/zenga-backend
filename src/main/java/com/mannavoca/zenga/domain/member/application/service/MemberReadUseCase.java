@@ -2,6 +2,9 @@ package com.mannavoca.zenga.domain.member.application.service;
 
 import com.mannavoca.zenga.common.annotation.UseCase;
 import com.mannavoca.zenga.common.util.UserUtils;
+import com.mannavoca.zenga.domain.block.application.dto.response.BlockCountInfoListResponseDto;
+import com.mannavoca.zenga.domain.block.application.dto.response.BlockCountResponseDto;
+import com.mannavoca.zenga.domain.block.application.dto.response.BlockCountResponseInterface;
 import com.mannavoca.zenga.domain.block.application.dto.response.BlockInfoResponseDto;
 import com.mannavoca.zenga.domain.block.domain.service.BlockService;
 import com.mannavoca.zenga.domain.channel.domain.service.ChannelService;
@@ -76,8 +79,16 @@ public class MemberReadUseCase {
         return MemberMapper.mapMemberListToMemberInfoResponseDtoList(memberService.getMemberListByUserId(userUtils.getUser().getId()));
     }
 
-    public List<BlockInfoResponseDto> getAllBlocksByMemberId(final Long memberId) {
-        return blockService.findAllByMemberId(memberId);
+    public BlockCountInfoListResponseDto getAllBlocksAndCountsByMemberId(final Long memberId) {
+        List<BlockCountResponseInterface> blockCountResponseDtoList = blockService.findAllBlockCountListByMemberId(memberId);
+        System.out.println(blockCountResponseDtoList.get(0).getBlockType());
+        List<BlockInfoResponseDto> blockInfoResponseDtoList = blockService.findAllByMemberId(memberId);
+
+        return BlockCountInfoListResponseDto
+                .builder()
+                .blockCountResponseDtoList(blockCountResponseDtoList)
+                .blockInfoResponseDtoList(blockInfoResponseDtoList)
+                .build();
     }
 
     public MemberInfoResponseDto getMemberInfoByMemberId(final Long memberId) {
