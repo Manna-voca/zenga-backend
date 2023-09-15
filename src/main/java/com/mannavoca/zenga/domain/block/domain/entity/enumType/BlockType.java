@@ -77,4 +77,36 @@ public enum BlockType implements CodeValue {
                 throw BusinessException.of(Error.INTERNAL_SERVER_ERROR);
         }
     }
+
+    public static String getColorFromBlockType(final BlockType blockType) {
+        switch (blockType) {
+            case PINK:
+            case PINK_FIRST:
+                return "PINK";
+            case ORANGE:
+            case ORANGE_FIRST:
+                return "ORANGE";
+            case SKY_BLUE:
+            case SKY_BLUE_FIRST:
+                return "SKY_BLUE";
+            case LIGHT_GREEN:
+            case LIGHT_GREEN_FIRST:
+                return "LIGHT_GREEN";
+            case PURPLE:
+            case PURPLE_FIRST:
+                return "PURPLE";
+            case YELLOW1:
+            case YELLOW10:
+            case YELLOW30:
+            case YELLOW50:
+                return "YELLOW";
+            case LIGHT_BROWN1:
+            case LIGHT_BROWN10:
+            case LIGHT_BROWN50:
+            case LIGHT_BROWN100:
+                return "LIGHT_BROWN";
+            default:
+                return null;
+        }
+    }
 }
