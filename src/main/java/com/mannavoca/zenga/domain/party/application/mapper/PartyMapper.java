@@ -3,10 +3,8 @@ package com.mannavoca.zenga.domain.party.application.mapper;
 import com.mannavoca.zenga.common.annotation.Mapper;
 import com.mannavoca.zenga.domain.comment.domain.entity.Comment;
 import com.mannavoca.zenga.domain.member.domain.entity.Member;
-import com.mannavoca.zenga.domain.party.application.dto.response.CompletePartyResponseDto;
-import com.mannavoca.zenga.domain.party.application.dto.response.CreatePartyResponseDto;
-import com.mannavoca.zenga.domain.party.application.dto.response.PartyDetailInfoResponseDto;
-import com.mannavoca.zenga.domain.party.application.dto.response.PartyTapResponseDto;
+import com.mannavoca.zenga.domain.member.domain.entity.enumType.State;
+import com.mannavoca.zenga.domain.party.application.dto.response.*;
 import com.mannavoca.zenga.domain.party.domain.entity.Participation;
 import com.mannavoca.zenga.domain.party.domain.entity.Party;
 
@@ -46,6 +44,27 @@ public class PartyMapper {
                 .openMemberName(partyMaker.getNickname()).openMemberProfileImageUrl(partyMaker.getProfileImageUrl())
                 .joinMemberCount(joinMemberCount)
                 .maxCapacity(party.getMaxCapacity()).partyImageUrl(party.getPartyImageUrl()).build();
+    }
+
+    public static PartyTapIncludingStateResponseDto mapPartyToPartyTapIncludingStateResponseDto(final Party party, final Member partyMaker, final Integer joinMemberCount) {
+        State state = State.COMPLETED;
+
+        if (party.getIsOpen() && party.getCardImageUrl() == null) {
+            state = State.RECRUITING;
+        } else if (!party.getIsOpen() && party.getCardImageUrl() == null) {
+            state = State.IN_PROGRESS;
+        } else if (!party.getIsOpen()){
+            state = State.COMPLETED;
+        }
+
+        return PartyTapIncludingStateResponseDto.builder()
+                .partyId(party.getId()).title(party.getTitle())
+                .partyDate(Optional.ofNullable(party.getPartyDate()).isEmpty() ? "날짜 미정" : party.getPartyDate().format(formatter))
+                .location(party.getLocation().isEmpty() ? "장소 미정" : party.getLocation())
+                .openMemberName(partyMaker.getNickname()).openMemberProfileImageUrl(partyMaker.getProfileImageUrl())
+                .joinMemberCount(joinMemberCount)
+                .maxCapacity(party.getMaxCapacity()).partyImageUrl(party.getPartyImageUrl())
+                .state(state).build();
     }
 
     public static PartyDetailInfoResponseDto mapToPartyDetailInfoResponseDto(Party party, Member member, Long channelMakerId, Long partyCommentCount, Comment lastComment) {
