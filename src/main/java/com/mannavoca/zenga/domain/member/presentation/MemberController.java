@@ -41,6 +41,11 @@ public class MemberController {
         return ResponseEntity.ok(ResponseDto.success(memberReadUseCase.getMemberInfoByChannelId(channelId)));
     }
 
+    @GetMapping("/{memberId}")
+    public ResponseEntity<ResponseDto<MemberInfoResponseDto>> getMemberInfoByMemberId(@PathVariable("memberId") @NotNull(message = "memberId는 null일 수 없습니다.") Long memberId) {
+        return ResponseEntity.ok(ResponseDto.success(memberReadUseCase.getMemberInfoByMemberId(memberId)));
+    }
+
     @GetMapping
     public ResponseEntity<ResponseDto<List<MemberInfoResponseDto>>> getMemberInfoList() {
         return ResponseEntity.ok(ResponseDto.success(memberReadUseCase.getMemberInfoList()));
