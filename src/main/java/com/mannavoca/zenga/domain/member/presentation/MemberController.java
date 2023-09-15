@@ -14,6 +14,7 @@ import com.mannavoca.zenga.domain.member.application.service.MemberCreateUseCase
 import com.mannavoca.zenga.domain.member.application.service.MemberModalCheckUseCase;
 import com.mannavoca.zenga.domain.member.application.service.MemberReadUseCase;
 import com.mannavoca.zenga.domain.member.domain.service.MemberService;
+import com.mannavoca.zenga.domain.party.application.dto.response.PartyTapIncludingStateResponseDto;
 import com.mannavoca.zenga.domain.party.application.dto.response.PartyTapResponseDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
@@ -93,7 +94,7 @@ public class MemberController {
     }
 
     @GetMapping("/{memberId}/parties/all")
-    public ResponseEntity<ResponseDto<List<PartyTapResponseDto>>> getAll2PartyList(
+    public ResponseEntity<ResponseDto<List<PartyTapIncludingStateResponseDto>>> getAll2PartyList(
             @PathVariable @NotNull(message = "멤버 ID는 필수입니다.") final Long memberId
     ) {
         return ResponseEntity.ok(ResponseDto.success(memberReadUseCase.getAll2PartyListByMemberId(memberId)));
