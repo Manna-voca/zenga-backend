@@ -14,6 +14,7 @@ import com.mannavoca.zenga.domain.member.application.mapper.MemberMapper;
 import com.mannavoca.zenga.domain.member.domain.entity.Member;
 import com.mannavoca.zenga.domain.member.domain.entity.enumType.State;
 import com.mannavoca.zenga.domain.member.domain.service.MemberService;
+import com.mannavoca.zenga.domain.party.application.dto.response.PartyTapIncludingStateResponseDto;
 import com.mannavoca.zenga.domain.party.application.dto.response.PartyTapResponseDto;
 import com.mannavoca.zenga.domain.party.application.mapper.PartyMapper;
 import com.mannavoca.zenga.domain.party.domain.entity.Party;
@@ -57,7 +58,7 @@ public class MemberReadUseCase {
         return partyTapResponseDtoSlice;
     }
 
-    public List<PartyTapResponseDto> getAll2PartyListByMemberId(final Long memberId) {
+    public List<PartyTapIncludingStateResponseDto> getAll2PartyListByMemberId(final Long memberId) {
         memberService.validateMemberId(memberId);
         List<Party> partyList = partyService.get2EachPartiesByMemberId(memberId);
 
@@ -65,7 +66,8 @@ public class MemberReadUseCase {
             Map<String, Object> partyMakerAndJoinerCount = participationService.getPartyMakerAndJoinerCount(party.getId());
             Member partyMaker = (Member) partyMakerAndJoinerCount.get("maker");
             Integer joinMemberCount = (Integer) partyMakerAndJoinerCount.get("joinerCount");
-            return PartyMapper.mapToPartyTapResponseDto(party, partyMaker, joinMemberCount);}).collect(Collectors.toList());
+            return PartyMapper.mapPartyToPartyTapIncludingStateResponseDto(party, partyMaker, joinMemberCount);}
+        ).collect(Collectors.toList());
     }
 
     public MemberInfoResponseDto getMemberInfoByChannelId(final Long channelId) {
