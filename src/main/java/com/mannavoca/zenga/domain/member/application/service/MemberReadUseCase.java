@@ -79,4 +79,8 @@ public class MemberReadUseCase {
     public List<BlockInfoResponseDto> getAllBlocksByMemberId(final Long memberId) {
         return blockService.findAllByMemberId(memberId);
     }
+
+    public MemberInfoResponseDto getMemberInfoByMemberId(final Long memberId) {
+        return MemberMapper.mapMemberToMemberInfoResponseDto(memberService.findMemberById(memberId));
+    }
 }
