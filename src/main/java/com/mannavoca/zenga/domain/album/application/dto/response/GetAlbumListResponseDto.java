@@ -20,6 +20,7 @@ public class GetAlbumListResponseDto {
     }
 
 
+    @Getter
     public static class AlbumResponseDto {
         private Long id;
 
