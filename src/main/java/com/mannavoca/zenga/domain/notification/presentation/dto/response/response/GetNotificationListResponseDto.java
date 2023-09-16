@@ -1,9 +1,7 @@
 package com.mannavoca.zenga.domain.notification.presentation.dto.response.response;
 
 import com.mannavoca.zenga.domain.notification.domain.entity.Notification;
-import lombok.AccessLevel;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -11,7 +9,7 @@ import java.util.stream.Collectors;
 
 @Getter
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
-public class GetNotificationListResponseDto {
+public class GetNotificationListResponseDto{
 
     List<NotificationDto> notificationList;
 
@@ -24,7 +22,9 @@ public class GetNotificationListResponseDto {
     }
 
 
-    public static class NotificationDto {
+    @Getter
+    @NoArgsConstructor(access = AccessLevel.PRIVATE)
+    public static class NotificationDto{
 
         private Long id;
 
