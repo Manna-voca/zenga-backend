@@ -28,6 +28,8 @@ public class GetNotificationListResponseDto{
 
         private Long id;
 
+        private String title;
+
         private String content;
 
         private LocalDateTime createdDate;
@@ -37,6 +39,7 @@ public class GetNotificationListResponseDto{
         public static NotificationDto of(Notification notification) {
             NotificationDto notificationDto = new NotificationDto();
             notificationDto.id = notification.getId();
+            notificationDto.title = notification.getTitle();
             notificationDto.content = notification.getContent();
             notificationDto.createdDate = notification.getCreatedDate();
             notificationDto.isCheck = notification.getIsCheck();
