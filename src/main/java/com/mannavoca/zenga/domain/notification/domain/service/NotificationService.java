@@ -31,7 +31,7 @@ public class NotificationService {
         Long userId = SecurityUtils.getUserId();
         Member member = memberRepository.findById(memberId).orElseThrow(() -> BusinessException.of(Error.DATA_NOT_FOUND));
 
-        if (Objects.equals(member.getUser().getId(), userId)) {
+        if (!Objects.equals(member.getUser().getId(), userId)) {
             throw BusinessException.of(Error.NOT_AUTHORIZED);
         }
 
@@ -45,7 +45,7 @@ public class NotificationService {
             Long userId = SecurityUtils.getUserId();
             Notification notification = notificationRepository.findById(notificationId).orElseThrow(() -> BusinessException.of(Error.DATA_NOT_FOUND));
 
-            if (Objects.equals(notification.getMember().getUser().getId(), userId)) {
+            if (!Objects.equals(notification.getMember().getUser().getId(), userId)) {
                 throw BusinessException.of(Error.NOT_AUTHORIZED);
             }
 
@@ -86,7 +86,7 @@ public class NotificationService {
         Long userId = SecurityUtils.getUserId();
         Member member = memberRepository.findById(memberId).orElseThrow(() -> BusinessException.of(Error.DATA_NOT_FOUND));
 
-        if (Objects.equals(member.getUser().getId(), userId)) {
+        if (!Objects.equals(member.getUser().getId(), userId)) {
             throw BusinessException.of(Error.NOT_AUTHORIZED);
         }
 
@@ -101,7 +101,7 @@ public class NotificationService {
 
         Long userId = SecurityUtils.getUserId();
         Member member = memberRepository.findById(memberId).orElseThrow(() -> BusinessException.of(Error.DATA_NOT_FOUND));
-        if (Objects.equals(member.getUser().getId(), userId)) {
+        if (!Objects.equals(member.getUser().getId(), userId)) {
             throw BusinessException.of(Error.NOT_AUTHORIZED);
         }
 
