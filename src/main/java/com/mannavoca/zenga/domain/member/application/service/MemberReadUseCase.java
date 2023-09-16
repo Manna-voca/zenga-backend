@@ -83,7 +83,7 @@ public class MemberReadUseCase {
 
     public BlockCountInfoListResponseDto getAllBlocksAndCountsByMemberId(final Long memberId) {
         List<BlockCountResponseInterface> blockCountResponseDtoList = blockService.findAllBlockCountListByMemberId(memberId);
-        System.out.println(blockCountResponseDtoList.get(0).getBlockType());
+//        System.out.println(blockCountResponseDtoList.get(0).getBlockType());
         List<BlockInfoResponseDto> blockInfoResponseDtoList = blockService.findAllByMemberId(memberId);
 
         return BlockCountInfoListResponseDto
