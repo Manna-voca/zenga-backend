@@ -5,16 +5,12 @@ import com.mannavoca.zenga.common.dto.SliceResponse;
 import com.mannavoca.zenga.domain.channel.application.dto.request.CreatingChannelRequestDto;
 import com.mannavoca.zenga.domain.channel.application.dto.request.SearchChannelMemberRequestDto;
 import com.mannavoca.zenga.domain.channel.application.dto.request.UpdatingChannelRequestDto;
-import com.mannavoca.zenga.domain.channel.application.dto.response.ChannelAndMemberIdResponseDto;
-import com.mannavoca.zenga.domain.channel.application.dto.response.ChannelOwnershipInfoResponseDto;
-import com.mannavoca.zenga.domain.channel.application.dto.response.ChannelResponseDto;
-import com.mannavoca.zenga.domain.channel.application.dto.response.ChannelValidityResponseDto;
+import com.mannavoca.zenga.domain.channel.application.dto.response.*;
 import com.mannavoca.zenga.domain.channel.application.service.ChannelCreateUseCase;
 import com.mannavoca.zenga.domain.channel.application.service.ChannelDeleteUseCase;
 import com.mannavoca.zenga.domain.channel.application.service.ChannelReadUseCase;
 import com.mannavoca.zenga.domain.channel.application.service.ChannelUpdateUseCase;
 import com.mannavoca.zenga.domain.member.application.dto.response.MemberInfoResponseDto;
-import com.mannavoca.zenga.domain.member.application.dto.response.MemberListInfoResponseDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
@@ -75,12 +71,17 @@ public class ChannelController {
     }
 
     @GetMapping("/{channelId}/members")
-    public ResponseEntity<ResponseDto<MemberListInfoResponseDto>> getAllMembersByChannelId(
+    public ResponseEntity<SliceResponse<MemberInfoResponseDto>> getAllMembersByChannelId(
             @PathVariable @NotNull(message = "채널 ID는 필수입니다.") final Long channelId,
             @ModelAttribute final SearchChannelMemberRequestDto searchChannelMemberRequestDto,
             @PageableDefault final Pageable pageable
     ) {
-        return ResponseEntity.ok(ResponseDto.success(channelReadUseCase.searchAllMembersByChannelId(channelId, searchChannelMemberRequestDto.getCursor(), searchChannelMemberRequestDto.getKeyword(), pageable)));
+        return ResponseEntity.ok(SliceResponse.of(channelReadUseCase.searchAllMembersByChannelId(channelId, searchChannelMemberRequestDto.getCursor(), searchChannelMemberRequestDto.getKeyword(), pageable)));
+    }
+
+    @GetMapping("/{channelId}/count")
+    public ResponseEntity<ResponseDto<ChannelMemberCountResponseDto>> getChannelMemberCount(@PathVariable @NotNull(message = "채널 ID는 필수입니다.") final Long channelId){
+        return ResponseEntity.ok(ResponseDto.success(channelReadUseCase.getChannelMemberCount(channelId)));
     }
 
 }
