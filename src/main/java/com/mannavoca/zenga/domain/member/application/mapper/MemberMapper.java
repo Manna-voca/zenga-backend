@@ -2,6 +2,7 @@ package com.mannavoca.zenga.domain.member.application.mapper;
 
 import com.mannavoca.zenga.common.annotation.Mapper;
 import com.mannavoca.zenga.domain.member.application.dto.response.MemberInfoResponseDto;
+import com.mannavoca.zenga.domain.member.application.dto.response.MemberListInfoResponseDto;
 import com.mannavoca.zenga.domain.member.domain.entity.Member;
 import org.springframework.data.domain.Slice;
 
@@ -28,5 +29,12 @@ public class MemberMapper {
 
     public static List<MemberInfoResponseDto> mapMemberListToMemberInfoResponseDtoList(List<Member> memberList) {
         return memberList.stream().map(MemberMapper::mapMemberToMemberInfoResponseDto).collect(Collectors.toList());
+    }
+
+    public static MemberListInfoResponseDto mapMemberSliceToMemberListInfoResponseDto(Slice<Member> memberSlice) {
+        return MemberListInfoResponseDto.builder()
+                .count((long) memberSlice.getNumberOfElements())
+                .memberInfoResponseDtoSlice(MapMemberSliceToMemberInfoResponseDtoList(memberSlice))
+                .build();
     }
 }
