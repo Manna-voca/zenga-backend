@@ -35,7 +35,7 @@ public class MemberRepositoryImpl implements MemberRepositoryCustom {
         List<Member> memberList = queryFactory
                 .selectFrom(member)
                 .where(member.channel.id.eq(channelId), gtMemberId(memberIdCursor), containsKeyword(keyword))
-                .orderBy(member.id.asc())
+                .orderBy(member.level.asc(), member.nickname.asc(), member.id.asc())
                 .limit(pageable.getPageSize() + 1)
                 .fetch();
 

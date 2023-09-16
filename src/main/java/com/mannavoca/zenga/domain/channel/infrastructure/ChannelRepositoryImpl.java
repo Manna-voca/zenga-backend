@@ -59,7 +59,7 @@ public class ChannelRepositoryImpl implements ChannelRepositoryCustom {
                 .where(
                         member.user.id.eq(userId)
                 )
-                .orderBy(channel.id.desc())
+                .orderBy(member.id.desc())
                 .fetch();
     }
 }
