@@ -2,15 +2,11 @@ package com.mannavoca.zenga.domain.channel.application.service;
 
 import com.mannavoca.zenga.common.annotation.UseCase;
 import com.mannavoca.zenga.common.util.UserUtils;
-import com.mannavoca.zenga.domain.channel.application.dto.response.ChannelAndMemberIdResponseDto;
-import com.mannavoca.zenga.domain.channel.application.dto.response.ChannelOwnershipInfoResponseDto;
-import com.mannavoca.zenga.domain.channel.application.dto.response.ChannelResponseDto;
-import com.mannavoca.zenga.domain.channel.application.dto.response.ChannelValidityResponseDto;
+import com.mannavoca.zenga.domain.channel.application.dto.response.*;
 import com.mannavoca.zenga.domain.channel.application.mapper.ChannelMapper;
 import com.mannavoca.zenga.domain.channel.domain.entity.Channel;
 import com.mannavoca.zenga.domain.channel.domain.service.ChannelService;
 import com.mannavoca.zenga.domain.member.application.dto.response.MemberInfoResponseDto;
-import com.mannavoca.zenga.domain.member.application.dto.response.MemberListInfoResponseDto;
 import com.mannavoca.zenga.domain.member.application.mapper.MemberMapper;
 import com.mannavoca.zenga.domain.member.domain.entity.enumType.LevelType;
 import com.mannavoca.zenga.domain.member.domain.service.MemberService;
@@ -60,14 +56,22 @@ public class ChannelReadUseCase {
                 .build();
     }
 
-    public MemberListInfoResponseDto searchAllMembersByChannelId(final Long channelId, final Long memberIdCursor, final String keyword, final Pageable pageable){
+    public Slice<MemberInfoResponseDto> searchAllMembersByChannelId(final Long channelId, final Long memberIdCursor, final String keyword, final Pageable pageable){
         channelService.validateChannelId(channelId);
         if (memberIdCursor != null) {
             memberService.validateMemberId(memberIdCursor);
         }
         memberService.validateMemberPermissionByUserIdAndChannelId(userUtils.getUser().getId(), channelId);
 
-        return MemberMapper.mapMemberSliceToMemberListInfoResponseDto(memberService.findAllMemberSlicesByChannelIdAndKeyword(channelId, memberIdCursor, keyword, pageable));
+        return MemberMapper.MapMemberSliceToMemberInfoResponseDtoList(memberService.findAllMemberSlicesByChannelIdAndKeyword(channelId, memberIdCursor, keyword, pageable));
     }
 
+    public ChannelMemberCountResponseDto getChannelMemberCount(final Long channelId) {
+        channelService.validateChannelId(channelId);
+        memberService.validateMemberPermissionByUserIdAndChannelId(userUtils.getUser().getId(), channelId);
+
+        return ChannelMemberCountResponseDto.builder()
+                .count(memberService.countMemberByChannelId(channelId))
+                .build();
+    }
 }
