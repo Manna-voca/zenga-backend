@@ -2,6 +2,7 @@ package com.mannavoca.zenga.domain.party.presentation;
 
 import com.mannavoca.zenga.common.ResponseCode.ResponseCode;
 import com.mannavoca.zenga.common.dto.ResponseDto;
+import com.mannavoca.zenga.domain.party.application.dto.request.ClosePartyRequestDto;
 import com.mannavoca.zenga.domain.party.application.dto.request.CompletePartyRequestDto;
 import com.mannavoca.zenga.domain.party.application.dto.request.EditPartyInfoRequestDto;
 import com.mannavoca.zenga.domain.party.application.dto.response.CompletePartyResponseDto;
@@ -30,6 +31,16 @@ public class PartyPatchController {
         return ResponseEntity.ok(ResponseDto.of(ResponseCode.PARTY_UPDATED, createPartyResponseDto));
     }
 
+    @PatchMapping("/close")
+    public ResponseEntity<ResponseDto<CreatePartyResponseDto>> closePartyApplication
+            (
+                    @RequestBody ClosePartyRequestDto closePartyRequestDto
+            )
+    {
+        CreatePartyResponseDto createPartyResponseDto = partyUpdateUseCase.closeParty(closePartyRequestDto);
+        return ResponseEntity.ok(ResponseDto.of(ResponseCode.PARTY_UPDATED, createPartyResponseDto));
+    }
+
     @PatchMapping("/finish")
     public ResponseEntity<ResponseDto<CompletePartyResponseDto>> uploadPartyCardImage
             (
@@ -39,4 +50,5 @@ public class PartyPatchController {
         CompletePartyResponseDto completePartyResponseDto = partyUpdateUseCase.uploadPartyCardAndComplete(completePartyRequestDto);
         return ResponseEntity.ok(ResponseDto.of(ResponseCode.PARTY_CARD_CREATED, completePartyResponseDto));
     }
+
 }
