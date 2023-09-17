@@ -32,11 +32,11 @@ public class AuthService {
      * @return ID Token 값
      * @throws BusinessException Error.KAKAO_OAUTH_FAILED4 인가 코드가 유효하지 않은 경우
      */
-    private String getIdToken(String code) {
+    private String getIdToken(final String code, final String redirectUri) {
         KakaoOAuthRequestDto kakaoOAuthRequestDto = KakaoOAuthRequestDto.builder()
                 .client_id(oAuthProperties.getClientId())
                 .client_secret(oAuthProperties.getClientSecret())
-                .redirect_uri(oAuthProperties.getRedirectUri())
+                .redirect_uri(redirectUri == null ? oAuthProperties.getRedirectUri() : redirectUri)
                 .code(code)
                 .build();
 
@@ -55,8 +55,8 @@ public class AuthService {
      * @param code 카카오 인가 코드
      * @return accessToken과 refreshToken을 담은 DTO
      */
-    public TokenResponseDto generateTokens(final String code) {
-        String idToken = getIdToken(code);
+    public TokenResponseDto generateTokens(final String code, final String redirectUri) {
+        String idToken = getIdToken(code, redirectUri);
         String socialId = kakaoOIDCHelper.getPayloadFromIdToken(idToken).getSub();
         User user = userFindService.findOrCreateBySocialId(socialId);
         //id_token 디코딩 후 Sub값의 uuid로 accessToken 생성
