@@ -84,7 +84,7 @@ public class ParticipationService {
         Member member = memberRepository.findById(memberId)
                 .orElseThrow(() -> BusinessException.of(Error.DATA_NOT_FOUND));
 
-        List<Participation> participationList = participationRepository.findAllByMemberAndAlbumCreatedDateIsNotNull(member);
+        List<Participation> participationList = participationRepository.findAllByMemberAndAlbumCreatedDateIsNotNullOrderByAlbumCreatedDateDesc(member);
 
         List<GetAlbumListResponseDto.AlbumResponseDto> albumResponseDtoList = participationList.stream()
                 .map(participation -> GetAlbumListResponseDto.AlbumResponseDto.of(
