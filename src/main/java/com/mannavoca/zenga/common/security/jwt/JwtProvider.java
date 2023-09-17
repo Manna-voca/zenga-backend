@@ -3,6 +3,7 @@ package com.mannavoca.zenga.common.security.jwt;
 import com.mannavoca.zenga.common.exception.Error;
 import com.mannavoca.zenga.common.security.exception.ExpiredTokenException;
 import com.mannavoca.zenga.common.security.exception.InvalidTokenException;
+import com.mannavoca.zenga.domain.auth.application.dto.response.TokenResponseDto;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.security.Keys;
 import io.jsonwebtoken.security.SignatureException;
@@ -14,7 +15,8 @@ import org.springframework.stereotype.Component;
 import java.nio.charset.StandardCharsets;
 import java.security.Key;
 import java.util.Date;
-import java.util.Objects;
+import java.util.Optional;
+import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 
 import static com.mannavoca.zenga.common.consts.ApplicationConst.*;
@@ -43,6 +45,7 @@ public class JwtProvider {
         final String refreshToken = buildToken(now)
                 .setExpiration(new Date(now.getTime() + jwtProperties.getRefreshTokenPeriod()))
                 .setSubject(id.toString())
+                .setId(UUID.randomUUID().toString())
                 .claim(TOKEN_TYPE, REFRESH_TOKEN)
                 .compact();
         storeRefreshToken(id, refreshToken);
@@ -51,8 +54,8 @@ public class JwtProvider {
 
     private void storeRefreshToken(Long id, String refreshToken) {
         redisTemplate.opsForValue().set(
-                id.toString(),
                 refreshToken,
+                id.toString(),
                 jwtProperties.getRefreshTokenPeriod(),
                 TimeUnit.MILLISECONDS);
     }
@@ -105,24 +108,27 @@ public class JwtProvider {
         );
     }
 
-    public String reIssue(String refreshToken) {
-        Long id = validateRefreshToken(refreshToken);
-        return generateAccessToken(id);
+    public TokenResponseDto reIssueTokens(final Long userId) {
+        final String accessToken = generateAccessToken(userId);
+        final String refreshToken = generateRefreshToken(userId);
+        redisTemplate.opsForValue().set(refreshToken, userId.toString(), jwtProperties.getRefreshTokenPeriod(), TimeUnit.MILLISECONDS);
+
+        return TokenResponseDto.builder()
+                .accessToken(accessToken)
+                .refreshToken(refreshToken)
+                .build();
     }
 
     public Long validateRefreshToken(String refreshToken) {
         validateToken(refreshToken);
-        final long id = extractId(refreshToken);
-        final String storedRefreshToken = getRefreshToken(id);
-        if (!Objects.equals(refreshToken, storedRefreshToken)) {
-            throw InvalidTokenException.of(Error.INVALID_TOKEN);
-        }
-        return id;
+
+        return Long.parseLong(
+                Optional.ofNullable(getRefreshToken(refreshToken))
+                        .orElseThrow(() -> InvalidTokenException.of(Error.REFRESH_TOKEN_NOT_FOUND))
+        );
     }
 
-    private String getRefreshToken(Long id) {
-        return String.valueOf(redisTemplate.opsForValue().get(id.toString()));
+    private String getRefreshToken(String refreshToken) {
+        return String.valueOf(redisTemplate.opsForValue().getAndDelete(refreshToken));
     }
-
-
 }
