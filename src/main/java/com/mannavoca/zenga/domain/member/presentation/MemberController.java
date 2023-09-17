@@ -86,7 +86,7 @@ public class MemberController {
         return ResponseEntity.ok(ResponseDto.success(SliceResponse.of(memberReadUseCase.getPartyListByMemberId(memberId, getMemberPartyRequestDto.getState(), getMemberPartyRequestDto.getCursor(), pageable))));
     }
 
-    @PostMapping("{memberId}")
+    @PutMapping("{memberId}")
     public ResponseEntity<ResponseDto<MemberInfoResponseDto>> updateMember(@PathVariable("memberId") Long memberId, @Valid @RequestBody UpdateMemberRequestDto updateMemberRequestDto) {
         Long userId = SecurityUtils.getUserId();
 
