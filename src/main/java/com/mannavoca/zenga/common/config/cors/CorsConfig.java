@@ -17,6 +17,8 @@ public class CorsConfig {
         config.addAllowedOrigin("http://localhost:3000");
         config.addAllowedOrigin("https://bucolic-empanada-eb0720.netlify.app");
         config.addAllowedOrigin("http://bucolic-empanada-eb0720.netlify.app");
+        config.addAllowedOrigin("https://main.d3io9tfwnwde06.amplifyapp.com");
+        config.addAllowedOrigin("https://zenga.club");
         config.addAllowedOrigin("https://*.netlify.app");
         config.addAllowedOrigin("https://*.zenga.club");
         config.addAllowedHeader("*");
