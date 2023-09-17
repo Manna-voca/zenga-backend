@@ -74,14 +74,11 @@ public class AuthService {
      */
     public TokenResponseDto refreshTokens(final RefreshTokensRequestDto refreshTokenDto) {
         final String refreshToken = refreshTokenDto.getRefreshToken();
-        jwtProvider.validateRefreshToken(refreshToken); // 저장된 리프레시와 받은 리프레시가 일치하는 지 검증
+        Long userId = jwtProvider.validateRefreshToken(refreshToken); // 저장된 리프레시와 받은 리프레시가 일치하는 지 검증
 
-        Long userId = jwtProvider.extractId(refreshToken); // 리프레시 토큰에 담긴 userId가 실제로 존재하는 지 검증
+        // 리프레시 토큰에 담긴 userId가 실제로 존재하는 지 검증
         userFindService.validateUserId(userId);
 
-        return TokenResponseDto.builder()
-                .accessToken(jwtProvider.generateAccessToken(userId))
-                .refreshToken(jwtProvider.generateRefreshToken(userId))
-                .build();
+        return jwtProvider.reIssueTokens(userId); // accessToken과 refreshToken 재발급
     }
 }
