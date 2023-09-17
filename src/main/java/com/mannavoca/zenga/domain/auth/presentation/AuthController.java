@@ -20,8 +20,8 @@ public class AuthController {
     private final AuthService authService;
 
     @GetMapping("/login/kakao")
-    public ResponseEntity<ResponseDto<TokenResponseDto>> loginByKakaoAuthCode(@RequestParam @NotBlank(message = "인가 코드는 필수입니다.") final String code) {
-        return ResponseEntity.ok(ResponseDto.success(authService.generateTokens(code)));
+    public ResponseEntity<ResponseDto<TokenResponseDto>> loginByKakaoAuthCode(@RequestParam @NotBlank(message = "인가 코드는 필수입니다.") final String code, @RequestParam(required = false) final String redirectUri) {
+        return ResponseEntity.ok(ResponseDto.success(authService.generateTokens(code, redirectUri)));
     }
 
     @PostMapping("/refresh")
