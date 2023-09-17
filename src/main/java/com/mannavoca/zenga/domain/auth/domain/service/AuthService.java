@@ -81,4 +81,9 @@ public class AuthService {
 
         return jwtProvider.reIssueTokens(userId); // accessToken과 refreshToken 재발급
     }
+
+    public String changeRedirectUri(String redirectUri) {
+        oAuthProperties.setRedirectUri(redirectUri);
+        return redirectUri;
+    }
 }
