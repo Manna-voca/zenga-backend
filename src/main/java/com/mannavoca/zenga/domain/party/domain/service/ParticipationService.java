@@ -16,7 +16,9 @@ import com.mannavoca.zenga.domain.party.domain.entity.Party;
 import com.mannavoca.zenga.domain.party.domain.repository.ParticipationRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -82,10 +84,16 @@ public class ParticipationService {
         Member member = memberRepository.findById(memberId)
                 .orElseThrow(() -> BusinessException.of(Error.DATA_NOT_FOUND));
 
-        List<Participation> participationList = participationRepository.findAllByMember(member);
+        List<Participation> participationList = participationRepository.findAllByMemberAndAlbumCreatedDateIsNotNull(member);
 
         List<GetAlbumListResponseDto.AlbumResponseDto> albumResponseDtoList = participationList.stream()
-                .map(participation -> GetAlbumListResponseDto.AlbumResponseDto.of(participation.getId(), participation.getParty().getCardImageUrl())
+                .map(participation -> GetAlbumListResponseDto.AlbumResponseDto.of(
+                        participation.getId(),
+                        participation.getParty().getCardImageUrl(),
+                        participation.getAlbumCreatedDate(),
+                        participation.getParty().getTitle(),
+                        participation.getParty().getContent()
+                        )
                 ).collect(Collectors.toList());
 
         return GetAlbumListResponseDto.of(albumResponseDtoList);
@@ -111,5 +119,10 @@ public class ParticipationService {
                 .stream().map(Participation::getMember).collect(Collectors.toList());
 
         return GetParticipationWithResponseDto.of(memberList.stream().map(GetParticipationWithResponseDto.ParticipationWithResponseDto::of).collect(Collectors.toList()));
+    }
+
+    @Transactional
+    public void setParticipationAlbumCreatedDate(Participation participation) {
+        participation.setAlbumCreatedDate(LocalDateTime.now());
     }
 }

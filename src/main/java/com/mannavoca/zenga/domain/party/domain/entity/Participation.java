@@ -8,6 +8,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
 
 @Getter
 @Entity
@@ -40,11 +41,18 @@ public class Participation extends BaseEntity {
     @Column(name = "is_private")
     private boolean isPrivate;
 
+    @Column(name = "album_created_date")
+    private LocalDateTime albumCreatedDate;
+
     @Builder
-    public Participation(Boolean isMaker, Member member, Party party, String text) {
+    public Participation(Boolean isMaker, Member member, Party party) {
         this.isMaker = isMaker;
         this.member = member;
         this.party = party;
         this.isPrivate = false;
+    }
+
+    public void setAlbumCreatedDate(LocalDateTime albumCreatedDate) {
+        this.albumCreatedDate = albumCreatedDate;
     }
 }
