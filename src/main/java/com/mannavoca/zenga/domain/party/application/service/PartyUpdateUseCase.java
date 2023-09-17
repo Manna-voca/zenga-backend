@@ -60,6 +60,8 @@ public class PartyUpdateUseCase {
         checkIsPartyMaker(member, party);
 
         Party updatedParty = partyService.closeParty(party);
+
+        notificationService.createCardMakingNotification(member, updatedParty);
         return PartyMapper.mapToCreatePartyResponseDto(updatedParty, member);
     }
 
