@@ -2,6 +2,7 @@ package com.mannavoca.zenga.common.security.oauth;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
+import lombok.Setter;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.context.properties.ConstructorBinding;
 
@@ -13,5 +14,6 @@ public class OAuthProperties {
     private final String iss;
     private final String clientId;
     private final String clientSecret;
-    private final String redirectUri;
+    @Setter
+    private String redirectUri;
 }
