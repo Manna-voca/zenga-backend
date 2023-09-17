@@ -62,6 +62,11 @@ public class PartyService {
         return partyRepository.save(party);
     }
 
+    public Party closeParty(Party party) {
+        party.updateIsOpen(false);
+        return partyRepository.save(party);
+    }
+
     /**
      * 멤버 ID를 받아서 해당 멤버가 참여한 Party 리스트를 상태별로 2개씩 반환하는 메소드
      * @param memberId 멤버 ID
