@@ -11,7 +11,6 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
 
 @RequiredArgsConstructor
 @RestController
@@ -28,5 +27,10 @@ public class AuthController {
     @PostMapping("/refresh")
     public ResponseEntity<ResponseDto<TokenResponseDto>> refreshTokens(@Valid @RequestBody final RefreshTokensRequestDto refreshToken) {
         return ResponseEntity.ok(ResponseDto.success(authService.refreshTokens(refreshToken)));
+    }
+
+    @PutMapping("/change-redirect-uri")
+    public ResponseEntity<ResponseDto<String>> changeRedirectUri(@RequestParam @NotBlank(message = "Redirect URI는 필수입니다.") final String redirectUri) {
+        return ResponseEntity.ok(ResponseDto.success(authService.changeRedirectUri(redirectUri)));
     }
 }
