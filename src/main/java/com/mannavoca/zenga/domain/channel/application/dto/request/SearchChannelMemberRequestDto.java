@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class SearchChannelMemberRequestDto {
-    private Long cursor;
+    private Long cursorId;
+    private String cursorName;
     private String keyword;
 }

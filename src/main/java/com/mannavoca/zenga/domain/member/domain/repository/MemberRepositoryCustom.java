@@ -9,7 +9,7 @@ import java.util.List;
 public interface MemberRepositoryCustom {
     List<Member> findMembersByChannelId(Long memberId, Long channelId);
 
-    Slice<Member> findAllMemberSlicesByChannelId(Long channelId, Long MemberIdCursor, String keyword, Pageable pageable);
+    Slice<Member> findAllMemberSlicesByChannelId(Long channelId, Long cursorId, String cursorName, String keyword, Pageable pageable);
 
     boolean existsByMemberId(Long memberId);
     boolean existsByUserIdAndChannelId(Long userId, Long channelId);
