@@ -31,11 +31,11 @@ public class MemberRepositoryImpl implements MemberRepositoryCustom {
     }
 
     @Override
-    public Slice<Member> findAllMemberSlicesByChannelId(Long channelId, Long memberIdCursor, String keyword, Pageable pageable) {
+    public Slice<Member> findAllMemberSlicesByChannelId(Long channelId, Long cursorId, String cursorName, String keyword, Pageable pageable) {
         List<Member> memberList = queryFactory
                 .selectFrom(member)
-                .where(member.channel.id.eq(channelId), gtMemberId(memberIdCursor), containsKeyword(keyword))
-                .orderBy(member.level.asc(), member.nickname.asc(), member.id.asc())
+                .where(member.channel.id.eq(channelId), containsKeyword(keyword), customCursor(cursorId, cursorName))
+                .orderBy(member.nickname.asc(), member.id.asc())
                 .limit(pageable.getPageSize() + 1)
                 .fetch();
 
@@ -85,11 +85,24 @@ public class MemberRepositoryImpl implements MemberRepositoryCustom {
         return new SliceImpl<>(results, pageable, hasNext);
     }
 
-    private BooleanExpression gtMemberId(Long memberIdCursor) {
-        return memberIdCursor == null ? null : member.id.gt(memberIdCursor);
+    private BooleanExpression gtMemberId(Long cursorId) {
+        return cursorId == null ? null : member.id.gt(cursorId);
     }
 
     private BooleanExpression containsKeyword(String keyword) {
         return keyword == null ? null : member.nickname.contains(keyword);
+    }
+
+    private BooleanExpression gtMemberName(String cursorName) {
+        return cursorName == null ? null : member.nickname.gt(cursorName);
+    }
+
+    private BooleanExpression customCursor(final Long cursorId, final String cursorName) {
+        if (cursorId == null || cursorName == null) {
+            return null;
+        }
+
+        return member.nickname.gt(cursorName)
+                .or(member.nickname.eq(cursorName).and(member.id.gt(cursorId)));
     }
 }

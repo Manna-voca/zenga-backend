@@ -89,14 +89,15 @@ public class MemberService {
     /**
      * Channel ID로 Member 조회 (페이지네이션 적용)
      *
-     * @param channelId      Channel ID
-     * @param memberIdCursor Member ID Cursor
-     * @param keyword        검색 키워드
-     * @param pageable       Pageable 객체
+     * @param channelId  Channel ID
+     * @param cursorId   Member ID Cursor
+     * @param cursorName Member Name Cursor
+     * @param keyword    검색 키워드
+     * @param pageable   Pageable 객체
      * @return Member Slice
      */
-    public Slice<Member> findAllMemberSlicesByChannelIdAndKeyword(final Long channelId, final Long memberIdCursor, final String keyword, final Pageable pageable) {
-        return memberRepository.findAllMemberSlicesByChannelId(channelId, memberIdCursor, keyword, pageable);
+    public Slice<Member> findAllMemberSlicesByChannelIdAndKeyword(final Long channelId, final Long cursorId, String cursorName, final String keyword, final Pageable pageable) {
+        return memberRepository.findAllMemberSlicesByChannelId(channelId, cursorId, cursorName, keyword, pageable);
     }
 
     /**

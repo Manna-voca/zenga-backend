@@ -76,7 +76,7 @@ public class ChannelController {
             @ModelAttribute final SearchChannelMemberRequestDto searchChannelMemberRequestDto,
             @PageableDefault final Pageable pageable
     ) {
-        return ResponseEntity.ok(SliceResponse.of(channelReadUseCase.searchAllMembersByChannelId(channelId, searchChannelMemberRequestDto.getCursor(), searchChannelMemberRequestDto.getKeyword(), pageable)));
+        return ResponseEntity.ok(SliceResponse.of(channelReadUseCase.searchAllMembersByChannelId(channelId, searchChannelMemberRequestDto, pageable)));
     }
 
     @GetMapping("/{channelId}/count")
