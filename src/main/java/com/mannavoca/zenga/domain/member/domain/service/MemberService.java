@@ -146,6 +146,7 @@ public class MemberService {
         return memberRepository.findAllByUser_Id(userId);
     }
 
+    @Transactional
     public MemberInfoResponseDto updateMember(Long userId, Long memberId, UpdateMemberRequestDto requestDto) {
 
         Member member = memberRepository.findById(memberId)
@@ -156,7 +157,6 @@ public class MemberService {
         }
 
         member.updateProfile(requestDto.getProfileImageUrl(), requestDto.getName(), requestDto.getDescription());
-
         return MemberMapper.mapMemberToMemberInfoResponseDto(member);
     }
 
