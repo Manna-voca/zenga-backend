@@ -31,7 +31,7 @@ public class NotificationController {
         return ResponseEntity.ok(ResponseDto.success());
     }
 
-    @PutMapping("check/all")
+    @PutMapping("/check-all/member/{memberId}")
     public ResponseEntity<ResponseDto> checkAllNotification(@PathVariable("memberId") Long memberId) {
 
         notificationService.checkAllNotification(memberId);
