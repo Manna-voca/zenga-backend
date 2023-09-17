@@ -7,6 +7,7 @@ import com.mannavoca.zenga.common.util.UserUtils;
 import com.mannavoca.zenga.domain.channel.domain.service.ChannelService;
 import com.mannavoca.zenga.domain.member.domain.entity.Member;
 import com.mannavoca.zenga.domain.notification.domain.service.NotificationService;
+import com.mannavoca.zenga.domain.party.application.dto.request.ClosePartyRequestDto;
 import com.mannavoca.zenga.domain.party.application.dto.request.CompletePartyRequestDto;
 import com.mannavoca.zenga.domain.party.application.dto.request.EditPartyInfoRequestDto;
 import com.mannavoca.zenga.domain.party.application.dto.response.CompletePartyResponseDto;
@@ -48,6 +49,16 @@ public class PartyUpdateUseCase {
         }
 
         Party updatedParty = partyService.updatePartyInfo(party, editPartyInfoRequestDto);
+        return PartyMapper.mapToCreatePartyResponseDto(updatedParty, member);
+    }
+
+    public CreatePartyResponseDto closeParty(ClosePartyRequestDto closePartyRequestDto) {
+        Member member = userUtils.getMember(closePartyRequestDto.getChannelId());
+        Party party = partyService.getPartyById(closePartyRequestDto.getPartyId());
+
+        checkIsPartyMaker(member, party);
+
+        Party updatedParty = partyService.closeParty(party);
         return PartyMapper.mapToCreatePartyResponseDto(updatedParty, member);
     }
 
