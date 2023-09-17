@@ -21,6 +21,7 @@ public class CorsConfig {
         config.addAllowedOrigin("https://zenga.club");
         config.addAllowedOrigin("https://*.netlify.app");
         config.addAllowedOrigin("https://*.zenga.club");
+        config.addAllowedOrigin("https://www.zenga.club");
         config.addAllowedHeader("*");
         config.addAllowedMethod("*");
         config.addExposedHeader("*");
