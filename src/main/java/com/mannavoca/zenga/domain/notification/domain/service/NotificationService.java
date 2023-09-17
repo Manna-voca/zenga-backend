@@ -60,25 +60,38 @@ public class NotificationService {
 
     public void createFullPartyNotification(Member member, Party party) {
 
-            Notification notification = Notification.createNotification("모임이 꽉 찼어요!", member, "모임: " + party.getTitle());
-            notificationRepository.save(notification);
+        int maxTitleLength = 12;
+        String title = party.getTitle().length() > maxTitleLength ? party.getTitle().substring(0, maxTitleLength) + "..." : party.getTitle();
+
+        Notification notification = Notification.createNotification("‘" + title + "’" + " 의 모집 인원이 다 찼어요!", member, "‘모집완료’ 버튼을 누르고 모임을 시작해봐요");
+        notificationRepository.save(notification);
     }
 
     public void createPartyCompletedNotification(Member member, Party party) {
 
-            Notification notification = Notification.createNotification("모임이 완료되었어요 카드를 만들어보세요!", member, "모임: " + party.getTitle());
+            Notification notification = Notification.createNotification("모임을 완료했어요!", member, "모임: " + party.getTitle());
             notificationRepository.save(notification);
     }
 
-    public void createCardNotification(Member member, Party party) {
+    public void createCardMakingNotification(Member maker, Party party) {
 
-            Notification notification = Notification.createNotification("카드가 만들어졌어요!", member, "모임: " + party.getTitle());
-            notificationRepository.save(notification);
+        int maxTitleLength = 13;
+        String title = party.getTitle().length() > maxTitleLength ? party.getTitle().substring(0, maxTitleLength) + "..." : party.getTitle();
+
+        Notification notification = Notification.createNotification("‘" + title + "’ 의 모임 카드를 만들 수 있어요!", maker, "모임을 완료한 후 사진을 등록해서 우리만의 카드를 만들어봐요");
+        notificationRepository.save(notification);
+    }
+
+    public void createCardNotification(Member member, Party party) {
+        int maxTitleLength = 13;
+        String title = party.getTitle().length() > maxTitleLength ? party.getTitle().substring(0, maxTitleLength) + "..." : party.getTitle();
+        Notification notification = Notification.createNotification("‘" + title + "’ 모임의 카드가 만들어졌어요!", member, "마이페이지_앨범에서 새롭게 만들어진 카드를 확인할 수 있어요");
+        notificationRepository.save(notification);
     }
 
     public void createChannelOpenedNotification(Member member, Channel channel) {
 
-            Notification notification = Notification.createNotification("채널이 개설되었어요!", member, "채널: " + channel.getName());
+            Notification notification = Notification.createNotification("지금부터 ’" + channel.getName() + "’ 채널을 시작해보세요!", member, "최소 인원 10명이 모여 모든 서비스가 활성화 되었어요");
             notificationRepository.save(notification);
     }
 
