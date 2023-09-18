@@ -13,15 +13,17 @@ public class ReceivedPraiseInfoResponseDto {
     private Boolean isOpened;
     private String praiseDescription;
     private PraiseType praiseType;
+    private Long memberId;
     private String memberName;
     private String memberProfileImageUrl;
 
     @Builder
-    public ReceivedPraiseInfoResponseDto(Long memberPraiseId, Boolean isOpened, String praiseDescription, PraiseType praiseType, String memberName, String memberProfileImageUrl) {
+    public ReceivedPraiseInfoResponseDto(Long memberPraiseId, Boolean isOpened, String praiseDescription, PraiseType praiseType, Long memberId, String memberName, String memberProfileImageUrl) {
         this.memberPraiseId = memberPraiseId;
         this.isOpened = isOpened;
         this.praiseDescription = praiseDescription;
         this.praiseType = praiseType;
+        this.memberId = memberId;
         this.memberName = memberName;
         this.memberProfileImageUrl = memberProfileImageUrl;
     }
