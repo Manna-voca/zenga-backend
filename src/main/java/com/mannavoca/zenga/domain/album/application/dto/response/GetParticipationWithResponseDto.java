@@ -20,7 +20,7 @@ public class GetParticipationWithResponseDto {
         return getParticipationWithResponseDto;
     }
 
-
+    @Getter
     public static class ParticipationWithResponseDto {
         private Long id;
 
