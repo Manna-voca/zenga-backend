@@ -4,6 +4,7 @@ import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Getter
@@ -26,10 +27,19 @@ public class GetAlbumListResponseDto {
 
         private String imageUrl;
 
-        public static AlbumResponseDto of(Long id, String imageUrl) {
+        private String title;
+
+        private String content;
+
+        private LocalDateTime albumCreatedDate;
+
+        public static AlbumResponseDto of(Long id, String imageUrl, LocalDateTime albumCreatedDate, String title, String content) {
             AlbumResponseDto getAlbumListResponseDto = new AlbumResponseDto();
             getAlbumListResponseDto.id = id;
             getAlbumListResponseDto.imageUrl = imageUrl;
+            getAlbumListResponseDto.albumCreatedDate = albumCreatedDate;
+            getAlbumListResponseDto.title = title;
+            getAlbumListResponseDto.content = content;
 
             return getAlbumListResponseDto;
         }
