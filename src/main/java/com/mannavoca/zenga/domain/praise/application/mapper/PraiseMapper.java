@@ -39,6 +39,7 @@ public class PraiseMapper {
                         .isOpened(memberPraise.getIsOpen())
                         .praiseDescription(memberPraise.getPraise().getDescription())
                         .praiseType(memberPraise.getPraise().getCategory())
+                        .memberId(memberPraise.getIsOpen() ? memberPraise.getPraiseMember().getId() : null)
                         .memberName(memberPraise.getIsOpen() ? memberPraise.getPraiseMember().getNickname() : "익명")
                         .memberProfileImageUrl(memberPraise.getIsOpen() ? memberPraise.getPraiseMember().getProfileImageUrl() : null)
                         .build()
