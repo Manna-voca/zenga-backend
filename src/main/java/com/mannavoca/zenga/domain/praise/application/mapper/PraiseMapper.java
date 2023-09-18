@@ -53,6 +53,7 @@ public class PraiseMapper {
                         .memberPraiseId(memberPraise.getId())
                         .praiseDescription(memberPraise.getPraise().getDescription())
                         .praiseType(memberPraise.getPraise().getCategory())
+                        .memberId(memberPraise.getPraisedMember().getId())
                         .memberName(memberPraise.getPraisedMember().getNickname())
                         .memberProfileImageUrl(memberPraise.getPraisedMember().getProfileImageUrl())
                         .build()

@@ -12,14 +12,16 @@ public class SendPraiseInfoResponseDto {
     private Long memberPraiseId;
     private String praiseDescription;
     private PraiseType praiseType;
+    private Long memberId;
     private String memberName;
     private String memberProfileImageUrl;
 
     @Builder
-    public SendPraiseInfoResponseDto(Long memberPraiseId, String praiseDescription, PraiseType praiseType, String memberName, String memberProfileImageUrl) {
+    public SendPraiseInfoResponseDto(Long memberPraiseId, String praiseDescription, PraiseType praiseType, Long memberId, String memberName, String memberProfileImageUrl) {
         this.memberPraiseId = memberPraiseId;
         this.praiseDescription = praiseDescription;
         this.praiseType = praiseType;
+        this.memberId = memberId;
         this.memberName = memberName;
         this.memberProfileImageUrl = memberProfileImageUrl;
     }
