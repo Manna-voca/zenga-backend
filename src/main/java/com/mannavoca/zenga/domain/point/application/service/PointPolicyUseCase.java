@@ -49,8 +49,8 @@ public class PointPolicyUseCase {
 
     // Member 가 포인트를 사용할 경우
     public void usePoint(Member member, String channelName) {
-        if (pointService.countTotalPointByUserId(member.getUser().getId()) >= 500) {
-            pointService.savePointHistory(member.getUser(), member, -500, "[ " + channelName + " ] 포인트 사용");
+        if (pointService.countTotalPointByUserId(member.getUser().getId()) >= 300) {
+            pointService.savePointHistory(member.getUser(), member, -300, "[ " + channelName + " ] 포인트 사용");
         } else {
             throw BusinessException.of(Error.NOT_ENOUGH_POINT);
         }
