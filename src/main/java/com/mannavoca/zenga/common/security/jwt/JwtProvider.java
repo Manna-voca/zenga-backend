@@ -119,16 +119,15 @@ public class JwtProvider {
                 .build();
     }
 
-    public Long validateRefreshToken(String refreshToken) {
-        validateToken(refreshToken);
+    public Long validateRefreshToken(final String refreshToken) {
+//        validateToken(refreshToken);
 
-        return Long.parseLong(
-                Optional.ofNullable(getRefreshToken(refreshToken))
-                        .orElseThrow(() -> InvalidTokenException.of(Error.REFRESH_TOKEN_NOT_FOUND))
-        );
+        return Optional.ofNullable(getRefreshToken(refreshToken))
+                .orElseThrow(() -> InvalidTokenException.of(Error.REFRESH_TOKEN_NOT_FOUND));
     }
 
-    private String getRefreshToken(String refreshToken) {
-        return String.valueOf(redisTemplate.opsForValue().getAndDelete(refreshToken));
+    private Long getRefreshToken(final String refreshToken) {
+        String userIdString = redisTemplate.opsForValue().getAndDelete(refreshToken);
+        return userIdString == null ? null : Long.valueOf(userIdString);
     }
 }
