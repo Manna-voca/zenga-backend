@@ -49,14 +49,17 @@ public class PartyCreateUseCase {
             throw BusinessException.of(Error.INTERNAL_SERVER_ERROR); // TODO: 예외 처리 따로 해야함
         }
         Party party = partyService.getPartyById(applyPartyRequestDto.getPartyId());
-        participationService.createNewParticipation(false, applyMember, party);
+        Long participationCount = participationService.getParticipationCountByPartyId(applyPartyRequestDto.getPartyId());
+        if (participationCount < party.getMaxCapacity()) {
+            participationService.createNewParticipation(false, applyMember, party);
+            if (participationCount + 1 == party.getMaxCapacity()) {
+                Member maker = party.getParticipationList().stream().filter(Participation::getIsMaker)
+                        .collect(Collectors.toList()).get(0).getMember();
 
-        if (party.isFull()) {
-            Member maker = party.getParticipationList().stream().filter(Participation::getIsMaker)
-                    .collect(Collectors.toList()).get(0).getMember();
-
-            notificationService.createFullPartyNotification(maker, party);
+                notificationService.createFullPartyNotification(maker, party);
+            }
+        } else {
+            throw BusinessException.of(Error.INTERNAL_SERVER_ERROR); // TODO: 예외 처리 따로 해야함
         }
-
     }
 }
