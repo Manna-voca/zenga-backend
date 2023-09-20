@@ -6,9 +6,9 @@ import com.mannavoca.zenga.common.util.SecurityUtils;
 import com.mannavoca.zenga.domain.channel.domain.entity.Channel;
 import com.mannavoca.zenga.domain.member.domain.entity.Member;
 import com.mannavoca.zenga.domain.member.domain.repository.MemberRepository;
-import com.mannavoca.zenga.domain.notification.presentation.dto.response.response.GetNotificationListResponseDto;
 import com.mannavoca.zenga.domain.notification.domain.entity.Notification;
 import com.mannavoca.zenga.domain.notification.domain.repository.NotificationRepository;
+import com.mannavoca.zenga.domain.notification.presentation.dto.response.response.GetNotificationListResponseDto;
 import com.mannavoca.zenga.domain.notification.presentation.dto.response.response.HasUncheckedNotificationResponseDto;
 import com.mannavoca.zenga.domain.party.domain.entity.Party;
 import com.mannavoca.zenga.domain.praise.domain.entity.Praise;
@@ -50,6 +50,7 @@ public class NotificationService {
             }
 
             notification.check();
+            notificationRepository.save(notification);
     }
 
     public void createPraiseNotification(Member member, Praise praise) {
@@ -108,6 +109,7 @@ public class NotificationService {
         for (Notification notification : notificationList) {
             notification.check();
         }
+        notificationRepository.saveAll(notificationList);
     }
 
     public HasUncheckedNotificationResponseDto hasUncheckedNotification(Long memberId) {
