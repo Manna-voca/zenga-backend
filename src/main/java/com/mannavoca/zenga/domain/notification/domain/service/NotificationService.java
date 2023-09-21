@@ -35,7 +35,7 @@ public class NotificationService {
             throw BusinessException.of(Error.NOT_AUTHORIZED);
         }
 
-        List<Notification> notificationList = notificationRepository.findAllByMember(member);
+        List<Notification> notificationList = notificationRepository.findAllByMemberOrderByIdDesc(member);
 
         return GetNotificationListResponseDto.of(notificationList);
     }
@@ -104,7 +104,7 @@ public class NotificationService {
             throw BusinessException.of(Error.NOT_AUTHORIZED);
         }
 
-        List<Notification> notificationList = notificationRepository.findAllByMember(member);
+        List<Notification> notificationList = notificationRepository.findAllByMemberOrderByIdDesc(member);
 
         for (Notification notification : notificationList) {
             notification.check();
