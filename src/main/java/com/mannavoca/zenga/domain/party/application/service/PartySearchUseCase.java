@@ -2,6 +2,7 @@ package com.mannavoca.zenga.domain.party.application.service;
 
 import com.mannavoca.zenga.common.annotation.UseCase;
 import com.mannavoca.zenga.common.dto.SliceResponse;
+import com.mannavoca.zenga.common.util.SecurityUtils;
 import com.mannavoca.zenga.common.util.UserUtils;
 import com.mannavoca.zenga.domain.channel.domain.service.ChannelService;
 import com.mannavoca.zenga.domain.comment.domain.entity.Comment;
@@ -35,6 +36,8 @@ public class PartySearchUseCase {
     private final ParticipationService participationService;
 
     public SliceResponse<PartyTapResponseDto> searchPartyListInChannel(Long channelId, Long partyId, Pageable pageable) {
+        memberService.validateChannelMember(SecurityUtils.getUserId(), channelId);
+
         Slice<Party> partyListByChannelId = partyService.getPartyListByChannelId(channelId, partyId, pageable);
 
         Slice<PartyTapResponseDto> partyTapResponseDtoSlice = partyListByChannelId.map(party -> {
@@ -47,6 +50,8 @@ public class PartySearchUseCase {
     }
 
     public PartyDetailInfoResponseDto getPartyDetailInfo(Long partyId, Long channelId) {
+        memberService.validateChannelMember(SecurityUtils.getUserId(), channelId);
+
         Member member = userUtils.getMember(channelId);
         Party party = partyService.getPartyById(partyId);
         Long channelMakerId = memberService.getChannelMaker(channelId).getId();
