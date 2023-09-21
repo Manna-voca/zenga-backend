@@ -6,9 +6,7 @@ import com.mannavoca.zenga.domain.block.domain.service.MemberBlockService;
 import com.mannavoca.zenga.domain.member.domain.entity.Member;
 import com.mannavoca.zenga.domain.member.domain.service.MemberService;
 import com.mannavoca.zenga.domain.party.domain.service.ParticipationService;
-import com.mannavoca.zenga.domain.party.domain.service.PartyService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
@@ -26,7 +24,7 @@ public class PartyUpdateEventListener {
     @TransactionalEventListener
     public void checkPartyCountAndUpdateMemberBlock(Long memberId){
         Member member = memberService.findMemberById(memberId);
-        Long partyCount = participationService.getParticipationCountByMemberId(memberId);
+        Long partyCount = participationService.getFinishedParticipationCountByMemberId(memberId);
 
         switch (partyCount.intValue()){
             case 1:
