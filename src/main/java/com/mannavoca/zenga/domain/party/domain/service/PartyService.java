@@ -29,7 +29,7 @@ public class PartyService {
                     .content(createPartyRequestDto.getContent())
                     .maxCapacity(createPartyRequestDto.getMaxCapacity())
                     .location(createPartyRequestDto.getLocation())
-                    .partyDate(createPartyRequestDto.getPartyDate())
+                        .partyDate(createPartyRequestDto.getPartyDate().plusHours(9L))
                     .partyImageUrl(createPartyRequestDto.getPartyImageUrl()).cardImageUrl(null)
                         .channel(channel).isOpen(true).build());
     }
