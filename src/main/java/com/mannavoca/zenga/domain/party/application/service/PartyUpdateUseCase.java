@@ -22,7 +22,6 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -76,6 +75,7 @@ public class PartyUpdateUseCase {
         List<Participation> particiationList =  party.getParticipationList();
         List<Member> participationMemberList = particiationList.stream().map(Participation::getMember).collect(Collectors.toList());
         pointPolicyUseCase.accumulatePointByParty(participationMemberList, party);
+        particiationList.forEach(partyMember -> partyUpdateEventListener.checkPartyCountAndUpdateMemberBlock(partyMember.getMember().getId()));
         partyUpdateEventListener.checkPartyCountAndUpdateMemberBlock(member.getId());
 
         particiationList.forEach(
