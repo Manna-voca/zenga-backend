@@ -153,11 +153,17 @@ public class MemberService {
                 .orElseThrow(() -> BusinessException.of(Error.DATA_NOT_FOUND));
 
         if (!member.getUser().getId().equals(userId)) {
-            throw BusinessException.of(Error.NOT_AUTHORIZED);
+            throw BusinessException.of(Error.NOT_USER_OF_MEMBER);
         }
 
         member.updateProfile(requestDto.getProfileImageUrl(), requestDto.getName(), requestDto.getDescription());
         return MemberMapper.mapMemberToMemberInfoResponseDto(member);
+    }
+
+    public void validateUserPermissionToMember(final Long userId, final Long memberId) {
+        if (!memberRepository.isUserInChannelByMemberId(userId, memberId)) {
+            throw BusinessException.of(Error.NOT_MEMBER_OF_CHANNEL);
+        }
     }
 
 }
