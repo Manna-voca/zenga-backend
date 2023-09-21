@@ -34,6 +34,7 @@ public enum Error {
 
     // 사용자
     USER_NOT_FOUND(HttpStatus.NOT_FOUND,"사용자를 찾을 수 없습니다.", 1000),
+    NOT_USER_OF_MEMBER(HttpStatus.FORBIDDEN, "멤버 프로필을 수정할 권한이 없습니다.", 1001),
 
 //    USER_ALREADY_ONBOARDED(HttpStatus.CONFLICT,"이미 사용자 정보를 입력했습니다.", 1001),
 
