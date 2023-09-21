@@ -3,10 +3,12 @@ package com.mannavoca.zenga.domain.party.application.service;
 import com.mannavoca.zenga.common.annotation.UseCase;
 import com.mannavoca.zenga.common.exception.BusinessException;
 import com.mannavoca.zenga.common.exception.Error;
+import com.mannavoca.zenga.common.util.SecurityUtils;
 import com.mannavoca.zenga.common.util.UserUtils;
 import com.mannavoca.zenga.domain.channel.domain.entity.Channel;
 import com.mannavoca.zenga.domain.channel.domain.service.ChannelService;
 import com.mannavoca.zenga.domain.member.domain.entity.Member;
+import com.mannavoca.zenga.domain.member.domain.service.MemberService;
 import com.mannavoca.zenga.domain.notification.domain.service.NotificationService;
 import com.mannavoca.zenga.domain.party.application.dto.request.ApplyPartyRequestDto;
 import com.mannavoca.zenga.domain.party.application.dto.request.CreatePartyRequestDto;
@@ -28,12 +30,15 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class PartyCreateUseCase {
     private final UserUtils userUtils;
+    private final MemberService memberService;
     private final ChannelService channelService;
     private final PartyService partyService;
     private final ParticipationService participationService;
     private final NotificationService notificationService;
 
     public CreatePartyResponseDto createNewParty(CreatePartyRequestDto createPartyRequestDto) {
+        memberService.validateChannelMember(SecurityUtils.getUserId(), createPartyRequestDto.getChannelId());
+
         Member partyMaker = userUtils.getMember(createPartyRequestDto.getChannelId());
         Channel channel = channelService.getChannelById(createPartyRequestDto.getChannelId());
 
@@ -44,6 +49,8 @@ public class PartyCreateUseCase {
     }
 
     public void applyParty(ApplyPartyRequestDto applyPartyRequestDto) {
+        memberService.validateChannelMember(SecurityUtils.getUserId(), applyPartyRequestDto.getChannelId());
+
         Member applyMember = userUtils.getMember(applyPartyRequestDto.getChannelId());
         if (participationService.isAlreadyApplied(applyPartyRequestDto.getPartyId(), applyMember.getId())) {
             throw BusinessException.of(Error.INTERNAL_SERVER_ERROR); // TODO: 예외 처리 따로 해야함

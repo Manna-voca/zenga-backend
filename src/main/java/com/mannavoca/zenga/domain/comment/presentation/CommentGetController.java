@@ -21,11 +21,12 @@ public class CommentGetController {
     public ResponseEntity<ResponseDto<SliceResponse<CommentInfoResponseDto>>> getParentCommentList
             (
                     @PathVariable Long partyId,
+                    @RequestParam Long channelId,
                     @RequestParam(required = false) Long commentId,
                     @PageableDefault(size = 6) Pageable pageable
             )
     {
-        SliceResponse<CommentInfoResponseDto> parentCommentList = commentSearchUseCase.getParentCommentList(partyId, commentId, pageable);
+        SliceResponse<CommentInfoResponseDto> parentCommentList = commentSearchUseCase.getParentCommentList(channelId, partyId, commentId, pageable);
         return ResponseEntity.ok(ResponseDto.of(ResponseCode.COMMENT_SEARCHING, parentCommentList));
     }
 

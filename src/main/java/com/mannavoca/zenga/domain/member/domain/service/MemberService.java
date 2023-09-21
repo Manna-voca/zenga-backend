@@ -39,6 +39,11 @@ public class MemberService {
                 .orElseThrow(() -> BusinessException.of(Error.MEMBER_NOT_FOUND));
     }
 
+    public void validateChannelMember(Long userId, Long channelId) {
+        memberRepository.findMemberByUser_IdAndChannel_Id(userId, channelId)
+                .orElseThrow(() -> BusinessException.of(Error.NOT_MEMBER_OF_CHANNEL));
+    }
+
     public List<Member> find8RandomMembersByChannelId(Long memberId, Long channelId) {
         List<Member> membersByClubId = memberRepository.findMembersByChannelId(memberId, channelId);
 
