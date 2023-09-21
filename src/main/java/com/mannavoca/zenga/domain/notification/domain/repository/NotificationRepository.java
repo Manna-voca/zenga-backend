@@ -10,7 +10,7 @@ import java.util.List;
 
 @Repository
 public interface NotificationRepository extends JpaRepository<Notification, Long>, NotificationRepositoryCustom {
-    List<Notification> findAllByMember(Member member);
+    List<Notification> findAllByMemberOrderByIdDesc(Member member);
 
     void updateCheckByMemberIdAndIsCheck(Long memberId);
 
