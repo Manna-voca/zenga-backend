@@ -10,13 +10,15 @@ import com.mannavoca.zenga.domain.member.application.mapper.MemberMapper;
 import com.mannavoca.zenga.domain.member.domain.service.MemberService;
 import com.mannavoca.zenga.domain.notification.domain.service.NotificationService;
 import com.mannavoca.zenga.domain.user.domain.entity.User;
-import com.mannavoca.zenga.domain.user.domain.service.UserFindService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 @RequiredArgsConstructor
 @Slf4j
 @UseCase
+@Transactional(propagation = Propagation.REQUIRES_NEW)
 public class MemberCreateUseCase {
     private final MemberService memberService;
     private final ChannelService channelService;
