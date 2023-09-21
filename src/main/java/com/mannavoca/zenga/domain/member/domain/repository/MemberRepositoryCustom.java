@@ -15,4 +15,6 @@ public interface MemberRepositoryCustom {
     boolean existsByUserIdAndChannelId(Long userId, Long channelId);
 
     Long countMemberByChannelId(Long channelId);
+
+    boolean isUserInChannelByMemberId(Long userId, Long memberId);
 }

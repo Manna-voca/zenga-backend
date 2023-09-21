@@ -18,6 +18,7 @@ import com.mannavoca.zenga.domain.party.application.mapper.PartyMapper;
 import com.mannavoca.zenga.domain.party.domain.entity.Party;
 import com.mannavoca.zenga.domain.party.domain.service.ParticipationService;
 import com.mannavoca.zenga.domain.party.domain.service.PartyService;
+import com.mannavoca.zenga.domain.user.domain.entity.User;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Pageable;
@@ -95,6 +96,9 @@ public class MemberReadUseCase {
     }
 
     public MemberInfoResponseDto getMemberInfoByMemberId(final Long memberId) {
+        final User user = userUtils.getUser();
+        memberService.validateUserPermissionToMember(user.getId(), memberId);
+
         return MemberMapper.mapMemberToMemberInfoResponseDto(memberService.findMemberById(memberId));
     }
 }
