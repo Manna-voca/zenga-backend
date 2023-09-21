@@ -12,7 +12,9 @@ import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
+import static com.mannavoca.zenga.domain.channel.domain.entity.QChannel.channel;
 import static com.mannavoca.zenga.domain.member.domain.entity.QMember.member;
+import static com.mannavoca.zenga.domain.user.domain.entity.QUser.user;
 
 @Repository
 @RequiredArgsConstructor
@@ -73,6 +75,23 @@ public class MemberRepositoryImpl implements MemberRepositoryCustom {
                         member.channel.id.eq(channelId)
                 )
                 .fetchFirst();
+    }
+
+    @Override
+    public boolean isUserInChannelByMemberId(Long userId, Long memberId) {
+        Long fetchedChannelId = queryFactory
+                .select(channel.id)
+                .from(member)
+                .innerJoin(member.channel, channel)
+                .where(member.id.eq(memberId))
+                .fetchOne();
+
+        return queryFactory
+                .from(member)
+                .innerJoin(member.user, user)
+                .innerJoin(member.channel, channel)
+                .where(user.id.eq(userId), channel.id.eq(fetchedChannelId))
+                .fetchFirst() != null;
     }
 
     private Slice<Member> checkLastPage(Pageable pageable, List<Member> results) {
