@@ -2,9 +2,11 @@ package com.mannavoca.zenga.domain.comment.application.service;
 
 import com.mannavoca.zenga.common.annotation.UseCase;
 import com.mannavoca.zenga.common.dto.SliceResponse;
+import com.mannavoca.zenga.common.util.SecurityUtils;
 import com.mannavoca.zenga.domain.comment.application.dto.response.CommentInfoResponseDto;
 import com.mannavoca.zenga.domain.comment.domain.entity.Comment;
 import com.mannavoca.zenga.domain.comment.domain.service.CommentService;
+import com.mannavoca.zenga.domain.member.domain.service.MemberService;
 import com.mannavoca.zenga.domain.party.domain.service.ParticipationService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -20,10 +22,13 @@ import java.util.*;
 @Transactional(readOnly = true)
 @RequiredArgsConstructor
 public class CommentSearchUseCase {
+    private final MemberService memberService;
     private final ParticipationService participationService;
     private final CommentService commentService;
 
-    public SliceResponse<CommentInfoResponseDto> getParentCommentList(Long partyId, Long commentId, Pageable pageable) {
+    public SliceResponse<CommentInfoResponseDto> getParentCommentList(Long channelId, Long partyId, Long commentId, Pageable pageable) {
+        memberService.validateChannelMember(SecurityUtils.getUserId(), channelId);
+
         Long partyMarkerId = participationService.getPartyMarkerId(partyId);
         Slice<Comment> commentSlice = commentService.findAllParentCommentInParty(partyId, commentId, pageable);
 
