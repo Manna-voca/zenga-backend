@@ -29,7 +29,7 @@ public class PartyService {
                     .content(createPartyRequestDto.getContent())
                     .maxCapacity(createPartyRequestDto.getMaxCapacity())
                     .location(createPartyRequestDto.getLocation())
-                        .partyDate(createPartyRequestDto.getPartyDate().plusHours(9L))
+                        .partyDate(createPartyRequestDto.getPartyDate() != null ? createPartyRequestDto.getPartyDate().plusHours(9L) : null)
                     .partyImageUrl(createPartyRequestDto.getPartyImageUrl()).cardImageUrl(null)
                         .channel(channel).isOpen(true).build());
     }
@@ -57,7 +57,7 @@ public class PartyService {
                 editPartyInfoRequestDto.getContent(),
                 editPartyInfoRequestDto.getMaxCapacity(),
                 editPartyInfoRequestDto.getLocation(),
-                editPartyInfoRequestDto.getPartyDate().plusHours(9L),
+                editPartyInfoRequestDto.getPartyDate() != null ? editPartyInfoRequestDto.getPartyDate().plusHours(9L) : null,
                 editPartyInfoRequestDto.getPartyImageUrl());
         return partyRepository.save(party);
     }
