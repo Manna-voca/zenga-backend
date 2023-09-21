@@ -14,6 +14,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;
 
+import java.time.ZoneId;
 import java.util.List;
 
 @Slf4j
@@ -57,7 +58,7 @@ public class PartyService {
                 editPartyInfoRequestDto.getContent(),
                 editPartyInfoRequestDto.getMaxCapacity(),
                 editPartyInfoRequestDto.getLocation(),
-                editPartyInfoRequestDto.getPartyDate(),
+                editPartyInfoRequestDto.getPartyDate().atZone(ZoneId.of("Asia/Seoul")).toLocalDateTime(),
                 editPartyInfoRequestDto.getPartyImageUrl());
         return partyRepository.save(party);
     }
