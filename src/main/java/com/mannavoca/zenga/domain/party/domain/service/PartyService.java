@@ -57,7 +57,7 @@ public class PartyService {
                 editPartyInfoRequestDto.getContent(),
                 editPartyInfoRequestDto.getMaxCapacity(),
                 editPartyInfoRequestDto.getLocation(),
-                editPartyInfoRequestDto.getPartyDate().plusDays(9L),
+                editPartyInfoRequestDto.getPartyDate().plusHours(9L),
                 editPartyInfoRequestDto.getPartyImageUrl());
         return partyRepository.save(party);
     }
