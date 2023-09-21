@@ -15,12 +15,15 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
 @RequiredArgsConstructor
 @Slf4j
 @UseCase
+@Transactional(propagation = Propagation.REQUIRES_NEW)
 public class ChannelReadUseCase {
     private final ChannelService channelService;
     private final MemberService memberService;

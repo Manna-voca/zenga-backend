@@ -3,13 +3,11 @@ package com.mannavoca.zenga.domain.member.application.service;
 import com.mannavoca.zenga.common.annotation.UseCase;
 import com.mannavoca.zenga.common.util.UserUtils;
 import com.mannavoca.zenga.domain.block.application.dto.response.BlockCountInfoListResponseDto;
-import com.mannavoca.zenga.domain.block.application.dto.response.BlockCountResponseDto;
 import com.mannavoca.zenga.domain.block.application.dto.response.BlockCountResponseInterface;
 import com.mannavoca.zenga.domain.block.application.dto.response.BlockInfoResponseDto;
 import com.mannavoca.zenga.domain.block.domain.service.BlockService;
 import com.mannavoca.zenga.domain.channel.domain.service.ChannelService;
 import com.mannavoca.zenga.domain.member.application.dto.response.MemberInfoResponseDto;
-import com.mannavoca.zenga.domain.member.application.mapper.BlockMapper;
 import com.mannavoca.zenga.domain.member.application.mapper.MemberMapper;
 import com.mannavoca.zenga.domain.member.domain.entity.Member;
 import com.mannavoca.zenga.domain.member.domain.entity.enumType.State;
@@ -24,6 +22,8 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Map;
@@ -32,6 +32,7 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 @Slf4j
 @UseCase
+@Transactional(propagation = Propagation.REQUIRES_NEW)
 public class MemberReadUseCase {
     private final MemberService memberService;
     private final ChannelService channelService;
