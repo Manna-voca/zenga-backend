@@ -53,7 +53,7 @@ public class PraiseUpdateEventListener {
     @TransactionalEventListener
     public void updatePraisedMemberBlock(final PraisedMemberEventDto praisedMemberEventDto){
         final Member praisedMember = memberService.findMemberById(praisedMemberEventDto.getPraisedMemberId());
-        if (memberPraiseService.existsReceivedPraiseByMemberId(praisedMember.getId())) {
+        if (!memberPraiseService.existsReceivedPraiseByMemberId(praisedMember.getId())) {
             BlockType foundBlockType = BlockType.getFirstOneFromBlockType(BlockType.fromPraiseType(praisedMemberEventDto.getPraiseType()));
             Block foundBlock = blockService.findBlockByBlockType(foundBlockType);
             memberBlockService.createMemberBlock(praisedMember, foundBlock);
