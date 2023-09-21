@@ -1,6 +1,8 @@
 package com.mannavoca.zenga.domain.praise.application.service;
 
 import com.mannavoca.zenga.common.annotation.UseCase;
+import com.mannavoca.zenga.common.exception.BusinessException;
+import com.mannavoca.zenga.common.exception.Error;
 import com.mannavoca.zenga.common.util.UserUtils;
 import com.mannavoca.zenga.domain.member.domain.entity.Member;
 import com.mannavoca.zenga.domain.member.domain.service.MemberService;
@@ -31,6 +33,9 @@ public class PraiseCreateUseCase {
     @Transactional
     public CurrentTodoPraiseResponseDto getCurrentTodoPraiseAndMemberList(Long channelId) {
         Member member = userUtils.getMember(channelId);
+        if (memberService.countMemberByChannelId(channelId) < 10) {
+            throw BusinessException.of(Error.NOT_ENOUGH_MEMBER);
+        }
         Optional<MemberPraise> currentTodoPraiseOpt = memberPraiseService.findCurrentTodoPraiseForMember(member.getId());
 
         if (currentTodoPraiseOpt.isPresent()) { // API 요청을 한적이 있어서 저장이 된 것이고 다시 조회하면 memberPraise 를 찾아서 데이터를 리턴
