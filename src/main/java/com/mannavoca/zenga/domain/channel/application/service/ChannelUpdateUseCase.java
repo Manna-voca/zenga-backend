@@ -14,10 +14,13 @@ import com.mannavoca.zenga.domain.member.domain.entity.enumType.LevelType;
 import com.mannavoca.zenga.domain.member.domain.service.MemberService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 @RequiredArgsConstructor
 @Slf4j
 @UseCase
+@Transactional(propagation = Propagation.REQUIRES_NEW)
 public class ChannelUpdateUseCase {
     private final ChannelService channelService;
     private final MemberService memberService;
