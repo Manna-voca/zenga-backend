@@ -8,7 +8,7 @@ import org.springframework.data.jpa.repository.Query;
 import java.util.List;
 import java.util.Optional;
 
-public interface ParticipationRepository extends JpaRepository<Participation, Long> {
+public interface ParticipationRepository extends JpaRepository<Participation, Long>, ParticipationRepositoryCustom {
     List<Participation> findParticipationByParty_Id(Long partyId);
 
     boolean existsByParty_IdAndMember_Id(Long partyId, Long memberId);

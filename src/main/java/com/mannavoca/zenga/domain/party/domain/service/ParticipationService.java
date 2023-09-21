@@ -10,7 +10,6 @@ import com.mannavoca.zenga.domain.album.application.dto.response.GetAlbumListRes
 import com.mannavoca.zenga.domain.album.application.dto.response.GetParticipationWithResponseDto;
 import com.mannavoca.zenga.domain.member.domain.entity.Member;
 import com.mannavoca.zenga.domain.member.domain.repository.MemberRepository;
-import com.mannavoca.zenga.domain.notification.domain.service.NotificationService;
 import com.mannavoca.zenga.domain.party.domain.entity.Participation;
 import com.mannavoca.zenga.domain.party.domain.entity.Party;
 import com.mannavoca.zenga.domain.party.domain.repository.ParticipationRepository;
@@ -65,8 +64,8 @@ public class ParticipationService {
         return participationRepository.countByParty_Id(partyId);
     }
 
-    public Long getParticipationCountByMemberId(Long memberId) {
-        return participationRepository.countByMember_Id(memberId);
+    public Long getFinishedParticipationCountByMemberId(Long memberId) {
+        return participationRepository.countFinishedParticipationByMemberId(memberId);
     }
 
     public Long getPartyMarkerId(Long partyId) {
