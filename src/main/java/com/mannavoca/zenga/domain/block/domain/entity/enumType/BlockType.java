@@ -9,13 +9,13 @@ public enum BlockType implements CodeValue {
 
     PINK("PINK", "외적 칭찬을 받았어요", PraiseType.APPEARANCE),
     ORANGE("ORANGE", "성격 칭찬을 받았어요", PraiseType.PERSONALITY),
-    SKY_BLUE("SKY_BLUE", "도전﹒열정 칭찬을 받았어요", PraiseType.PASSION),
-    LIGHT_GREEN("LIGHT_GREEN", "그 외 칭찬을 받았어요", PraiseType.OTHERS),
-    YELLOW1("YELLOW1", "첫 모임에 참여했어요", null),
-    YELLOW10("YELLOW10", "모임에 총 10번 참여했어요", null),
-    YELLOW30("YELLOW30", "모임에 총 30번 참여했어요", null),
-    YELLOW50("YELLOW50", "모임에 총 50번 참여했어요", null),
-    PURPLE("PURPLE", "능력 칭찬을 받았어요", PraiseType.ABILITY),
+    YELLOW("YELLOW", "도전﹒열정 칭찬을 받았어요", PraiseType.PASSION),
+    SKY_BLUE("SKY_BLUE", "그 외 칭찬을 받았어요", PraiseType.OTHERS),
+    PURPLE1("PURPLE1", "첫 모임에 참여했어요", null),
+    PURPLE10("PURPLE10", "모임에 총 10번 참여했어요", null),
+    PURPLE30("PURPLE30", "모임에 총 30번 참여했어요", null),
+    PURPLE50("PURPLE50", "모임에 총 50번 참여했어요", null),
+    LIGHT_GREEN("LIGHT_GREEN", "능력 칭찬을 받았어요", PraiseType.ABILITY),
     LIGHT_BROWN1("LIGHT_BROWN1", "첫 칭찬을 보냈어요", null),
     LIGHT_BROWN10("LIGHT_BROWN10", "칭찬을 총 10번 보냈어요", null),
     LIGHT_BROWN50("LIGHT_BROWN50", "칭찬을 총 50번 보냈어요", null),
@@ -24,7 +24,7 @@ public enum BlockType implements CodeValue {
     ORANGE_FIRST("ORANGE_FIRST", "첫 칭찬을 받았어요", null),
     SKY_BLUE_FIRST("SKY_BLUE_FIRST", "첫 칭찬을 받았어요", null),
     LIGHT_GREEN_FIRST("LIGHT_GREEN_FIRST", "첫 칭찬을 받았어요", null),
-    PURPLE_FIRST("PURPLE_FIRST", "첫 칭찬을 받았어요", null)
+    YELLOW_FIRST("PURPLE_FIRST", "첫 칭찬을 받았어요", null)
 
     ;
 
@@ -67,12 +67,12 @@ public enum BlockType implements CodeValue {
                 return PINK_FIRST;
             case ORANGE:
                 return ORANGE_FIRST;
+            case YELLOW:
+                return YELLOW_FIRST;
             case SKY_BLUE:
                 return SKY_BLUE_FIRST;
             case LIGHT_GREEN:
                 return LIGHT_GREEN_FIRST;
-            case PURPLE:
-                return PURPLE_FIRST;
             default:
                 throw BusinessException.of(Error.INTERNAL_SERVER_ERROR);
         }
@@ -86,20 +86,20 @@ public enum BlockType implements CodeValue {
             case ORANGE:
             case ORANGE_FIRST:
                 return "ORANGE";
-            case SKY_BLUE:
+            case YELLOW:
             case SKY_BLUE_FIRST:
                 return "SKY_BLUE";
-            case LIGHT_GREEN:
+            case SKY_BLUE:
             case LIGHT_GREEN_FIRST:
                 return "LIGHT_GREEN";
-            case PURPLE:
-            case PURPLE_FIRST:
-                return "PURPLE";
-            case YELLOW1:
-            case YELLOW10:
-            case YELLOW30:
-            case YELLOW50:
+            case LIGHT_GREEN:
+            case YELLOW_FIRST:
                 return "YELLOW";
+            case PURPLE1:
+            case PURPLE10:
+            case PURPLE30:
+            case PURPLE50:
+                return "PURPLE";
             case LIGHT_BROWN1:
             case LIGHT_BROWN10:
             case LIGHT_BROWN50:
