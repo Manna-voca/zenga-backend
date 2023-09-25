@@ -29,7 +29,7 @@ public class PointPolicyUseCase {
     // Member 가 칭찬할 경우 50점 추가 (일주일에 10번)
     public void accumulatePointByPraise(User user, Member member, String channelName) {
         if (isAvailableAccumulatePointByCase(member.getId(), 50)) {
-            pointService.savePointHistory(user, member, 50, "[ " + channelName + " ] 칭찬으로 인한 포인트 적립");
+            pointService.savePointHistory(user, member, 50, "[ " + channelName + " ] 칭찬 포인트가 적립되었어요!");
         }
     }
 
@@ -40,7 +40,7 @@ public class PointPolicyUseCase {
         memberList.stream()
                 .filter(member -> isAvailableAccumulatePointByCase(member.getId(), 100))
                 .forEach(member -> userMemberMap.putIfAbsent(member.getUser(), member));
-        pointService.savePointHistoryBulk(userMemberMap, 100, "[ " + party.getChannel().getName() + " ] 모임으로 인한 포인트 적립");
+        pointService.savePointHistoryBulk(userMemberMap, 100, "[ " + party.getChannel().getName() + " ] 모임에 참여하여 포인트가 적립되었어요!");
 
         memberList.forEach(
                 member -> notificationService.createPartyCompletedNotification(member, party)
@@ -50,7 +50,7 @@ public class PointPolicyUseCase {
     // Member 가 포인트를 사용할 경우
     public void usePoint(Member member, String channelName) {
         if (pointService.countTotalPointByUserId(member.getUser().getId()) >= 300) {
-            pointService.savePointHistory(member.getUser(), member, -300, "[ " + channelName + " ] 포인트 사용");
+            pointService.savePointHistory(member.getUser(), member, -300, "[ " + channelName + " ] 받은 칭찬을 확인했어요!");
         } else {
             throw BusinessException.of(Error.NOT_ENOUGH_POINT);
         }
