@@ -41,7 +41,7 @@ public class PointRepositoryImpl implements PointRepositoryCustom {
     @Override
     public Long countPointHistoryByCase(Long memberId, Integer pointCase) {
         LocalDateTime now = LocalDateTime.now();
-        LocalDateTime monday = now.with(DayOfWeek.MONDAY);
+        LocalDateTime monday = now.with(DayOfWeek.MONDAY).with(LocalTime.MIN);
         LocalDateTime sunday = now.with(DayOfWeek.SUNDAY).with(LocalTime.MAX);
 
         Long count = queryFactory
