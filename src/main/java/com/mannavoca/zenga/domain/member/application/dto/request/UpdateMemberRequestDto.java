@@ -3,6 +3,7 @@ package com.mannavoca.zenga.domain.member.application.dto.request;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import javax.annotation.Nullable;
 import javax.validation.constraints.NotBlank;
 
 @Getter
@@ -15,6 +16,6 @@ public class UpdateMemberRequestDto {
     @NotBlank(message = "이름을 입력해주세요.")
     private String name;
 
-    @NotBlank(message = "한줄소개를 입력해주세요.")
+    @Nullable
     private String description;
 }
