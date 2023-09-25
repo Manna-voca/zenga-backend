@@ -10,7 +10,6 @@ import com.mannavoca.zenga.domain.praise.application.dto.event.PraisedMemberEven
 import com.mannavoca.zenga.domain.praise.domain.service.MemberPraiseService;
 import com.mannavoca.zenga.domain.praise.domain.service.PraiseService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
@@ -48,8 +47,7 @@ public class PraiseUpdateEventListener {
 
     }
 
-    @Async
-    @Transactional(propagation = Propagation.REQUIRES_NEW)
+    @Transactional(propagation = Propagation.REQUIRED)
     @TransactionalEventListener
     public void updatePraisedMemberBlock(final PraisedMemberEventDto praisedMemberEventDto){
         final Member praisedMember = memberService.findMemberById(praisedMemberEventDto.getPraisedMemberId());
