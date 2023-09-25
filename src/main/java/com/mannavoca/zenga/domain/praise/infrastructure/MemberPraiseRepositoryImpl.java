@@ -106,7 +106,7 @@ public class MemberPraiseRepositoryImpl implements MemberPraiseRepositoryCustom 
         return queryFactory.select(memberPraise.count())
                 .from(memberPraise)
                 .where(
-                        memberPraise.praiseMember.isNotNull(), memberPraise.praiseMember.id.eq(memberId)
+                        memberPraise.praisedMember.isNotNull(), memberPraise.praiseMember.id.eq(memberId)
                 )
                 .fetchOne();
     }
