@@ -28,16 +28,16 @@ public class PartyUpdateEventListener {
 
         switch (partyCount.intValue()){
             case 1:
-                memberBlockService.createMemberBlock(member, blockService.findBlockByBlockType(BlockType.YELLOW1));
+                memberBlockService.createMemberBlock(member, blockService.findBlockByBlockType(BlockType.PURPLE1));
                 break;
             case 10:
-                memberBlockService.createMemberBlock(member, blockService.findBlockByBlockType(BlockType.YELLOW10));
+                memberBlockService.createMemberBlock(member, blockService.findBlockByBlockType(BlockType.PURPLE10));
                 break;
             case 30:
-                memberBlockService.createMemberBlock(member, blockService.findBlockByBlockType(BlockType.YELLOW30));
+                memberBlockService.createMemberBlock(member, blockService.findBlockByBlockType(BlockType.PURPLE30));
                 break;
             case 50:
-                memberBlockService.createMemberBlock(member, blockService.findBlockByBlockType(BlockType.YELLOW50));
+                memberBlockService.createMemberBlock(member, blockService.findBlockByBlockType(BlockType.PURPLE50));
                 break;
         }
     }
