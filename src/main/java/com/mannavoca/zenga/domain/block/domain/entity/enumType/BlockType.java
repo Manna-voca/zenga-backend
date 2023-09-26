@@ -86,13 +86,13 @@ public enum BlockType implements CodeValue {
             case ORANGE:
             case ORANGE_FIRST:
                 return "ORANGE";
-            case YELLOW:
+            case SKY_BLUE:
             case SKY_BLUE_FIRST:
                 return "SKY_BLUE";
-            case SKY_BLUE:
+            case LIGHT_GREEN:
             case LIGHT_GREEN_FIRST:
                 return "LIGHT_GREEN";
-            case LIGHT_GREEN:
+            case YELLOW:
             case YELLOW_FIRST:
                 return "YELLOW";
             case PURPLE1:
