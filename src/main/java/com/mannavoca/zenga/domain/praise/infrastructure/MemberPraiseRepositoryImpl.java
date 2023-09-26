@@ -113,12 +113,12 @@ public class MemberPraiseRepositoryImpl implements MemberPraiseRepositoryCustom 
 
     @Override
     public Boolean existsReceivedPraiseByMemberId(final Long memberId) {
-        return Optional.ofNullable(queryFactory.select(memberPraise.count())
+        return queryFactory.select(memberPraise.count())
                 .from(memberPraise)
                 .where(
-                        memberPraise.praisedMember.isNotNull(), memberPraise.praisedMember.id.eq(memberId)
+                        memberPraise.praisedMember.id.eq(memberId)
                 )
-                .fetchOne()).orElse(0L) > 0;
+                .fetchFirst() != null;
     }
 
 }
