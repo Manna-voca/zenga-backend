@@ -20,6 +20,6 @@ if [ ! -z ${TARGET_PID} ]; then
   sudo kill ${TARGET_PID}
 fi
 
-nohup java -jar -Dserver.port=${TARGET_PORT} -Dspring.profiles.active=dev -Duser.timezone=Asia/Seoul /home/ec2-user/zenga/build/libs/zenga-0.0.1-SNAPSHOT.jar > /home/ec2-user/nohup.out 2>&1 &
+nohup java -jar -Dserver.port=${TARGET_PORT} -Dspring.profiles.active=prod -Duser.timezone=Asia/Seoul /home/ec2-user/zenga/build/libs/zenga-0.0.1-SNAPSHOT.jar > /home/ec2-user/nohup.out 2>&1 &
 echo "> Now new WAS runs at ${TARGET_PORT}."
 exit 0
