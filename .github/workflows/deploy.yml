@@ -1,9 +1,11 @@
 name: zenga-backend
 
-on:
-  push:
-    branches: [ "dev" ]
-  workflow_dispatch: # (2).수동 실행
+  # EB 배포 비활성화
+
+  # on:
+  # push:
+  # branches: [ "dev" ]
+# workflow_dispatch: # (2).수동 실행
 
 permissions:
   contents: read
