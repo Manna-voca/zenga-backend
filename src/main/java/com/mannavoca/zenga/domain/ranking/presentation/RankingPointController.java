@@ -3,6 +3,7 @@ package com.mannavoca.zenga.domain.ranking.presentation;
 import com.mannavoca.zenga.common.dto.ResponseDto;
 import com.mannavoca.zenga.domain.ranking.application.dto.ChannelMemberRankDto;
 import com.mannavoca.zenga.domain.ranking.application.dto.MemberRankDto;
+import com.mannavoca.zenga.domain.ranking.application.dto.MemberRankingPointHistoryDto;
 import com.mannavoca.zenga.domain.ranking.application.service.RankingPointReadUseCase;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -34,6 +35,13 @@ public class RankingPointController {
             @Valid @NotNull @RequestParam("channelId") final Long channelId
     ) {
         return ResponseEntity.ok(ResponseDto.success(rankingPointReadUseCase.findChannelMemberRanks(channelId)));
+    }
+
+    @GetMapping("/point/history")
+    public ResponseEntity<ResponseDto<MemberRankingPointHistoryDto>> findMyRankingPointHistory(
+            @Valid @NotNull @RequestParam("memberId") final Long memberId
+    ) {
+        return ResponseEntity.ok(ResponseDto.success(rankingPointReadUseCase.findMyRankingPointHistory(memberId)));
     }
 
 }
