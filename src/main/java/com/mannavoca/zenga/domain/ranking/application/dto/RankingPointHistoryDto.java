@@ -12,7 +12,7 @@ public class RankingPointHistoryDto {
     private Integer point;
 
     public RankingPointHistoryDto(LocalDateTime dateTime, String contents, Integer point) {
-        this.date = dateTime.format(DateTimeFormatter.ofPattern("yy.mm.dd"));
+        this.date = dateTime.format(DateTimeFormatter.ofPattern("yy.MM.dd"));
         this.contents = contents;
         this.point = point;
     }
