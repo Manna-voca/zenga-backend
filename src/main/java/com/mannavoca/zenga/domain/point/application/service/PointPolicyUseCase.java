@@ -1,5 +1,9 @@
 package com.mannavoca.zenga.domain.point.application.service;
 
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
+
 import com.mannavoca.zenga.common.annotation.UseCase;
 import com.mannavoca.zenga.common.exception.BusinessException;
 import com.mannavoca.zenga.common.exception.Error;
@@ -8,12 +12,9 @@ import com.mannavoca.zenga.domain.notification.domain.service.NotificationServic
 import com.mannavoca.zenga.domain.party.domain.entity.Party;
 import com.mannavoca.zenga.domain.point.domain.service.PointService;
 import com.mannavoca.zenga.domain.user.domain.entity.User;
+
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
 
 @Slf4j
 @UseCase
@@ -50,8 +51,8 @@ public class PointPolicyUseCase {
 
     // Member 가 포인트를 사용할 경우
     public void usePoint(Member member, String channelName) {
-        if (pointService.countTotalPointByUserId(member.getUser().getId()) >= 300) {
-            pointService.savePointHistory(member.getUser(), member, -300, "[" + channelName + "] 받은 칭찬을 확인했어요!");
+        if (pointService.countTotalPointByUserId(member.getUser().getId()) >= 200) {
+            pointService.savePointHistory(member.getUser(), member, -200, "[" + channelName + "] 받은 칭찬을 확인했어요!");
         } else {
             throw BusinessException.of(Error.NOT_ENOUGH_POINT);
         }
@@ -60,7 +61,8 @@ public class PointPolicyUseCase {
     // Member 의 금주의 적립 내역 조회해서 가능한지 여부 확인
     private Boolean isAvailableAccumulatePointByCase(Long memberId, int pointCase) {
         if (pointCase == 50) { // 칭찬으로 얻는 경우
-            return pointService.countPointHistoryByCase(memberId, pointCase) < 10;
+            // return pointService.countPointHistoryByCase(memberId, pointCase) < 10;
+            return true;
         } else if (pointCase == 100) { // 모임으로 얻는 경우
             return pointService.countPointHistoryByCase(memberId, pointCase) < 3;
         } else {
