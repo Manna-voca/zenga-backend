@@ -43,7 +43,11 @@ public class MemberRepositoryImpl implements MemberRepositoryCustom {
     public Slice<Member> findAllMemberSlicesByChannelId(Long channelId, Long cursorId, String cursorName, String keyword, Pageable pageable) {
         List<Member> memberList = queryFactory
                 .selectFrom(member)
-                .where(member.channel.id.eq(channelId), containsKeyword(keyword), customCursor(cursorId, cursorName))
+                .where(
+                    member.channel.id.eq(channelId),
+                    member.level.ne(LevelType.ADMIN),
+                    containsKeyword(keyword), customCursor(cursorId, cursorName)
+                )
                 .orderBy(member.nickname.asc(), member.id.asc())
                 .limit(pageable.getPageSize() + 1)
                 .fetch();
