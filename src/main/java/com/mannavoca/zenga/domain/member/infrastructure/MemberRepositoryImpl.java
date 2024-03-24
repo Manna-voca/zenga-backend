@@ -1,20 +1,23 @@
 package com.mannavoca.zenga.domain.member.infrastructure;
 
-import com.mannavoca.zenga.domain.member.domain.entity.Member;
-import com.mannavoca.zenga.domain.member.domain.repository.MemberRepositoryCustom;
-import com.querydsl.core.types.dsl.BooleanExpression;
-import com.querydsl.jpa.impl.JPAQueryFactory;
-import lombok.RequiredArgsConstructor;
+import static com.mannavoca.zenga.domain.channel.domain.entity.QChannel.*;
+import static com.mannavoca.zenga.domain.member.domain.entity.QMember.*;
+import static com.mannavoca.zenga.domain.user.domain.entity.QUser.*;
+
+import java.util.List;
+
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;
 import org.springframework.data.domain.SliceImpl;
 import org.springframework.stereotype.Repository;
 
-import java.util.List;
+import com.mannavoca.zenga.domain.member.domain.entity.Member;
+import com.mannavoca.zenga.domain.member.domain.entity.enumType.LevelType;
+import com.mannavoca.zenga.domain.member.domain.repository.MemberRepositoryCustom;
+import com.querydsl.core.types.dsl.BooleanExpression;
+import com.querydsl.jpa.impl.JPAQueryFactory;
 
-import static com.mannavoca.zenga.domain.channel.domain.entity.QChannel.channel;
-import static com.mannavoca.zenga.domain.member.domain.entity.QMember.member;
-import static com.mannavoca.zenga.domain.user.domain.entity.QUser.user;
+import lombok.RequiredArgsConstructor;
 
 @Repository
 @RequiredArgsConstructor
@@ -72,7 +75,8 @@ public class MemberRepositoryImpl implements MemberRepositoryCustom {
                 .select(member.count())
                 .from(member)
                 .where(
-                        member.channel.id.eq(channelId)
+                        member.channel.id.eq(channelId),
+                        member.level.ne(LevelType.ADMIN)
                 )
                 .fetchFirst();
     }
