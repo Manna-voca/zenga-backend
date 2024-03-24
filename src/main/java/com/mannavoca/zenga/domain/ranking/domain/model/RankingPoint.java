@@ -1,8 +1,7 @@
 package com.mannavoca.zenga.domain.ranking.domain.model;
 
 import com.mannavoca.zenga.common.infrastructure.domain.BaseEntity;
-import com.mannavoca.zenga.domain.channel.domain.entity.Channel;
-import com.mannavoca.zenga.domain.user.domain.entity.User;
+import com.mannavoca.zenga.domain.member.domain.entity.Member;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 
@@ -22,18 +21,15 @@ public class RankingPoint extends BaseEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @ManyToOne(fetch = FetchType.LAZY)
-    private User user;
-    @ManyToOne(fetch = FetchType.LAZY)
-    private Channel channel;
+    private Member member;
     private Integer point;
 
-    private RankingPoint(User user, Channel channel, Integer point) {
-        this.user = user;
-        this.channel = channel;
+    private RankingPoint(Member member, Integer point) {
+        this.member = member;
         this.point = point;
     }
 
-    public static RankingPoint create(User user, Channel channel, Integer point) {
-        return new RankingPoint(user, channel, point);
+    public static RankingPoint create(Member member, Integer point) {
+        return new RankingPoint(member, point);
     }
 }
