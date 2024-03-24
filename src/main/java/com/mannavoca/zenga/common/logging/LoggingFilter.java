@@ -1,6 +1,7 @@
 package com.mannavoca.zenga.common.logging;
 
 import lombok.extern.slf4j.Slf4j;
+import org.slf4j.MDC;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 import org.springframework.web.util.ContentCachingRequestWrapper;
@@ -11,39 +12,60 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
+import java.util.UUID;
 
 @Slf4j
 @Component
 public class LoggingFilter extends OncePerRequestFilter {
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
-        //전처리 과정 - HttpServletRequest와 HttpServletResponse를 캐시 가능하도록 래핑해준다.
-        ContentCachingRequestWrapper httpServletRequest = new ContentCachingRequestWrapper((HttpServletRequest) request);
-        ContentCachingResponseWrapper httpServletResponse = new ContentCachingResponseWrapper((HttpServletResponse) response);
+        ContentCachingRequestWrapper wrappedRequest = new ContentCachingRequestWrapper(request);
+        ContentCachingResponseWrapper wrappedResponse = new ContentCachingResponseWrapper(response);
+
+        String traceId = UUID.randomUUID().toString();
+        MDC.put("traceId", traceId);
+
+        try {
+            filterChain.doFilter(wrappedRequest, wrappedResponse);
+
+            if (!isHealthCheckRequest(wrappedRequest)) {
+                logRequest(wrappedRequest);
+                logResponse(wrappedResponse);
+            }
+        } finally {
+            MDC.clear();
+            wrappedResponse.copyBodyToResponse();
+        }
+    }
+
+    private void logRequest(ContentCachingRequestWrapper request) throws IOException {
+        String contentType = request.getContentType();
+
+        String queryString = request.getQueryString();
+        log.info("Request: {} uri=[{}] content-type=[{}]",
+                request.getMethod(),
+                queryString == null ? request.getRequestURI() : request.getRequestURI() + "?" + queryString,
+                contentType);
+
+        if (contentType != null && !contentType.startsWith("multipart/form-data")) {
+            byte[] content = request.getContentAsByteArray();
+            if (content.length > 0) {
+                log.info("Request Payload: {}", new String(content, request.getCharacterEncoding()));
+            }
+        }
+    }
+
+    private void logResponse(ContentCachingResponseWrapper response) throws IOException {
+        byte[] content = response.getContentAsByteArray();
+
+        if (content.length > 0) {
+            log.info("Response Payload: {}", new String(content, StandardCharsets.UTF_8)); // 문자열 생성 시 인코딩 사용
+        }
+    }
 
 
-        //전, 후 처리의 기준이되는 메소드
-        //filter의 동작에 httpServletRequest, httpServletResponse를 이용한다.
-        filterChain.doFilter(httpServletRequest, httpServletResponse);
-
-
-        //후 처리 과정
-
-        //request 요청으로 어떤 uri가 들어왔는지 확인
-        String uri = httpServletRequest.getRequestURI();
-
-        //request 내용 확인
-        String reqContent = new String(httpServletRequest.getContentAsByteArray());
-        log.info("URI: {}, Request: {}", uri, reqContent);
-
-
-        // response 내용 상태 정보, 내용 확인
-        int httpStatus = httpServletResponse.getStatus();
-        String resContent = new String(httpServletResponse.getContentAsByteArray());
-
-        //주의 : response를 클라이언트에서 볼 수 있도록 하려면 response를 복사해야 한다. response를 콘솔에 보여주면 내용이 사라진다.
-        httpServletResponse.copyBodyToResponse();
-
-        log.info("Status: {}, Response: {}", httpStatus, resContent);
+    private boolean isHealthCheckRequest(HttpServletRequest request) {
+        return "/health".equals(request.getRequestURI()) && "GET".equalsIgnoreCase(request.getMethod());
     }
 }
