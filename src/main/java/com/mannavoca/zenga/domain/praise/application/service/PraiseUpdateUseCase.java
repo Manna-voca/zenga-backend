@@ -24,7 +24,7 @@ import com.mannavoca.zenga.domain.praise.application.mapper.PraiseMapper;
 import com.mannavoca.zenga.domain.praise.domain.entity.MemberPraise;
 import com.mannavoca.zenga.domain.praise.domain.service.CandidateService;
 import com.mannavoca.zenga.domain.praise.domain.service.MemberPraiseService;
-
+import com.mannavoca.zenga.domain.ranking.domain.service.RankingPointPolicyService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
@@ -38,6 +38,7 @@ public class PraiseUpdateUseCase {
     private final PointPolicyUseCase pointPolicyUseCase;
     private final MemberPraiseService memberPraiseService;
     private final MemberService memberService;
+    private final RankingPointPolicyService rankingPointPolicyService;
     private final NotificationService notificationService;
     private final PraiseUpdateEventListener praiseUpdateEventListener;
 
@@ -65,6 +66,7 @@ public class PraiseUpdateUseCase {
         if (memberPraise.getPraisedMember() != null) { throw BusinessException.of(Error.ALREADY_PRAISED); }
         // 본인이 본인을 칭찬할 수 있는 경우를 그 전에 리스트 줄 때 막긴하는데 여기서도 막아야하나...?
         pointPolicyUseCase.accumulatePointByPraise(userUtils.getUser(), memberPraise.getPraiseMember(), praisedMember.getChannel().getName());
+        rankingPointPolicyService.accumulateRankingPointByPraise(memberPraise.getPraiseMember(), praisedMember.getChannel().getName());
         memberPraiseService.updatePraisedMemberToMemberPraise(memberPraise, praisedMember);
 
         notificationService.createPraiseNotification(praisedMember, memberPraise.getPraise());

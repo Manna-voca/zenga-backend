@@ -5,6 +5,8 @@ import com.mannavoca.zenga.common.util.UserUtils;
 import com.mannavoca.zenga.domain.member.domain.entity.Member;
 import com.mannavoca.zenga.domain.ranking.application.dto.ChannelMemberRankDto;
 import com.mannavoca.zenga.domain.ranking.application.dto.MemberRankDto;
+import com.mannavoca.zenga.domain.ranking.application.dto.MemberRankingPointHistoryDto;
+import com.mannavoca.zenga.domain.ranking.domain.repository.RankingPointQuerydslRepository;
 import com.mannavoca.zenga.domain.ranking.domain.repository.RankingPointRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.transaction.annotation.Transactional;
@@ -14,6 +16,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional(readOnly = true)
 public class RankingQueryService {
     private final RankingPointRepository rankingPointRepository;
+    private final RankingPointQuerydslRepository rankingPointQuerydslRepository;
     private final UserUtils userUtils;
 
     public MemberRankDto findMyRank(final Long channelId) {
@@ -24,5 +27,9 @@ public class RankingQueryService {
 
     public ChannelMemberRankDto findChannelMemberRanks(final Long channelId) {
         return ChannelMemberRankDto.create(rankingPointRepository.findChannelMemberRanks(channelId));
+    }
+
+    public MemberRankingPointHistoryDto findMyRankingPointHistory(Long memberId) {
+        return MemberRankingPointHistoryDto.createFromRankingPointHistoryDtos(rankingPointQuerydslRepository.findRankingPointHistories(memberId));
     }
 }
