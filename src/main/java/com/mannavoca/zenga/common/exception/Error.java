@@ -1,7 +1,8 @@
 package com.mannavoca.zenga.common.exception;
 
-import lombok.Getter;
 import org.springframework.http.HttpStatus;
+
+import lombok.Getter;
 
 @Getter
 public enum Error {
@@ -42,6 +43,7 @@ public enum Error {
     CANNOT_SHUFFLE(HttpStatus.BAD_REQUEST, "더 이상 셔플할 수 없습니다.", 1100),
     ALREADY_PRAISED(HttpStatus.BAD_REQUEST, "이미 칭찬하기를 완료했습니다.", 1101),
     NOT_MEMBER_PRAISE_OWNER(HttpStatus.BAD_REQUEST, "칭찬을 열 권한이 없습니다.", 1102),
+    ALREADY_OPEN(HttpStatus.BAD_REQUEST, "이미 열린 칭찬입니다.", 1103),
 
     // Point
     NOT_ENOUGH_POINT(HttpStatus.BAD_REQUEST, "포인트가 부족합니다.", 1200),
@@ -70,7 +72,6 @@ public enum Error {
     INVALID_TOKEN(HttpStatus.BAD_REQUEST,"유효하지 않은 토큰입니다.", 7000),
     EXPIRED_TOKEN(HttpStatus.BAD_REQUEST, "토큰이 만료되었습니다. 토큰 재발행 혹은 로그인을 다시 해주세요.", 7001),
     REFRESH_TOKEN_NOT_FOUND(HttpStatus.BAD_REQUEST, "리프레시 토큰을 찾을 수 없습니다.", 7002),
-
     ;
 
     private final HttpStatus httpStatus;
