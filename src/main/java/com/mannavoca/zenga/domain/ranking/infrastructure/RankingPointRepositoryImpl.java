@@ -20,7 +20,7 @@ public class RankingPointRepositoryImpl implements RankingPointCustomRepository 
                     "    point\n" +
                     "FROM (\n" +
                     "    SELECT\n" +
-                    "        DENSE_RANK() OVER (ORDER BY COALESCE(SUM(r.point), 0) DESC, m.nickname) AS member_rank,\n" +
+                    "        DENSE_RANK() OVER (ORDER BY COALESCE(SUM(r.point), 0) DESC) AS member_rank,\n" +
                     "        m.id AS member_id,\n" +
                     "        m.profile_image_url AS profile_image_url,\n" +
                     "        m.nickname AS nickname,\n" +
@@ -49,7 +49,7 @@ public class RankingPointRepositoryImpl implements RankingPointCustomRepository 
                     "    point\n" +
                     "FROM (\n" +
                     "    SELECT\n" +
-                    "        DENSE_RANK() OVER (ORDER BY COALESCE(SUM(r.point), 0) DESC, m.nickname) AS member_rank,\n" +
+                    "        DENSE_RANK() OVER (ORDER BY COALESCE(SUM(r.point), 0) DESC) AS member_rank,\n" +
                     "        m.id AS member_id,\n" +
                     "        m.profile_image_url AS profile_image_url,\n" +
                     "        m.nickname AS nickname,\n" +
