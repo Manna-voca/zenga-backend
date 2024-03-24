@@ -1,5 +1,10 @@
 package com.mannavoca.zenga.domain.party.application.service;
 
+import java.util.stream.Collectors;
+
+import org.springframework.transaction.annotation.Transactional;
+
+import com.mannavoca.zenga.common.annotation.DistributedLock;
 import com.mannavoca.zenga.common.annotation.UseCase;
 import com.mannavoca.zenga.common.exception.BusinessException;
 import com.mannavoca.zenga.common.exception.Error;
@@ -18,15 +23,12 @@ import com.mannavoca.zenga.domain.party.domain.entity.Participation;
 import com.mannavoca.zenga.domain.party.domain.entity.Party;
 import com.mannavoca.zenga.domain.party.domain.service.ParticipationService;
 import com.mannavoca.zenga.domain.party.domain.service.PartyService;
+
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.transaction.annotation.Transactional;
-
-import java.util.stream.Collectors;
 
 @Slf4j
 @UseCase
-@Transactional
 @RequiredArgsConstructor
 public class PartyCreateUseCase {
     private final UserUtils userUtils;
@@ -36,6 +38,7 @@ public class PartyCreateUseCase {
     private final ParticipationService participationService;
     private final NotificationService notificationService;
 
+    @Transactional
     public CreatePartyResponseDto createNewParty(CreatePartyRequestDto createPartyRequestDto) {
         memberService.validateChannelMember(SecurityUtils.getUserId(), createPartyRequestDto.getChannelId());
 
@@ -48,6 +51,7 @@ public class PartyCreateUseCase {
         return PartyMapper.mapToCreatePartyResponseDto(newParty, partyMaker);
     }
 
+    @DistributedLock(key = "'ApplyParty:' + #applyPartyRequestDto.getPartyId() ")
     public void applyParty(ApplyPartyRequestDto applyPartyRequestDto) {
         memberService.validateChannelMember(SecurityUtils.getUserId(), applyPartyRequestDto.getChannelId());
 
