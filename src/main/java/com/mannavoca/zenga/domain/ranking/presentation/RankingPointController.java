@@ -1,5 +1,6 @@
 package com.mannavoca.zenga.domain.ranking.presentation;
 
+import com.mannavoca.zenga.common.dto.ResponseDto;
 import com.mannavoca.zenga.domain.ranking.application.dto.MemberRankDto;
 import com.mannavoca.zenga.domain.ranking.application.service.RankingPointReadUseCase;
 import lombok.RequiredArgsConstructor;
@@ -18,7 +19,7 @@ public class RankingPointController {
     private final RankingPointReadUseCase rankingPointReadUseCase;
 
     @GetMapping("/my")
-    public ResponseEntity<MemberRankDto> findMyRank(@RequestParam("channelId") final Long channelId) {
-        return ResponseEntity.ok(rankingPointReadUseCase.findMyRank(channelId));
+    public ResponseEntity<ResponseDto<MemberRankDto>> findMyRank(@RequestParam("channelId") final Long channelId) {
+        return ResponseEntity.ok(ResponseDto.success(rankingPointReadUseCase.findMyRank(channelId)));
     }
 }
