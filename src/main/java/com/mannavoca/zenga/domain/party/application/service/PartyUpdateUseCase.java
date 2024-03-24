@@ -4,6 +4,7 @@ import com.mannavoca.zenga.common.annotation.UseCase;
 import com.mannavoca.zenga.common.exception.BusinessException;
 import com.mannavoca.zenga.common.exception.Error;
 import com.mannavoca.zenga.common.util.UserUtils;
+import com.mannavoca.zenga.domain.channel.domain.entity.Channel;
 import com.mannavoca.zenga.domain.channel.domain.service.ChannelService;
 import com.mannavoca.zenga.domain.member.domain.entity.Member;
 import com.mannavoca.zenga.domain.notification.domain.service.NotificationService;
@@ -18,6 +19,7 @@ import com.mannavoca.zenga.domain.party.domain.entity.Party;
 import com.mannavoca.zenga.domain.party.domain.service.ParticipationService;
 import com.mannavoca.zenga.domain.party.domain.service.PartyService;
 import com.mannavoca.zenga.domain.point.application.service.PointPolicyUseCase;
+import com.mannavoca.zenga.domain.ranking.domain.service.RankingPointPolicyService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.transaction.annotation.Transactional;
@@ -37,6 +39,7 @@ public class PartyUpdateUseCase {
     private final PointPolicyUseCase pointPolicyUseCase;
     private final NotificationService notificationService;
     private final PartyUpdateEventListener partyUpdateEventListener;
+    private final RankingPointPolicyService rankingPointPolicyService;
 
     public CreatePartyResponseDto editPartyInfo(EditPartyInfoRequestDto editPartyInfoRequestDto) {
         Member member = userUtils.getMember(editPartyInfoRequestDto.getChannelId());
@@ -67,6 +70,7 @@ public class PartyUpdateUseCase {
     public CompletePartyResponseDto uploadPartyCardAndComplete(CompletePartyRequestDto completePartyRequestDto) {
         Member member = userUtils.getMember(completePartyRequestDto.getChannelId());
         Party party = partyService.getPartyById(completePartyRequestDto.getPartyId());
+        Channel channel = channelService.getChannelById(completePartyRequestDto.getChannelId());
 
         checkIsPartyMaker(member, party);
 
@@ -75,6 +79,7 @@ public class PartyUpdateUseCase {
         List<Participation> particiationList =  party.getParticipationList();
         List<Member> participationMemberList = particiationList.stream().map(Participation::getMember).collect(Collectors.toList());
         pointPolicyUseCase.accumulatePointByParty(participationMemberList, party);
+        participationMemberList.forEach(participationMember -> rankingPointPolicyService.accumulateRankingPointByPartyFinish(participationMember, channel.getName()));
         particiationList.forEach(partyMember -> partyUpdateEventListener.checkPartyCountAndUpdateMemberBlock(partyMember.getMember().getId()));
 
         particiationList.forEach(
