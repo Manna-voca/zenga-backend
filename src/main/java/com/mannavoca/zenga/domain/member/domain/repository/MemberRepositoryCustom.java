@@ -1,13 +1,14 @@
 package com.mannavoca.zenga.domain.member.domain.repository;
 
-import com.mannavoca.zenga.domain.member.domain.entity.Member;
+import java.util.List;
+
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;
 
-import java.util.List;
+import com.mannavoca.zenga.domain.member.domain.entity.Member;
 
 public interface MemberRepositoryCustom {
-    List<Member> findMembersByChannelId(Long memberId, Long channelId);
+    List<Member> findRandomMembersByChannelId(Long memberId, Long channelId, int limit);
 
     Slice<Member> findAllMemberSlicesByChannelId(Long channelId, Long cursorId, String cursorName, String keyword, Pageable pageable);
 

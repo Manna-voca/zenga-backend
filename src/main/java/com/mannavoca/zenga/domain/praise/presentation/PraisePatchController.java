@@ -1,18 +1,21 @@
 package com.mannavoca.zenga.domain.praise.presentation;
 
-import com.mannavoca.zenga.common.dto.ResponseDto;
-import com.mannavoca.zenga.domain.praise.application.dto.request.ChooseMemberPraiseRequestDto;
-import com.mannavoca.zenga.domain.praise.application.dto.request.OpenMemberPraiseRequestDto;
-import com.mannavoca.zenga.domain.praise.application.dto.request.PraiseChannelIdRequestDto;
-import com.mannavoca.zenga.domain.praise.application.dto.response.CurrentTodoPraiseResponseDto;
-import com.mannavoca.zenga.domain.praise.application.service.PraiseUpdateUseCase;
-import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import com.mannavoca.zenga.common.dto.ResponseDto;
+import com.mannavoca.zenga.domain.praise.application.dto.request.ChooseMemberPraiseRequestDto;
+import com.mannavoca.zenga.domain.praise.application.dto.request.OpenMemberPraiseRequestDto;
+import com.mannavoca.zenga.domain.praise.application.dto.request.PraiseChannelIdRequestDto;
+import com.mannavoca.zenga.domain.praise.application.dto.response.CurrentTodoPraiseResponseDto;
+import com.mannavoca.zenga.domain.praise.application.dto.response.ReceivedPraiseInfoResponseDto;
+import com.mannavoca.zenga.domain.praise.application.service.PraiseUpdateUseCase;
+
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @RestController
@@ -39,12 +42,13 @@ public class PraisePatchController {
     }
 
     @PatchMapping("/open")
-    public ResponseEntity<ResponseDto<Void>> openMemberPraise
+    public ResponseEntity<ResponseDto<ReceivedPraiseInfoResponseDto>> openMemberPraise
             (
                     @RequestBody OpenMemberPraiseRequestDto openMemberPraiseRequestDto
             )
     {
-        praiseUpdateUseCase.openMemberPraise(openMemberPraiseRequestDto);
-        return ResponseEntity.ok(ResponseDto.success());
+        ReceivedPraiseInfoResponseDto receivedPraiseInfoResponseDto = praiseUpdateUseCase.openMemberPraise(
+            openMemberPraiseRequestDto);
+        return ResponseEntity.ok(ResponseDto.success(receivedPraiseInfoResponseDto));
     }
 }

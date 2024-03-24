@@ -1,30 +1,47 @@
 package com.mannavoca.zenga.domain.praise.domain.service;
 
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
+import java.util.List;
+import java.util.stream.Collectors;
+
+import org.springframework.jdbc.core.BatchPreparedStatementSetter;
+import org.springframework.jdbc.core.JdbcTemplate;
+
 import com.mannavoca.zenga.common.annotation.DomainService;
 import com.mannavoca.zenga.common.exception.BusinessException;
 import com.mannavoca.zenga.common.exception.Error;
 import com.mannavoca.zenga.domain.member.domain.entity.Member;
 import com.mannavoca.zenga.domain.praise.domain.entity.Candidate;
 import com.mannavoca.zenga.domain.praise.domain.repository.CandidateRepository;
-import lombok.RequiredArgsConstructor;
 
-import java.util.List;
-import java.util.stream.Collectors;
-import java.util.stream.IntStream;
+import lombok.RequiredArgsConstructor;
 
 @DomainService
 @RequiredArgsConstructor
 public class CandidateService {
     private final CandidateRepository candidateRepository;
+    private final JdbcTemplate jdbcTemplate;
 
     public Boolean existsCandidateHistory(Long memberId) {
         return candidateRepository.existsByMember_Id(memberId);
     }
     public void saveCandidateBulk(Member member, List<Member> candidates) {
-        List<Candidate> candidateList = candidates.stream()
-                .map(candidate -> Candidate.builder().member(member).candidate(candidate).build())
-                .collect(Collectors.toList());
-        candidateRepository.saveAll(candidateList);
+        jdbcTemplate.batchUpdate(
+            "INSERT INTO zg_candidate (member_id, candidate_id) VALUES (?, ?)",
+            new BatchPreparedStatementSetter() {
+                @Override
+                public void setValues(PreparedStatement ps, int i) throws SQLException {
+                    ps.setLong(1, member.getId());
+                    ps.setLong(2, candidates.get(i).getId());
+                }
+
+                @Override
+                public int getBatchSize() {
+                    return candidates.size();
+                }
+            }
+        );
     }
 
     public List<Member> getCandidates(Long memberId) {
@@ -32,17 +49,16 @@ public class CandidateService {
                 .stream().map(Candidate::getCandidate).collect(Collectors.toList());
     }
 
-    public void updateCandidates(Long memberId, List<Member> newCandidates) {
+    public void deletedAndSaveBulkCandidates(Member member, List<Member> newCandidates) {
         if (newCandidates.isEmpty()) { throw BusinessException.of(Error.DATA_NOT_FOUND); }
 
-        List<Candidate> candidates = candidateRepository.findCandidatesByMember_Id(memberId);
+        // bulk delete
+        candidateRepository.bulkDeleteCandidate(member.getId());
 
-        if (candidates.size() != newCandidates.size()) { throw BusinessException.of(Error.INTERNAL_SERVER_ERROR); }
-
-        IntStream.range(0, candidates.size()).forEach(i -> candidates.get(i).updateCandidate(newCandidates.get(i)));
-
-        candidateRepository.saveAll(candidates);
+        // bulk insert
+        saveCandidateBulk(member, newCandidates);
     }
+
 
 
 }
