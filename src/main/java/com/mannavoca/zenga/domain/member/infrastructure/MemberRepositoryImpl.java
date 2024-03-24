@@ -15,6 +15,7 @@ import com.mannavoca.zenga.domain.member.domain.entity.Member;
 import com.mannavoca.zenga.domain.member.domain.entity.enumType.LevelType;
 import com.mannavoca.zenga.domain.member.domain.repository.MemberRepositoryCustom;
 import com.querydsl.core.types.dsl.BooleanExpression;
+import com.querydsl.core.types.dsl.Expressions;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 
 import lombok.RequiredArgsConstructor;
@@ -25,14 +26,17 @@ public class MemberRepositoryImpl implements MemberRepositoryCustom {
     private final JPAQueryFactory queryFactory;
 
     @Override
-    public List<Member> findMembersByChannelId(Long memberId, Long channelId) {
+    public List<Member> findRandomMembersByChannelId(Long memberId, Long channelId, int limit) {
         return queryFactory
-                .selectFrom(member)
-                .where(
-                        member.channel.id.eq(channelId)
-                                .and(member.id.ne(memberId))
-                )
-                .fetch();
+            .selectFrom(member)
+            .where(
+                    member.channel.id.eq(channelId)
+                            .and(member.id.ne(memberId))
+                            .and(member.level.ne(LevelType.ADMIN))
+            )
+            .orderBy(Expressions.numberTemplate(Double.class, "function('rand')").asc())
+            .limit(limit)
+            .fetch();
     }
 
     @Override
