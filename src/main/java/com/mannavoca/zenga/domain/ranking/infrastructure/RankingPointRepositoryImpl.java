@@ -29,13 +29,14 @@ public class RankingPointRepositoryImpl implements RankingPointCustomRepository 
                     "        zg_member m\n" +
                     "    LEFT JOIN\n" +
                     "        zg_ranking_point r ON m.id = r.member_id\n" +
-                    "    WHERE\n" +
-                    "        m.id = ?\n" +
                     "    GROUP BY\n" +
                     "        m.id, m.profile_image_url, m.nickname\n" +
-                    ") AS rankedMembers\n" +
                     "ORDER BY\n" +
-                    "    member_rank, nickname"; // 이 부분이 수정되었습니다.
+                    "    member_rank, nickname" +
+                    ") AS rankedMembers\n" +
+                    "WHERE\n" +
+                    "    member_id = ?\n";
+
 
 
 
