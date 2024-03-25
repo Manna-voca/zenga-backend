@@ -56,6 +56,7 @@ public enum Error {
 
     // Party
     PARTY_NOT_FOUND(HttpStatus.NOT_FOUND, "모임을 찾을 수 없습니다.", 1400),
+    ALREADY_COMPLETED_PARTY(HttpStatus.BAD_REQUEST, "이미 카드 업로드가 완료되었습니다.", 1401),
 
     // Channel
     CHANNEL_NOT_FOUND(HttpStatus.NOT_FOUND, "채널을 찾을 수 없습니다.", 1500),

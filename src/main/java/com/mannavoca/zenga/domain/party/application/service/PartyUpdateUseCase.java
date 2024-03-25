@@ -1,5 +1,12 @@
 package com.mannavoca.zenga.domain.party.application.service;
 
+import java.util.List;
+import java.util.Objects;
+import java.util.stream.Collectors;
+
+import org.springframework.transaction.annotation.Transactional;
+
+import com.mannavoca.zenga.common.annotation.DistributedLock;
 import com.mannavoca.zenga.common.annotation.UseCase;
 import com.mannavoca.zenga.common.exception.BusinessException;
 import com.mannavoca.zenga.common.exception.Error;
@@ -20,16 +27,12 @@ import com.mannavoca.zenga.domain.party.domain.service.ParticipationService;
 import com.mannavoca.zenga.domain.party.domain.service.PartyService;
 import com.mannavoca.zenga.domain.point.application.service.PointPolicyUseCase;
 import com.mannavoca.zenga.domain.ranking.domain.service.RankingPointPolicyService;
+
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.transaction.annotation.Transactional;
-
-import java.util.List;
-import java.util.stream.Collectors;
 
 @Slf4j
 @UseCase
-@Transactional
 @RequiredArgsConstructor
 public class PartyUpdateUseCase {
     private final UserUtils userUtils;
@@ -41,6 +44,7 @@ public class PartyUpdateUseCase {
     private final PartyUpdateEventListener partyUpdateEventListener;
     private final RankingPointPolicyService rankingPointPolicyService;
 
+    @Transactional
     public CreatePartyResponseDto editPartyInfo(EditPartyInfoRequestDto editPartyInfoRequestDto) {
         Member member = userUtils.getMember(editPartyInfoRequestDto.getChannelId());
         Party party = partyService.getPartyById(editPartyInfoRequestDto.getPartyId());
@@ -55,6 +59,7 @@ public class PartyUpdateUseCase {
         return PartyMapper.mapToCreatePartyResponseDto(updatedParty, member);
     }
 
+    @Transactional
     public CreatePartyResponseDto closeParty(ClosePartyRequestDto closePartyRequestDto) {
         Member member = userUtils.getMember(closePartyRequestDto.getChannelId());
         Party party = partyService.getPartyById(closePartyRequestDto.getPartyId());
@@ -67,12 +72,18 @@ public class PartyUpdateUseCase {
         return PartyMapper.mapToCreatePartyResponseDto(updatedParty, member);
     }
 
+    @DistributedLock(key = "'FinishParty:' + #completePartyRequestDto.getPartyId() ")
     public CompletePartyResponseDto uploadPartyCardAndComplete(CompletePartyRequestDto completePartyRequestDto) {
         Member member = userUtils.getMember(completePartyRequestDto.getChannelId());
         Party party = partyService.getPartyById(completePartyRequestDto.getPartyId());
+
+        if (Objects.nonNull(party.getCardImageUrl())) {
+            throw BusinessException.of(Error.ALREADY_COMPLETED_PARTY);
+        }
+
         Channel channel = channelService.getChannelById(completePartyRequestDto.getChannelId());
 
-        checkIsPartyMaker(member, party);
+		checkIsPartyMaker(member, party);
 
         Party completedPartyAndUploadCard = partyService.completePartyAndUploadCard(party, completePartyRequestDto.getPartyCardImageUrl());
 
