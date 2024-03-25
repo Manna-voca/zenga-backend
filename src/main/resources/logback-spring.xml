@@ -42,7 +42,5 @@
             <appender-ref ref="CONSOLE_LOG"/>
             <appender-ref ref="CLOUDWATCH_LOG"/>
         </root>
-
-        <logger name="org.hibernate.SQL" level="DEBUG"/>
     </springProfile>
 </configuration>

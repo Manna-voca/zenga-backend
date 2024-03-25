@@ -2,6 +2,8 @@ package com.mannavoca.zenga.domain.praise.domain.service;
 
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
+import java.sql.Timestamp;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -28,12 +30,14 @@ public class CandidateService {
     }
     public void saveCandidateBulk(Member member, List<Member> candidates) {
         jdbcTemplate.batchUpdate(
-            "INSERT INTO zg_candidate (member_id, candidate_id) VALUES (?, ?)",
+            "INSERT INTO zg_candidate (member_id, candidate_id, created_date, modified_date) VALUES (?, ?, ?, ?)",
             new BatchPreparedStatementSetter() {
                 @Override
                 public void setValues(PreparedStatement ps, int i) throws SQLException {
                     ps.setLong(1, member.getId());
                     ps.setLong(2, candidates.get(i).getId());
+                    ps.setTimestamp(3, Timestamp.valueOf(LocalDateTime.now()));
+                    ps.setTimestamp(4, Timestamp.valueOf(LocalDateTime.now()));
                 }
 
                 @Override
